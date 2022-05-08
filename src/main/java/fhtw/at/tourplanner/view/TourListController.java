@@ -5,6 +5,7 @@ import fhtw.at.tourplanner.viewmodel.TourListViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 
 public class TourListController {
     @FXML
@@ -23,5 +24,10 @@ public class TourListController {
 
     public void addNewTour(ActionEvent actionEvent) {
         tourListViewModel.saveData();
+    }
+
+    public void getSelectedListViewItem(MouseEvent mouseEvent) {
+        System.out.println("clicked on " + tourModelListView.getSelectionModel().getSelectedItem()); //Debug
+        tourListViewModel.setSelectedItem(tourModelListView.getSelectionModel().getSelectedItem());
     }
 }

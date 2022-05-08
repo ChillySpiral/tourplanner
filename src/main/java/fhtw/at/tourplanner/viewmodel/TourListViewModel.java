@@ -7,8 +7,12 @@ import javafx.collections.ObservableList;
 public class TourListViewModel {
 
     private ObservableList<TourModel> data;
+    private TourTabViewModel tourTabViewModel;
+    private LogTableViewModel logTableViewModel;
 
-    public TourListViewModel(){
+    public TourListViewModel(TourTabViewModel tourTabViewModel, LogTableViewModel logTableViewModel){
+        this.tourTabViewModel = tourTabViewModel;
+        this.logTableViewModel = logTableViewModel;
         this.data = FXCollections.observableArrayList(
                 new TourModel("Radtour Donauinsel", "Von einem Ende zum anderen."),
                 new TourModel("Wienerberg Wanderung", "Mit Mittagspause bei einem Restaurant.")
@@ -21,5 +25,9 @@ public class TourListViewModel {
 
     public void saveData(){
         data.add(new TourModel("New Tour", "Description"));
+    }
+
+    public void setSelectedItem(TourModel selectedItem){
+        tourTabViewModel.setTourModel(selectedItem);
     }
 }

@@ -29,6 +29,6 @@
             </tabs>
         </TabPane>
         <Label text="Title: " />
-        <TextField GridPane.columnIndex="1" />
+        <TextField fx:id="tourTitle" GridPane.columnIndex="1" />
     </children>
 </GridPane>
