@@ -6,13 +6,11 @@ import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 
 import java.io.IOException;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class FXMLDependencyInjection {
 
     public static Parent load(String location) throws IOException {
-        FXMLLoader loader = getLoader(location);
+        var loader = getLoader(location);
         return loader.load();
     }
 

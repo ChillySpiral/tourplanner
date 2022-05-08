@@ -39,10 +39,10 @@
        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
      </rowConstraints>
       <children>
-          <fx:include fx:id="searchBar" source="searchBarView.fxml" GridPane.rowIndex="1" GridPane.rowSpan="2147483647"/>
+          <fx:include fx:id="searchBar" source="tourListView.fxml" GridPane.rowIndex="1" GridPane.rowSpan="2147483647"/>
           <fx:include fx:id="tourTab" source="tourTabView.fxml" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
           <fx:include fx:id="logTable" source="logTableView.fxml" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-          <fx:include fx:id="tourList" source="tourListView.fxml" GridPane.columnSpan="2147483647"/>
+          <fx:include fx:id="tourList" source="searchBarView.fxml" GridPane.columnSpan="2147483647"/>
       </children>
       <padding>
          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
