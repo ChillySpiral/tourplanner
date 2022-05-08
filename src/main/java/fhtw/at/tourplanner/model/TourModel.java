@@ -17,6 +17,9 @@ public class TourModel {
     public StringProperty getTitle() {
         return title;
     }
+    public StringProperty getDescription() {
+        return description;
+    }
 
     @Override
     public String toString() {
