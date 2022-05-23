@@ -1,29 +1,40 @@
 package fhtw.at.tourplanner.viewmodel;
 
-import fhtw.at.tourplanner.listener.BindListener;
 import fhtw.at.tourplanner.model.TourModel;
-
-import java.util.ArrayList;
-import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class TourTabViewModel {
 
-    public TourModel data = new TourModel("", "");
-    private List<BindListener> reBindListenerList = new ArrayList<BindListener>();
+    private TourModel data;
+    private volatile boolean isInitialValue = false;
 
-    public void setTourModel(TourModel selectedItem){
-        for (var listener: this.reBindListenerList) {
-            listener.requestUnBind();
-        }
+    private final StringProperty title = new SimpleStringProperty();
 
-        data = selectedItem;
-
-        for (var listener: this.reBindListenerList) {
-            listener.requestReBind();
-        }
+    public TourTabViewModel(){
+        title.addListener( (arg, oldVal, newVal)->updateTourModel());
     }
 
-    public void addListener(BindListener listener) {
-        this.reBindListenerList.add(listener);
+    public String getTitle(){
+        return title.get();
+    }
+    public StringProperty titleProperty(){
+        return title;
+    }
+
+    public void setTourModel(TourModel selectedItem){
+        isInitialValue = true;
+        if(selectedItem == null){
+            title.set("New Tour");
+            return;
+        }
+
+        this.data = selectedItem;
+        title.setValue(selectedItem.getTitle());
+        isInitialValue = false;
+    }
+
+    public void updateTourModel(){
+        data.setTitle(this.getTitle());
     }
 }

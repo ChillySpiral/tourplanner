@@ -16,7 +16,7 @@ public class ControllerFactory {
         logTableViewModel = new LogTableViewModel();
         searchBarViewModel = new SearchBarViewModel();
         tourTabViewModel = new TourTabViewModel();
-        tourListViewModel = new TourListViewModel(tourTabViewModel, logTableViewModel);
+        tourListViewModel = new TourListViewModel();
         homeViewModel = new HomeViewModel(searchBarViewModel, tourListViewModel, tourTabViewModel, logTableViewModel);
     }
 

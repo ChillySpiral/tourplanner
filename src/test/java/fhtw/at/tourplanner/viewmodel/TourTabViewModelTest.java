@@ -1,14 +1,11 @@
 package fhtw.at.tourplanner.viewmodel;
 
-import fhtw.at.tourplanner.listener.BindListener;
-import fhtw.at.tourplanner.model.TourModel;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
+
+//ToDo
 class TourTabViewModelTest {
-
+/*
     @Test
     public void TestBindListener(){
         var testTourTabVM = new TourTabViewModel();
@@ -31,4 +28,7 @@ class TourTabViewModelTest {
         testTourTabVM.setTourModel(expected);
         assertThat(testTourTabVM.data).isEqualTo(expected);
     }
+
+
+ */
 }

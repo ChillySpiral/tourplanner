@@ -4,25 +4,26 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class TourModel {
-    private StringProperty title = new SimpleStringProperty();
-    private StringProperty description = new SimpleStringProperty();
+    private String title = new String();
+    private String description = new String();
     //Route
     //List<Log>
 
-    public TourModel(String title, String description){
-        this.title.setValue(title);
-        this.description.setValue(description);
+    public TourModel(){
     }
 
-    public StringProperty getTitle() {
+    public String getTitle() {
         return title;
     }
-    public StringProperty getDescription() {
+    public void setTitle(String newTitle){
+        title = newTitle;
+    }
+    public String getDescription() {
         return description;
     }
 
     @Override
-    public String toString() {
-        return this.title.getValue();
+    public String toString(){
+        return title;
     }
 }

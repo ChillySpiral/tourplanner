@@ -1,5 +1,7 @@
 package fhtw.at.tourplanner.viewmodel;
 
+import fhtw.at.tourplanner.model.TourModel;
+
 public class HomeViewModel {
     private SearchBarViewModel searchBarViewModel;
     private TourListViewModel tourListViewModel;
@@ -11,5 +13,11 @@ public class HomeViewModel {
         this.tourListViewModel = tourListViewModel;
         this.tourTabViewModel = tourTabViewModel;
         this.logTableViewModel = logTableViewModel;
+
+        this.tourListViewModel.addTourSelectionListener(selectedTourItem -> selectTour(selectedTourItem));
+    }
+
+    private void selectTour(TourModel selectedTourItem){
+        this.tourTabViewModel.setTourModel(selectedTourItem);
     }
 }

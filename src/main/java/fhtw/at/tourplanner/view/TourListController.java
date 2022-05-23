@@ -20,14 +20,14 @@ public class TourListController {
     @FXML
     public void initialize() {
         tourModelListView.setItems(tourListViewModel.getData());
+        tourModelListView.getSelectionModel().selectedItemProperty().addListener(tourListViewModel.getChangeListener());
     }
 
     public void addNewTour(ActionEvent actionEvent) {
-        tourListViewModel.saveData();
+        tourListViewModel.addNewTour();
     }
 
-    public void getSelectedListViewItem(MouseEvent mouseEvent) {
-        System.out.println("clicked on " + tourModelListView.getSelectionModel().getSelectedItem()); //Debug
-        tourListViewModel.setSelectedItem(tourModelListView.getSelectionModel().getSelectedItem());
+    public void deleteTour(ActionEvent actionEvent){
+        tourListViewModel.deleteTour(tourModelListView.getSelectionModel().getSelectedItem());
     }
 }
