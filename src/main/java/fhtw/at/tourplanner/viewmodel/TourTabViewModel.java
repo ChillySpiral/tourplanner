@@ -1,29 +1,57 @@
 package fhtw.at.tourplanner.viewmodel;
 
-import fhtw.at.tourplanner.listener.BindListener;
 import fhtw.at.tourplanner.model.TourModel;
-
-import java.util.ArrayList;
-import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class TourTabViewModel {
 
-    public TourModel data = new TourModel("", "");
-    private List<BindListener> reBindListenerList = new ArrayList<BindListener>();
+    private TourModel data;
+    private volatile boolean isInitialValue = false;
+    private final StringProperty title = new SimpleStringProperty();
 
-    public void setTourModel(TourModel selectedItem){
-        for (var listener: this.reBindListenerList) {
-            listener.requestUnBind();
+    public TourTabViewModel() {
+        registerPropertyListeners();
+    }
+
+    public String getTitle() {
+        return title.get();
+    }
+
+    public StringProperty titleProperty() {
+        return title;
+    }
+
+    public void setTourModel(TourModel selectedItem) {
+
+        if (selectedItem == null) {
+            isInitialValue = true;
+        } else {
+            this.data = selectedItem;
+            isInitialValue = false;
         }
+        setTourTabProperties();
+    }
 
-        data = selectedItem;
+    private void registerPropertyListeners() {
+        title.addListener((arg, oldVal, newVal) -> updateTourModel());
+        //ToDo: Alle Properties müssen hier registriert werden, sodass jede Änderung dieser auch das Model Updated
+    }
 
-        for (var listener: this.reBindListenerList) {
-            listener.requestReBind();
+    private void setTourTabProperties() {
+        if (this.isInitialValue) {
+            title.setValue("");
+            //ToDo: Alle weiteren Properties müssen einen Initial-Wert bekommen
+        } else {
+            title.setValue(data.getTitle());
+            //ToDo: Alle weiteren Properties müssen hier gesetzt werden
         }
     }
 
-    public void addListener(BindListener listener) {
-        this.reBindListenerList.add(listener);
+    private void updateTourModel() {
+        if(isInitialValue)
+            return;
+        data.setTitle(this.getTitle());
+        //ToDo: Alle weiteren Property Updates müssen hier eingefügt werden
     }
 }

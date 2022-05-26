@@ -1,34 +1,40 @@
 package fhtw.at.tourplanner.viewmodel;
 
-import fhtw.at.tourplanner.listener.BindListener;
 import fhtw.at.tourplanner.model.TourModel;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
 class TourTabViewModelTest {
+    private TourTabViewModel tourTabViewModel;
 
-    @Test
-    public void TestBindListener(){
-        var testTourTabVM = new TourTabViewModel();
-        BindListener bindListener = mock(BindListener.class);
-        testTourTabVM.addListener(bindListener);
-
-        testTourTabVM.setTourModel(new TourModel("ExpectedTitle", "ExpectedDescription"));
-        verify(bindListener, times(1)).requestReBind();
-        verify(bindListener, times(1)).requestUnBind();
+    @BeforeEach
+    private void initTestVM(){
+        this.tourTabViewModel = new TourTabViewModel();
     }
 
     @Test
-    public void TestSetTourModel(){
-        var testTourTabVM = new TourTabViewModel();
-        assertThat(testTourTabVM.data).isNotEqualTo(new TourModel("",""));
-        assertThat(testTourTabVM.data.getTitle().getValue()).isEqualTo("");
-        assertThat(testTourTabVM.data.getDescription().getValue()).isEqualTo("");
-
-        var expected = new TourModel("ExpectedTitle", "ExpectedDescription");
-        testTourTabVM.setTourModel(expected);
-        assertThat(testTourTabVM.data).isEqualTo(expected);
+    @DisplayName("Initial Value Test")
+    public void TestSetTourModel_V_A(){
+        tourTabViewModel.setTourModel(null);
+        assertThat(tourTabViewModel.getTitle()).isEqualTo("");
+        //ToDo: More Properties
     }
+
+    @Test
+    @DisplayName("Set Model Test")
+    public void TestSetTourModel_V_B(){
+        var expected = new TourModel();
+        var expectedTitle = "ExcpectedTitle";
+        expected.setTitle(expectedTitle);
+        //ToDo: More Properties
+
+
+        tourTabViewModel.setTourModel(expected);
+
+        assertThat(tourTabViewModel.getTitle()).isEqualTo(expectedTitle);
+    }
+
 }
