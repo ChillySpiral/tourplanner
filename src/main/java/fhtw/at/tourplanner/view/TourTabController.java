@@ -17,5 +17,6 @@ public class TourTabController {
     @FXML
     public void initialize() {
         tourTitle.textProperty().bindBidirectional(tourTabViewModel.titleProperty());
+        //ToDo: Alle Properties müssen hier gebindet werden (nicht umbedingt immer BiDirectional)
     }
 }

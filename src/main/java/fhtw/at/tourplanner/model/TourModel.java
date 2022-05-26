@@ -5,6 +5,7 @@ import javafx.beans.property.StringProperty;
 
 public class TourModel {
     private String title = new String();
+    //ToDo: Description might be a an own Class (Model)
     private String description = new String();
     //Route
     //List<Log>
