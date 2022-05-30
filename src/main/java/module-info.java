@@ -1,6 +1,7 @@
 module fhtw.at.tourplanner {
     requires javafx.controls;
     requires javafx.fxml;
+    requires lombok;
 
 
     opens fhtw.at.tourplanner to javafx.fxml;

@@ -1,26 +1,26 @@
 package fhtw.at.tourplanner.model;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 public class TourModel {
+
+    @Getter
+    @Setter
     private String title = new String();
-    //ToDo: Description might be a an own Class (Model)
+
+    @Getter
+    @Setter
     private String description = new String();
     //Route
     //List<Log>
 
-    public TourModel(){
+    public TourModel(String title, String description){
+        this.title = title;
+        this.description = description;
     }
 
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String newTitle){
-        title = newTitle;
-    }
-    public String getDescription() {
-        return description;
+    public TourModel(){
     }
 
     @Override
