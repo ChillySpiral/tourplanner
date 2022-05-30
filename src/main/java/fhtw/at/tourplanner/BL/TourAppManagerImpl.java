@@ -18,4 +18,14 @@ public class TourAppManagerImpl implements TourAppManager {
     public List<TourModel> getAllTours() {
         return tourModelDao.getAll();
     }
+
+    @Override
+    public TourModel createTour() {
+        return tourModelDao.create();
+    }
+
+    @Override
+    public void deleteTour(TourModel tourModel) {
+        tourModelDao.delete(tourModel);
+    }
 }

@@ -1,27 +1,28 @@
 package fhtw.at.tourplanner.DAL.dao;
 
 import fhtw.at.tourplanner.model.TourModel;
+import lombok.Builder;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class TourDaoInMemory implements Dao<TourModel> {
 
-    private final List<TourModel> tours = new ArrayList<>();
+    private List<TourModel> tours = new ArrayList<>();
 
     public TourDaoInMemory(){
-        tours.add(new TourModel("Donauinsel Walk", "Not difficult"));
-        tours.add(new TourModel("Wienerberg Walk", "Slightly difficult"));
-        tours.add(new TourModel("Dachstein Walk", "Very difficult"));
-        tours.add(new TourModel("Gletscher Climb", "Very difficult"));
-        tours.add(new TourModel("Prater Walk", "Not difficult"));
+        tours.add(new TourModel(1,"Donauinsel Walk", "Not difficult", "Steinspornbrücke", "Floridsdorferbrücke", "BICYCLE", 7.0, LocalTime.of(1, 20), -1));
+        tours.add(new TourModel(2,"Wienerberg Walk", "Slightly difficult", "Wienerberg City", "Stefan Fadinger Platz", "WALKING", 2.0, LocalTime.of(0, 20), -1));
+        tours.add(new TourModel(3,"Dachstein Walk", "Very difficult", "Dorf", "Spitze", "WALKING", 9.0, LocalTime.of(2, 20), -1));
     }
 
 
     @Override
     public Optional<TourModel> get(int id) {
-        return Optional.empty();
+        var tour = tours.stream().filter(x -> x.getTourId() == id).findFirst();
+        return tour;
     }
 
     @Override
@@ -31,7 +32,10 @@ public class TourDaoInMemory implements Dao<TourModel> {
 
     @Override
     public TourModel create() {
-        return null;
+        var newItem = new TourModel();
+        newItem.setTitle("New Tour");
+        tours.add(newItem);
+        return newItem;
     }
 
     @Override
@@ -41,6 +45,9 @@ public class TourDaoInMemory implements Dao<TourModel> {
 
     @Override
     public void delete(TourModel tourModel) {
-
+        if(tours.contains(tourModel)){
+            var index = tours.indexOf(tourModel);
+            tours.remove(index);
+        }
     }
 }

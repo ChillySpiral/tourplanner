@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface TourAppManager {
     List<TourModel> getAllTours();
+    TourModel createTour();
+    void deleteTour(TourModel tourModel);
 }

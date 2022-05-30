@@ -1,5 +1,6 @@
 package fhtw.at.tourplanner.viewmodel;
 
+import fhtw.at.tourplanner.BL.TourAppManager;
 import fhtw.at.tourplanner.BL.TourAppManagerFactory;
 import fhtw.at.tourplanner.listener.TourSelectionListener;
 import fhtw.at.tourplanner.model.TourModel;
@@ -14,10 +15,11 @@ public class TourListViewModel {
 
     private final ObservableList<TourModel> data = FXCollections.observableArrayList();
     private final List<TourSelectionListener> listeners = new ArrayList<>();
+    private final TourAppManager tourAppManager = TourAppManagerFactory.getTourAppManager();
 
     public TourListViewModel() {
-        var blFactory = TourAppManagerFactory.getTourAppManager();
-        setTours(blFactory.getAllTours());
+        var tours = tourAppManager.getAllTours();
+        setTours(tours);
     }
 
     public ObservableList<TourModel> getData() {
@@ -48,12 +50,12 @@ public class TourListViewModel {
     }
 
     public void addNewTour() {
-        var newItem = new TourModel();
-        newItem.setTitle("New Tour");
+        var newItem = tourAppManager.createTour();
         data.add(newItem);
     }
 
     public void deleteTour(TourModel tourItem) {
+        tourAppManager.deleteTour(tourItem);
         data.remove(tourItem);
     }
 }
