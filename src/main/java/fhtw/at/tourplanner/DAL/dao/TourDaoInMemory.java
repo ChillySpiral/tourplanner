@@ -39,8 +39,20 @@ public class TourDaoInMemory implements Dao<TourModel> {
     }
 
     @Override
-    public void update(TourModel tourModel, List<?> params) {
+    public void update(TourModel tourModel) {
+        if(tours.contains(tourModel)){
+            var index = tours.indexOf(tourModel);
+            var originalTour = tours.get(index);
 
+            originalTour.setTitle(tourModel.getTitle());
+            originalTour.setDescription(tourModel.getDescription());
+            originalTour.setFrom(tourModel.getFrom());
+            originalTour.setTo(tourModel.getTo());
+            originalTour.setTourDistance(tourModel.getTourDistance());
+            originalTour.setEstimatedTime(tourModel.getEstimatedTime());
+            originalTour.setIdToRouteImage(tourModel.getIdToRouteImage());
+            originalTour.setTransportType(tourModel.getTransportType());
+        }
     }
 
     @Override

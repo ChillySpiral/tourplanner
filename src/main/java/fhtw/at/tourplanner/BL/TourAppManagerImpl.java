@@ -28,4 +28,9 @@ public class TourAppManagerImpl implements TourAppManager {
     public void deleteTour(TourModel tourModel) {
         tourModelDao.delete(tourModel);
     }
+
+    @Override
+    public void updateTour(TourModel tourModel) {
+        tourModelDao.update(tourModel);
+    }
 }

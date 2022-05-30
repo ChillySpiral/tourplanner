@@ -8,4 +8,5 @@ public interface TourAppManager {
     List<TourModel> getAllTours();
     TourModel createTour();
     void deleteTour(TourModel tourModel);
+    void updateTour(TourModel tourModel);
 }

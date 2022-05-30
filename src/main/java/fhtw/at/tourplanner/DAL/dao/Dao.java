@@ -11,7 +11,7 @@ public interface Dao<T> {
 
     T create();
 
-    void update(T t, List<?> params);
+    void update(T t);
 
     void delete(T t);
 }
