@@ -1,5 +1,7 @@
 package fhtw.at.tourplanner.DAL.dao;
 
+import fhtw.at.tourplanner.model.TourModel;
+
 import java.util.List;
 import java.util.Optional;
 

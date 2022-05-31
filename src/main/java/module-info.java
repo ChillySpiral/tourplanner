@@ -2,6 +2,7 @@ module fhtw.at.tourplanner {
     requires javafx.controls;
     requires javafx.fxml;
     requires lombok;
+    requires java.sql;
 
 
     opens fhtw.at.tourplanner to javafx.fxml;

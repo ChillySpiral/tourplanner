@@ -1,21 +1,24 @@
-package fhtw.at.tourplanner.DAL.dao;
+package fhtw.at.tourplanner.DAL.implementation;
 
+import fhtw.at.tourplanner.DAL.extended.TourDaoExtension;
+import fhtw.at.tourplanner.model.TourLog;
 import fhtw.at.tourplanner.model.TourModel;
-import lombok.Builder;
+import fhtw.at.tourplanner.model.enums.RouteType;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class TourDaoInMemory implements Dao<TourModel> {
+public class TourDaoInMemory implements TourDaoExtension {
 
     private List<TourModel> tours = new ArrayList<>();
+    private List<TourLog> tourLogs = new ArrayList<>();
 
     public TourDaoInMemory(){
-        tours.add(new TourModel(1,"Donauinsel Walk", "Not difficult", "Steinspornbrücke", "Floridsdorferbrücke", "BICYCLE", 7.0, LocalTime.of(1, 20), -1));
-        tours.add(new TourModel(2,"Wienerberg Walk", "Slightly difficult", "Wienerberg City", "Stefan Fadinger Platz", "WALKING", 2.0, LocalTime.of(0, 20), -1));
-        tours.add(new TourModel(3,"Dachstein Walk", "Very difficult", "Dorf", "Spitze", "WALKING", 9.0, LocalTime.of(2, 20), -1));
+        tours.add(new TourModel(1,"Donauinsel Walk", "Not difficult", "Steinspornbrücke", "Floridsdorferbrücke", RouteType.bicycle, 7.0, LocalTime.of(1, 20), ""));
+        tours.add(new TourModel(2,"Wienerberg Walk", "Slightly difficult", "Wienerberg City", "Stefan Fadinger Platz", RouteType.fastest, 2.0, LocalTime.of(0, 20), ""));
+        tours.add(new TourModel(3,"Dachstein Walk", "Very difficult", "Dorf", "Spitze", RouteType.pedestrian, 9.0, LocalTime.of(2, 20), ""));
     }
 
 
@@ -50,8 +53,8 @@ public class TourDaoInMemory implements Dao<TourModel> {
             originalTour.setTo(tourModel.getTo());
             originalTour.setTourDistance(tourModel.getTourDistance());
             originalTour.setEstimatedTime(tourModel.getEstimatedTime());
-            originalTour.setIdToRouteImage(tourModel.getIdToRouteImage());
-            originalTour.setTransportType(tourModel.getTransportType());
+            originalTour.setImageFilename(tourModel.getImageFilename());
+            originalTour.setRouteType(tourModel.getRouteType());
         }
     }
 
@@ -61,5 +64,10 @@ public class TourDaoInMemory implements Dao<TourModel> {
             var index = tours.indexOf(tourModel);
             tours.remove(index);
         }
+    }
+
+    @Override
+    public List<TourLog> getLogsForTour(TourModel tour) {
+        return null;
     }
 }

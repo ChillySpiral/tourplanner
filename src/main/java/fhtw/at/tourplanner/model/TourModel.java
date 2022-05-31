@@ -1,12 +1,12 @@
 package fhtw.at.tourplanner.model;
 
+import fhtw.at.tourplanner.model.enums.RouteType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
-import java.util.UUID;
 
 
 //Properties might need to be redefined to match MapQuest API
@@ -37,7 +37,7 @@ public class TourModel {
 
     @Getter
     @Setter
-    private String transportType; //Enum
+    private RouteType routeType; //Enum
 
     @Getter
     @Setter
@@ -49,7 +49,7 @@ public class TourModel {
 
     @Getter
     @Setter
-    private int idToRouteImage;
+    private String imageFilename;
 
     @Override
     public String toString(){
