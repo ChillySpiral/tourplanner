@@ -37,7 +37,7 @@ public class TourModel {
 
     @Getter
     @Setter
-    private RouteType routeType; //Enum
+    private String transportType; //Enum
 
     @Getter
     @Setter

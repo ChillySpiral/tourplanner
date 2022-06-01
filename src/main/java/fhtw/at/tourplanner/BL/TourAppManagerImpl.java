@@ -11,7 +11,7 @@ public class TourAppManagerImpl implements TourAppManager {
     private final Dao<TourModel> tourModelDao;
 
     public TourAppManagerImpl(){
-        tourModelDao = DalFactory.GetTourModelDaoInMemory();
+        tourModelDao = DalFactory.GetTourModelDao();
     }
 
     @Override

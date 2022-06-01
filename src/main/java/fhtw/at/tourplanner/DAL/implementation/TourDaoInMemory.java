@@ -16,9 +16,9 @@ public class TourDaoInMemory implements TourDaoExtension {
     private List<TourLog> tourLogs = new ArrayList<>();
 
     public TourDaoInMemory(){
-        tours.add(new TourModel(1,"Donauinsel Walk", "Not difficult", "Steinspornbrücke", "Floridsdorferbrücke", RouteType.bicycle, 7.0, LocalTime.of(1, 20), ""));
-        tours.add(new TourModel(2,"Wienerberg Walk", "Slightly difficult", "Wienerberg City", "Stefan Fadinger Platz", RouteType.fastest, 2.0, LocalTime.of(0, 20), ""));
-        tours.add(new TourModel(3,"Dachstein Walk", "Very difficult", "Dorf", "Spitze", RouteType.pedestrian, 9.0, LocalTime.of(2, 20), ""));
+        tours.add(new TourModel(1,"Donauinsel Walk", "Not difficult", "Steinspornbrücke", "Floridsdorferbrücke", "RouteType.bicycle", 7.0, LocalTime.of(1, 20), ""));
+        tours.add(new TourModel(2,"Wienerberg Walk", "Slightly difficult", "Wienerberg City", "Stefan Fadinger Platz", "RouteType.fastest", 2.0, LocalTime.of(0, 20), ""));
+        tours.add(new TourModel(3,"Dachstein Walk", "Very difficult", "Dorf", "Spitze", "RouteType.pedestrian", 9.0, LocalTime.of(2, 20), ""));
     }
 
 
@@ -54,7 +54,7 @@ public class TourDaoInMemory implements TourDaoExtension {
             originalTour.setTourDistance(tourModel.getTourDistance());
             originalTour.setEstimatedTime(tourModel.getEstimatedTime());
             originalTour.setImageFilename(tourModel.getImageFilename());
-            originalTour.setRouteType(tourModel.getRouteType());
+            originalTour.setTransportType(tourModel.getTransportType());
         }
     }
 

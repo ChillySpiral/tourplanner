@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface Database {
     List<HashMap<String, Object>> select(String query, List<Object> sqlParams);
-    boolean insert(String query, List<Object> sqlParams);
+    int insert(String query, List<Object> sqlParams);
     boolean delete(String query, List<Object> sqlParams);
     boolean update(String query, List<Object> sqlParams);
 }
