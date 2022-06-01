@@ -1,9 +1,8 @@
-package fhtw.at.tourplanner.DAL.implementation;
+package fhtw.at.tourplanner.DAL.dao.implementation;
 
-import fhtw.at.tourplanner.DAL.extended.TourDaoExtension;
+import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.model.TourLog;
 import fhtw.at.tourplanner.model.TourModel;
-import fhtw.at.tourplanner.model.enums.RouteType;
 
 import java.time.LocalTime;
 import java.util.ArrayList;

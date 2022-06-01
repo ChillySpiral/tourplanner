@@ -1,8 +1,8 @@
-package fhtw.at.tourplanner.DAL.implementation;
+package fhtw.at.tourplanner.DAL.dao.implementation;
 
 import fhtw.at.tourplanner.DAL.dao.DalFactory;
 import fhtw.at.tourplanner.DAL.database.Database;
-import fhtw.at.tourplanner.DAL.extended.TourDaoExtension;
+import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.model.TourLog;
 import fhtw.at.tourplanner.model.TourModel;
 
@@ -61,12 +61,16 @@ public class TourDao implements TourDaoExtension {
 
     @Override
     public void update(TourModel tourModel) {
-
+        var queryString = "UPDATE public.\"tour\" SET \"Title\" = ?, \"Description\" = ?, \"From\" = ?, \"To\" = ?, \"TransportType\" = ?, \"Distance\" = ?, \"EstimatedTime\" = ?, \"ImageFilename\" = ? WHERE \"Id\" = CAST(? AS INTEGER);";
+        database.update(queryString, getParameters(tourModel));
     }
 
     @Override
     public void delete(TourModel tourModel) {
-
+        var queryString = "DELETE FROM public.\"tour\" WHERE \"Id\" = CAST(? AS INTEGER);";
+        List<Object> paramsId = new ArrayList<>();
+        paramsId.add(tourModel.getTourId());
+        database.delete(queryString,paramsId);
     }
 
     @Override

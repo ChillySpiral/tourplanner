@@ -1,4 +1,4 @@
-package fhtw.at.tourplanner.DAL.extended;
+package fhtw.at.tourplanner.DAL.dao.extended;
 
 import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.model.TourLog;

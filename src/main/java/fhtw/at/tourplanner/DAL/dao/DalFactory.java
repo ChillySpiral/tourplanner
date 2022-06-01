@@ -1,12 +1,11 @@
 package fhtw.at.tourplanner.DAL.dao;
 
 import fhtw.at.tourplanner.DAL.database.Database;
-import fhtw.at.tourplanner.DAL.extended.TourDaoExtension;
-import fhtw.at.tourplanner.DAL.implementation.TourDao;
-import fhtw.at.tourplanner.DAL.implementation.TourDaoInMemory;
-import fhtw.at.tourplanner.DAL.implementation.TourDatabase;
+import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
+import fhtw.at.tourplanner.DAL.dao.implementation.TourDao;
+import fhtw.at.tourplanner.DAL.dao.implementation.TourDaoInMemory;
+import fhtw.at.tourplanner.DAL.database.implementation.TourDatabase;
 import fhtw.at.tourplanner.model.TourModel;
-import lombok.Data;
 
 public class DalFactory {
 

@@ -1,4 +1,4 @@
-package fhtw.at.tourplanner.DAL.implementation;
+package fhtw.at.tourplanner.DAL.database.implementation;
 
 import fhtw.at.tourplanner.DAL.database.ConnectionManager;
 import fhtw.at.tourplanner.DAL.database.Database;
@@ -41,29 +41,17 @@ public class TourDatabase implements Database {
     public int insert(String query, List<Object> sqlParams) {
         if (query == null || query.isEmpty())
             return -1;
-        var expectedParamsCount = countParameters(query);
-        List<HashMap<String, Object>> result = null;
 
         try {
             PreparedStatement statement = dbConnection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            if (sqlParams != null) {
-                int i = 1;
-                for (var param : sqlParams) {
-                    if(i-1 == expectedParamsCount)
-                        break;
-                    if(param != null){
-                        statement.setString(i, param.toString());
-                    } else {
-                        statement.setString(i, null);
-                    }
-                    ++i;
-                }
-                var insertedElements = statement.executeUpdate();
-                if(insertedElements > 0) {
-                    try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                        if (generatedKeys.next()) {
-                            return generatedKeys.getInt(1);
-                        }
+            setParameters(statement, query, sqlParams);
+
+            var insertedElements = statement.executeUpdate();
+
+            if (insertedElements > 0) {
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        return generatedKeys.getInt(1);
                     }
                 }
             }
@@ -76,11 +64,43 @@ public class TourDatabase implements Database {
 
     @Override
     public boolean delete(String query, List<Object> sqlParams) {
+        if (query == null || query.isEmpty())
+            return false;
+
+        try {
+            PreparedStatement statement = dbConnection.prepareStatement(query);
+            setParameters(statement, query, sqlParams);
+
+            var modifiedElements = statement.executeUpdate();
+
+            if (modifiedElements == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
         return false;
     }
 
     @Override
     public boolean update(String query, List<Object> sqlParams) {
+        if (query == null || query.isEmpty())
+            return false;
+
+        try {
+            PreparedStatement statement = dbConnection.prepareStatement(query);
+            setParameters(statement, query, sqlParams);
+
+            var modifiedElements = statement.executeUpdate();
+
+            if (modifiedElements == 1) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
         return false;
     }
 
@@ -103,8 +123,7 @@ public class TourDatabase implements Database {
         return queryResult;
     }
 
-    private int countParameters(String str)
-    {
+    private int countParameters(String str) {
         int count = 0;
 
         for(int i=0; i < str.length(); i++)
@@ -114,4 +133,22 @@ public class TourDatabase implements Database {
 
         return count;
     }
+
+    private void setParameters(PreparedStatement statement,String query ,List<Object> sqlParams) throws SQLException {
+        var expectedParamsCount = countParameters(query);
+        if (sqlParams != null) {
+            int pos = 1;
+            for (var param : sqlParams) {
+                if (pos - 1 == expectedParamsCount)
+                    break;
+                if (param != null) {
+                    statement.setString(pos, param.toString());
+                } else {
+                    statement.setString(pos, null);
+                }
+                ++pos;
+            }
+        }
+    }
+
 }
