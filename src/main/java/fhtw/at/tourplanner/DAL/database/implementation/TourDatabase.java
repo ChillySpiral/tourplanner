@@ -22,13 +22,8 @@ public class TourDatabase implements Database {
 
         try{
             PreparedStatement statement = dbConnection.prepareStatement(query);
-            if(sqlParams != null){
-                int i = 1;
-                for(var param : sqlParams){
-                    statement.setString(i, param.toString());
-                    ++i;
-                }
-            }
+            setParameters(statement, query, sqlParams);
+
             var resultSet = statement.executeQuery();
             result =  processQueryResult(resultSet);
         } catch(SQLException e){

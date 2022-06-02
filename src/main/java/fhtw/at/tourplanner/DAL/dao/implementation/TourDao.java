@@ -3,12 +3,11 @@ package fhtw.at.tourplanner.DAL.dao.implementation;
 import fhtw.at.tourplanner.DAL.dao.DalFactory;
 import fhtw.at.tourplanner.DAL.database.Database;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
+import fhtw.at.tourplanner.DAL.database.converter.ModelConverter;
 import fhtw.at.tourplanner.model.TourLog;
 import fhtw.at.tourplanner.model.TourModel;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +15,7 @@ public class TourDao implements TourDaoExtension {
 
     private final Database database;
 
-    public TourDao(){
+    public TourDao() {
         this.database = DalFactory.GetDatabase();
     }
 
@@ -24,14 +23,14 @@ public class TourDao implements TourDaoExtension {
     public Optional<TourModel> get(int id) {
         var queryString = "SELECT * FROM public.\"tour\" WHERE Id = CAST(? AS INTEGER);";
 
-        List<Object> params = new ArrayList();
+        List<Object> params = new ArrayList<>();
         params.add(id);
 
         var queryResult = database.select(queryString, params);
-        if(queryResult.isEmpty()){
+        if (queryResult.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(convertToModel(queryResult.get(0)));
+        return Optional.of(ModelConverter.convertToTourModel(queryResult.get(0)));
     }
 
     @Override
@@ -39,8 +38,8 @@ public class TourDao implements TourDaoExtension {
         var queryString = "SELECT * FROM public.\"tour\";";
         var queryResult = database.select(queryString, null);
         List<TourModel> result = new ArrayList<>();
-        for (var tour : queryResult){
-            result.add(convertToModel(tour));
+        for (var tour : queryResult) {
+            result.add(ModelConverter.convertToTourModel(tour));
         }
         return result;
     }
@@ -52,7 +51,7 @@ public class TourDao implements TourDaoExtension {
         newItem.setTitle("New Tour");
         var newId = database.insert(queryString, getParameters(newItem));
 
-        if(newId == -1){
+        if (newId == -1) {
             return null;
         }
         newItem.setTourId(newId);
@@ -70,30 +69,25 @@ public class TourDao implements TourDaoExtension {
         var queryString = "DELETE FROM public.\"tour\" WHERE \"Id\" = CAST(? AS INTEGER);";
         List<Object> paramsId = new ArrayList<>();
         paramsId.add(tourModel.getTourId());
-        database.delete(queryString,paramsId);
+        database.delete(queryString, paramsId);
     }
 
     @Override
     public List<TourLog> getLogsForTour(TourModel tour) {
-        return null;
+        var queryString = "SELECT * FROM public.\"log\" WHERE \"TourId\" = CAST(? AS INTEGER);";
+        List<Object> paramsId = new ArrayList<>();
+        paramsId.add(tour.getTourId());
+
+        var queryResult = database.select(queryString, paramsId);
+
+        List<TourLog> result = new ArrayList<>();
+        for (var log : queryResult) {
+            result.add(ModelConverter.convertToTourLogModel(log));
+        }
+        return result;
     }
 
-    private TourModel convertToModel(HashMap<String, Object> params) {
-        var id = Integer.parseInt(params.get("Id").toString());
-        var title = (String) params.get("Title");
-        var description = (String) params.get("Description");
-        var from = (String) params.get("From");
-        var to = (String) params.get("To");
-        var transportType = (String) params.get("TransportType");
-        var distance = params.get("Distance") == null ? 0 : Double.parseDouble(params.get("Distance").toString());
-        LocalTime estimatedTime = params.get("EstimatedTime") == null ? LocalTime.of(0,0,0) :LocalTime.parse(params.get("EstimatedTime").toString());
-        var imageFilename = (String) params.get("ImageFilename");
-
-
-        return new TourModel(id, title, description, from, to, transportType, distance, estimatedTime, imageFilename);
-    }
-
-    private List<Object> getParameters(TourModel tour){
+    private List<Object> getParameters(TourModel tour) {
         List<Object> params = new ArrayList<>();
         params.add(tour.getTitle());
         params.add(tour.getDescription());
