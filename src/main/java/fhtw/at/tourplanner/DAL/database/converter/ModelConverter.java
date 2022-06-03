@@ -1,7 +1,7 @@
 package fhtw.at.tourplanner.DAL.database.converter;
 
-import fhtw.at.tourplanner.model.TourLog;
-import fhtw.at.tourplanner.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.TourLog;
+import fhtw.at.tourplanner.DAL.model.TourModel;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,7 +21,7 @@ public  class ModelConverter {
         LocalTime estimatedTime = params.get("EstimatedTime") == null ? LocalTime.of(0, 0, 0) : LocalTime.parse(params.get("EstimatedTime").toString());
         var imageFilename = (String) params.get("ImageFilename");
 
-        return new TourModel(id, title, description, from, to, transportType, distance, estimatedTime, imageFilename);
+        return new TourModel(id, title, description, from, to, TransportTypeDBConverter.ConvertString(transportType), distance, estimatedTime, imageFilename);
     }
 
     public static TourLog convertToTourLogModel(HashMap<String, Object> params) {

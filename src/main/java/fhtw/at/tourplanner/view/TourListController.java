@@ -1,6 +1,6 @@
 package fhtw.at.tourplanner.view;
 
-import fhtw.at.tourplanner.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.viewmodel.TourListViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

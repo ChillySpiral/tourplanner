@@ -4,8 +4,8 @@ import fhtw.at.tourplanner.DAL.dao.DalFactory;
 import fhtw.at.tourplanner.DAL.database.Database;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.database.converter.ModelConverter;
-import fhtw.at.tourplanner.model.TourLog;
-import fhtw.at.tourplanner.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.TourLog;
+import fhtw.at.tourplanner.DAL.model.TourModel;
 
 import java.util.ArrayList;
 import java.util.List;

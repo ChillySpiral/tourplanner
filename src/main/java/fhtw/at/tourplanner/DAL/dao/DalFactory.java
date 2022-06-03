@@ -5,7 +5,7 @@ import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.dao.implementation.TourDao;
 import fhtw.at.tourplanner.DAL.dao.implementation.TourDaoInMemory;
 import fhtw.at.tourplanner.DAL.database.implementation.TourDatabase;
-import fhtw.at.tourplanner.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.TourModel;
 
 public class DalFactory {
 

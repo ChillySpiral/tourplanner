@@ -1,6 +1,6 @@
 package fhtw.at.tourplanner.viewmodel;
 
-import fhtw.at.tourplanner.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.TourModel;
 
 public class HomeViewModel {
     private SearchBarViewModel searchBarViewModel;

@@ -1,15 +1,12 @@
-package fhtw.at.tourplanner.model;
+package fhtw.at.tourplanner.DAL.model;
 
-import fhtw.at.tourplanner.model.enums.RouteType;
+import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
-
-
-//Properties might need to be redefined to match MapQuest API
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,7 +34,7 @@ public class TourModel {
 
     @Getter
     @Setter
-    private String transportType; //Enum
+    private TransportType transportType;
 
     @Getter
     @Setter
@@ -45,7 +42,7 @@ public class TourModel {
 
     @Getter
     @Setter
-    private LocalTime estimatedTime; //Questionable? maybe other data type
+    private LocalTime estimatedTime;
 
     @Getter
     @Setter

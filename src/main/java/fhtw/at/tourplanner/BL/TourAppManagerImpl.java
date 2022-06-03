@@ -2,7 +2,7 @@ package fhtw.at.tourplanner.BL;
 
 import fhtw.at.tourplanner.DAL.dao.DalFactory;
 import fhtw.at.tourplanner.DAL.dao.Dao;
-import fhtw.at.tourplanner.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.TourModel;
 
 import java.util.List;
 

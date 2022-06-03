@@ -1,8 +1,9 @@
 package fhtw.at.tourplanner.DAL.dao.implementation;
 
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
-import fhtw.at.tourplanner.model.TourLog;
-import fhtw.at.tourplanner.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.TourLog;
+import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -15,9 +16,9 @@ public class TourDaoInMemory implements TourDaoExtension {
     private List<TourLog> tourLogs = new ArrayList<>();
 
     public TourDaoInMemory(){
-        tours.add(new TourModel(1,"Donauinsel Walk", "Not difficult", "Steinspornbrücke", "Floridsdorferbrücke", "RouteType.bicycle", 7.0, LocalTime.of(1, 20), ""));
-        tours.add(new TourModel(2,"Wienerberg Walk", "Slightly difficult", "Wienerberg City", "Stefan Fadinger Platz", "RouteType.fastest", 2.0, LocalTime.of(0, 20), ""));
-        tours.add(new TourModel(3,"Dachstein Walk", "Very difficult", "Dorf", "Spitze", "RouteType.pedestrian", 9.0, LocalTime.of(2, 20), ""));
+        tours.add(new TourModel(1,"Donauinsel Walk", "Not difficult", "Steinspornbrücke", "Floridsdorferbrücke", TransportType.Bicycle, 7.0, LocalTime.of(1, 20), ""));
+        tours.add(new TourModel(2,"Wienerberg Walk", "Slightly difficult", "Wienerberg City", "Stefan Fadinger Platz", TransportType.Foot, 2.0, LocalTime.of(0, 20), ""));
+        tours.add(new TourModel(3,"Dachstein Walk", "Very difficult", "Dorf", "Spitze", TransportType.Car, 9.0, LocalTime.of(2, 20), ""));
     }
 
 
