@@ -18,7 +18,8 @@ public class TestMapQuestApiRunner {
         testModel.setFrom("Vienna");
         testModel.setTo("Schladming");
         testModel.setTransportType(TransportType.Bicycle);
-        var result = test.getRouteInfo(testModel);
-        System.out.println(result);
+        //var result = test.getRouteInfo(testModel);
+        //System.out.println(result);
+        test.getRouteImage(testModel);
     }
 }
