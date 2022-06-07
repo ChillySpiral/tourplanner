@@ -1,5 +1,8 @@
-package fhtw.at.tourplanner.DAL.dao;
+package fhtw.at.tourplanner.DAL;
 
+import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
+import fhtw.at.tourplanner.DAL.FileSystem.implementation.FileSystemTourImage;
+import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.DAL.database.Database;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.dao.implementation.TourDao;
@@ -12,6 +15,7 @@ public class DalFactory {
     private static Dao<TourModel> tourDaoInMemory;
     private static TourDaoExtension tourDao;
     private static Database database;
+    private static FileSystem fileSystem;
 
     public static Dao<TourModel> GetTourModelDaoInMemory(){
         if(tourDaoInMemory == null){
@@ -32,5 +36,12 @@ public class DalFactory {
             database = new TourDatabase();
         }
         return database;
+    }
+
+    public static FileSystem GetFileSystem(){
+        if(fileSystem == null){
+            fileSystem = new FileSystemTourImage();
+        }
+        return fileSystem;
     }
 }

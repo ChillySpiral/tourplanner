@@ -1,6 +1,6 @@
 package fhtw.at.tourplanner.BL;
 
-import fhtw.at.tourplanner.DAL.dao.DalFactory;
+import fhtw.at.tourplanner.DAL.DalFactory;
 import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 

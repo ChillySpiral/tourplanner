@@ -1,6 +1,6 @@
 package fhtw.at.tourplanner.DAL.dao.implementation;
 
-import fhtw.at.tourplanner.DAL.dao.DalFactory;
+import fhtw.at.tourplanner.DAL.DalFactory;
 import fhtw.at.tourplanner.DAL.database.Database;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.database.converter.ModelConverter;
