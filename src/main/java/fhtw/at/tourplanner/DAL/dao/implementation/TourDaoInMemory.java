@@ -34,7 +34,7 @@ public class TourDaoInMemory implements TourDaoExtension {
     }
 
     @Override
-    public TourModel create() {
+    public TourModel create(int optId) {
         var newItem = new TourModel();
         newItem.setTitle("New Tour");
         tours.add(newItem);

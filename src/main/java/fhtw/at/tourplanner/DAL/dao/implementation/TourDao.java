@@ -15,8 +15,8 @@ public class TourDao implements TourDaoExtension {
 
     private final Database database;
 
-    public TourDao() {
-        this.database = DalFactory.GetDatabase();
+    public TourDao(Database database) {
+        this.database = database;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class TourDao implements TourDaoExtension {
     }
 
     @Override
-    public TourModel create() {
+    public TourModel create(int optId) {
         var queryString = "INSERT INTO public.\"tour\" (\"Title\") VALUES(?);";
         var newItem = new TourModel();
         newItem.setTitle("New Tour");
