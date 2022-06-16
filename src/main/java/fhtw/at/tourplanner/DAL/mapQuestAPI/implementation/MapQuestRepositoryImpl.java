@@ -2,12 +2,14 @@ package fhtw.at.tourplanner.DAL.mapQuestAPI.implementation;
 
 import fhtw.at.tourplanner.DAL.DalFactory;
 import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
+import fhtw.at.tourplanner.DAL.FileSystem.implementation.ImageProperties;
 import fhtw.at.tourplanner.DAL.helper.ConfigurationLoader;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestService;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.converter.TransportTypeConverter;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.mapQuestModels.MapQuestModel;
+import javafx.scene.image.Image;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -47,14 +49,20 @@ public class MapQuestRepositoryImpl implements MapQuestRepository {
 
     @Override
     public String getRouteImage(TourModel tourModel) {
-        final String result;
+        var foundImage = fileSystem.findFile(tourModel);
+        if(foundImage != null){
+            if(!checkIfRouteForImageChanged(tourModel, foundImage.bObject)){
+                return foundImage.aObject;
+            }
+        }
+
         try{
             var routeInfo = getRouteInfo(tourModel);
             if(routeInfo != null){
                 var imageResponseBody = service.downloadImage(mapQuestKey, "640,480", routeInfo.getRoute().getSessionId(), routeInfo.getRoute().getBoundingBox().toString()).execute().body();
-                var filename = "tourImage_" + tourModel.getTourId() + "_from_" + tourModel.getFrom() + "_to_" + tourModel.getTo() + ".jpeg";
+                var filename = "tourImage_" + tourModel.getTourId() + "_from_" + tourModel.getFrom() + "_to_" + tourModel.getTo() + "_" + ".jpeg";
 
-                if(fileSystem.writeResponseBody(imageResponseBody, imagePath + filename)){
+                if(fileSystem.writeResponseBody(imageResponseBody, filename)){
                     return imagePath + filename;
                 }
             }
@@ -64,8 +72,7 @@ public class MapQuestRepositoryImpl implements MapQuestRepository {
         return null;
     }
 
-    private boolean checkIfRouteForImageChanged(TourModel tourModel){
-        //ToDo: Implement
-        return false;
+    private boolean checkIfRouteForImageChanged(TourModel tourModel, ImageProperties checkImage){
+        return !checkImage.getFrom().equalsIgnoreCase(tourModel.getFrom()) || !checkImage.getTo().equalsIgnoreCase(tourModel.getTo());
     }
 }

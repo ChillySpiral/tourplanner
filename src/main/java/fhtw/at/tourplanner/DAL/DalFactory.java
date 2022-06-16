@@ -1,7 +1,7 @@
 package fhtw.at.tourplanner.DAL;
 
 import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
-import fhtw.at.tourplanner.DAL.FileSystem.implementation.FileSystemTourImage;
+import fhtw.at.tourplanner.DAL.model.fileSystem.FileSystemTourImage;
 import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.DAL.dao.implementation.TourLogDao;
 import fhtw.at.tourplanner.DAL.database.Database;
