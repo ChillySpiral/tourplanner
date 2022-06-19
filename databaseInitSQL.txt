@@ -1,0 +1,53 @@
+create database tourplanner
+    with owner swe2user;
+
+create schema public;
+
+comment on schema public is 'standard public schema';
+
+alter schema public owner to swe2user;
+
+grant create, usage on schema public to public;
+
+
+create table if not exists tour
+(
+    "Id"            serial
+        constraint tour_pk
+            primary key,
+    "Title"         varchar,
+    "Description"   varchar,
+    "From"          varchar,
+    "To"            varchar,
+    "TransportType" varchar,
+    "Distance"      varchar,
+    "EstimatedTime" varchar,
+    "ImageFilename" varchar
+);
+
+alter table tour
+    owner to swe2user;
+
+create table if not exists log
+(
+    "Id"         serial
+        constraint log_pk
+            primary key,
+    "DateTime"   varchar,
+    "Comment"    varchar,
+    "Difficulty" varchar,
+    "TotalTime"  varchar,
+    "Rating"     varchar,
+    "TourId"     integer
+        constraint "log___fk__tourId"
+            references tour
+            on update cascade on delete cascade
+);
+
+alter table log
+    owner to swe2user;
+
+
+
+//Docker Command:
+docker run --name swe2db -e POSTGRES_USER=swe2user -e POSTGRES_PASSWORD=swe2pw -p 6000:5432 postgres

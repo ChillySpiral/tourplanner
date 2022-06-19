@@ -11,7 +11,6 @@ class ControllerFactoryTest {
     @Test
     public void TestCreate(){
         assertThat(ControllerFactory.getInstance().create(HomeController.class)).isInstanceOf(HomeController.class);
-        assertThat(ControllerFactory.getInstance().create(LogTableController.class)).isInstanceOf(LogTableController.class);
         assertThat(ControllerFactory.getInstance().create(SearchBarController.class)).isInstanceOf(SearchBarController.class);
         assertThat(ControllerFactory.getInstance().create(TourListController.class)).isInstanceOf(TourListController.class);
         assertThat(ControllerFactory.getInstance().create(TourTabController.class)).isInstanceOf(TourTabController.class);

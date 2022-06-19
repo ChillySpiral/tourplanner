@@ -1,6 +1,8 @@
 package fhtw.at.tourplanner.viewmodel;
 
-import fhtw.at.tourplanner.model.TourModel;
+import fhtw.at.tourplanner.BL.TourAppManager;
+import fhtw.at.tourplanner.BL.TourAppManagerFactory;
+import fhtw.at.tourplanner.DAL.model.TourModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -9,6 +11,7 @@ public class TourTabViewModel {
     private TourModel data;
     private volatile boolean isInitialValue = false;
     private final StringProperty title = new SimpleStringProperty();
+    private final TourAppManager tourAppManager = TourAppManagerFactory.getTourAppManager();
 
     public TourTabViewModel() {
         registerPropertyListeners();
@@ -52,6 +55,7 @@ public class TourTabViewModel {
         if(isInitialValue)
             return;
         data.setTitle(this.getTitle());
+        tourAppManager.updateTour(data);
         //ToDo: Alle weiteren Property Updates müssen hier eingefügt werden
     }
 }

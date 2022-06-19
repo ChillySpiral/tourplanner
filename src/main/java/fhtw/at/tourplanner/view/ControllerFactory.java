@@ -4,7 +4,6 @@ import fhtw.at.tourplanner.viewmodel.*;
 
 public class ControllerFactory {
     private final HomeViewModel homeViewModel;
-    private final LogTableViewModel logTableViewModel;
     private final SearchBarViewModel searchBarViewModel;
     private final TourListViewModel tourListViewModel;
     private final TourTabViewModel tourTabViewModel;
@@ -13,11 +12,10 @@ public class ControllerFactory {
     private static ControllerFactory instance = new ControllerFactory();
 
     public ControllerFactory() {
-        logTableViewModel = new LogTableViewModel();
         searchBarViewModel = new SearchBarViewModel();
         tourTabViewModel = new TourTabViewModel();
         tourListViewModel = new TourListViewModel();
-        homeViewModel = new HomeViewModel(searchBarViewModel, tourListViewModel, tourTabViewModel, logTableViewModel);
+        homeViewModel = new HomeViewModel(searchBarViewModel, tourListViewModel, tourTabViewModel);
     }
 
     public static ControllerFactory getInstance() {
@@ -28,8 +26,6 @@ public class ControllerFactory {
     public Object create(Class<?> controllerClass) {
         if (controllerClass == HomeController.class)
             return new HomeController(homeViewModel);
-        if (controllerClass == LogTableController.class)
-            return new LogTableController(logTableViewModel);
         if (controllerClass == SearchBarController.class)
             return new SearchBarController(searchBarViewModel);
         if (controllerClass == TourListController.class)

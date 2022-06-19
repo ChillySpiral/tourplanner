@@ -11,8 +11,6 @@ public class HomeController {
     private TourListController tourListController;
     @FXML
     private TourTabViewModel tourTabViewModel;
-    @FXML
-    private LogTableController logTableController;
 
     private final HomeViewModel homeViewModel;
 
