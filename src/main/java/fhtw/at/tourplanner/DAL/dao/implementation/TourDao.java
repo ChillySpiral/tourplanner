@@ -4,19 +4,23 @@ import fhtw.at.tourplanner.DAL.DalFactory;
 import fhtw.at.tourplanner.DAL.database.Database;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.database.converter.ModelConverter;
+import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+//ToDo: MapQuest
 public class TourDao implements TourDaoExtension {
 
     private final Database database;
+    private final MapQuestRepository mapQuestRepository;
 
-    public TourDao(Database database) {
+    public TourDao(Database database, MapQuestRepository mapQuestRepository) {
         this.database = database;
+        this.mapQuestRepository = mapQuestRepository;
     }
 
     @Override
@@ -49,6 +53,7 @@ public class TourDao implements TourDaoExtension {
         var queryString = "INSERT INTO public.\"tour\" (\"Title\") VALUES(?);";
         var newItem = new TourModel();
         newItem.setTitle("New Tour");
+        newItem.setTransportType(TransportType.Foot);
         var newId = database.insert(queryString, getParameters(newItem));
 
         if (newId == -1) {
