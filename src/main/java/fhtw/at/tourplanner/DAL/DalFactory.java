@@ -1,6 +1,8 @@
 package fhtw.at.tourplanner.DAL;
 
 import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
+import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
+import fhtw.at.tourplanner.DAL.mapQuestAPI.implementation.MapQuestRepositoryImpl;
 import fhtw.at.tourplanner.DAL.model.fileSystem.FileSystemTourImage;
 import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.DAL.dao.implementation.TourLogDao;
@@ -20,6 +22,8 @@ public class DalFactory {
     private static Database database;
     private static FileSystem fileSystem;
 
+    private static MapQuestRepository mapQuestRepository;
+
     public static Dao<TourModel> GetTourModelDaoInMemory(){
         if(tourDaoInMemory == null){
             tourDaoInMemory = new TourDaoInMemory();
@@ -29,7 +33,7 @@ public class DalFactory {
 
     public static TourDaoExtension GetTourModelDao(){
         if(tourDao == null){
-            tourDao = new TourDao(GetDatabase());
+            tourDao = new TourDao(GetDatabase(), GetMapQuestRepository());
         }
         return tourDao;
     }
@@ -53,5 +57,12 @@ public class DalFactory {
             fileSystem = new FileSystemTourImage();
         }
         return fileSystem;
+    }
+
+    public static MapQuestRepository GetMapQuestRepository(){
+        if(mapQuestRepository == null){
+            mapQuestRepository = new MapQuestRepositoryImpl();
+        }
+        return mapQuestRepository;
     }
 }
