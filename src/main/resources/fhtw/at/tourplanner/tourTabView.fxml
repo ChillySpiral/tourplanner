@@ -41,6 +41,7 @@
         </TabPane>
         <Label text="Title: " />
         <TextField fx:id="tourTitle" GridPane.columnIndex="1" />
+        <Button onAction="#editTour" text="Edit" GridPane.columnIndex="2" GridPane.halignment="RIGHT" fx:id="editButton"/>
         <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
             <columns>
                 <TableColumn prefWidth="75.0" text="Date" />

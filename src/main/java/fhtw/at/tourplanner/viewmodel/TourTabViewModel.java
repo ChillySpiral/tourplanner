@@ -43,7 +43,7 @@ public class TourTabViewModel {
 
     private void setTourTabProperties() {
         if (this.isInitialValue) {
-            title.setValue("");
+            title.setValue(null);
             //ToDo: Alle weiteren Properties müssen einen Initial-Wert bekommen
         } else {
             title.setValue(data.getTitle());
