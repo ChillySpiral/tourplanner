@@ -43,7 +43,11 @@
                 </Tab>
             <Tab text="Details">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="detailsFrom" editable="false" />
+                        <TextField fx:id="detailsTo" editable="false" />
+                     </children></AnchorPane>
                </content>
             </Tab>
             </tabs>

@@ -19,6 +19,12 @@ public class TourTabController {
     @FXML
     private TextArea descriptionText;
 
+    @FXML
+    public TextField detailsFrom;
+
+    @FXML
+    public TextField detailsTo;
+
     private final TourTabViewModel tourTabViewModel;
 
     public TourTabController(TourTabViewModel tourTabViewModel) {
@@ -32,13 +38,15 @@ public class TourTabController {
         editButton.disableProperty().bind(Bindings.isNull(tourTabViewModel.titleProperty()));
         //ToDo: Alle Properties müssen hier gebindet werden (nicht umbedingt immer BiDirectional)
         descriptionText.textProperty().bindBidirectional(tourTabViewModel.descriptionProperty());
+        detailsFrom.textProperty().bindBidirectional(tourTabViewModel.detailsFromProperty());
+        detailsTo.textProperty().bindBidirectional(tourTabViewModel.detailsToProperty());
     }
 
     public void editTour(ActionEvent actionEvent) {
 
         //ToDo: Implement Text fields Description, From, To, etc. and add them here
         //ToDo: Implement ComboBox with Enum for TransportType !Warning: This has to be addressed separately
-        var result = new TourEditViewModel(tourTitle.getText(), descriptionText.getText(), "From Text", "To Text");
+        var result = new TourEditViewModel(tourTitle.getText(), descriptionText.getText(), detailsFrom.getText(), detailsTo.getText());
         var dialog = new EditDialog(tourTitle.getScene().getWindow(), result);
 
         dialog.showAndWait().ifPresent(x -> {
