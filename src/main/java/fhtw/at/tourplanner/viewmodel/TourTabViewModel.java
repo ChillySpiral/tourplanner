@@ -12,6 +12,8 @@ public class TourTabViewModel {
     private volatile boolean isInitialValue = false;
     private final StringProperty title = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
+    private final StringProperty detailsFrom = new SimpleStringProperty();
+    private final StringProperty detailsTo = new SimpleStringProperty();
     private final TourAppManager tourAppManager = TourAppManagerFactory.getTourAppManager();
 
     public TourTabViewModel() {
@@ -26,12 +28,26 @@ public class TourTabViewModel {
         return description.get();
     }
 
+    public String getDetailsFrom() {
+        return detailsFrom.get();
+    }
+
+    public String getDetailsTo() { return detailsTo.get(); }
+
     public StringProperty titleProperty() {
         return title;
     }
 
     public StringProperty descriptionProperty() {
         return description;
+    }
+
+    public StringProperty detailsFromProperty() {
+        return detailsFrom;
+    }
+
+    public StringProperty detailsToProperty() {
+        return detailsTo;
     }
 
     public void setTourModel(TourModel selectedItem) {
@@ -48,6 +64,8 @@ public class TourTabViewModel {
     private void registerPropertyListeners() {
         title.addListener((arg, oldVal, newVal) -> updateTourModel());
         description.addListener((arg, oldVal, newVal) -> updateTourModel());
+        detailsFrom.addListener((arg, oldVal, newVal) -> updateTourModel());
+        detailsTo.addListener((arg, oldVal, newVal) -> updateTourModel());
         //ToDo: Alle Properties müssen hier registriert werden, sodass jede Änderung dieser auch das Model Updated
     }
 
@@ -58,6 +76,8 @@ public class TourTabViewModel {
         } else {
             title.setValue(data.getTitle());
             description.setValue(data.getDescription());
+            detailsFrom.setValue(data.getFrom());
+            detailsTo.setValue(data.getTo());
             //ToDo: Alle weiteren Properties müssen hier gesetzt werden
         }
     }
@@ -67,6 +87,8 @@ public class TourTabViewModel {
             return;
         data.setTitle(this.getTitle());
         data.setDescription(this.getDescription());
+        data.setFrom(this.getDetailsFrom());
+        data.setTo(this.getDetailsTo());
         tourAppManager.updateTour(data);
         //ToDo: Alle weiteren Property Updates müssen hier eingefügt werden
     }
