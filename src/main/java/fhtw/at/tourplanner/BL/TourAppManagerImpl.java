@@ -1,5 +1,6 @@
 package fhtw.at.tourplanner.BL;
 
+import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
 import fhtw.at.tourplanner.DAL.DalFactory;
 import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
@@ -12,10 +13,12 @@ public class TourAppManagerImpl implements TourAppManager {
 
     private final TourDaoExtension tourModelDao;
     private final Dao<TourLog> tourLogDao;
+    private final ReportGenerator reportGenerator;
 
-    public TourAppManagerImpl(){
+    public TourAppManagerImpl(ReportGenerator reportGenerator){
         tourModelDao = DalFactory.GetTourModelDao();
         tourLogDao = DalFactory.GetTourLogDao();
+        this.reportGenerator = reportGenerator;
     }
 
     @Override
