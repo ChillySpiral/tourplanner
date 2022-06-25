@@ -61,6 +61,7 @@ public class TourTabViewModel {
         setTourTabProperties();
     }
 
+    //ToDo: Marker: Manually trigger the update, since we use a dialog
     private void registerPropertyListeners() {
         title.addListener((arg, oldVal, newVal) -> updateTourModel());
         description.addListener((arg, oldVal, newVal) -> updateTourModel());
@@ -85,7 +86,8 @@ public class TourTabViewModel {
         }
     }
 
-    private void updateTourModel() {
+    //ToDo: Marker: Add Paramter, set ViewModel Properties and data -> send to DB
+    public void updateTourModel() {
         if(isInitialValue)
             return;
         data.setTitle(this.getTitle());
