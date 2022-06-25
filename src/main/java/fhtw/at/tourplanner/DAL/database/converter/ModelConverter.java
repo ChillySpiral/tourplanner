@@ -26,10 +26,10 @@ public  class ModelConverter {
 
     public static TourLog convertToTourLogModel(HashMap<String, Object> params) {
         var id = Integer.parseInt(params.get("Id").toString());
-        LocalDateTime dateTime = params.get("TotalTime") == null ? LocalDateTime.of(LocalDate.MIN, LocalTime.of(0, 0, 0)) : LocalDateTime.parse(params.get("EstimatedTime").toString());
+        LocalDateTime dateTime = params.get("DateTime") == null ? LocalDateTime.of(LocalDate.MIN, LocalTime.of(0, 0, 0)) : LocalDateTime.parse(params.get("DateTime").toString());
         var comment = (String) params.get("Comment");
         var difficulty = (String) params.get("Difficulty");
-        LocalTime totalTime = params.get("TotalTime") == null ? LocalTime.of(0, 0, 0) : LocalTime.parse(params.get("EstimatedTime").toString());
+        LocalTime totalTime = params.get("TotalTime") == null ? LocalTime.of(0, 0, 0) : LocalTime.parse(params.get("TotalTime").toString());
         var rating = (String) params.get("Rating");
         var tourId = Integer.parseInt(params.get("Id").toString());
 

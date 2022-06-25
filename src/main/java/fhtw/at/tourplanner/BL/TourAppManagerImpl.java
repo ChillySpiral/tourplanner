@@ -27,6 +27,16 @@ public class TourAppManagerImpl implements TourAppManager {
     }
 
     @Override
+    public TourModel getTour(int Id) {
+        var result = tourModelDao.get(Id);
+
+        if(result.isPresent()){
+            return result.get();
+        }
+        return null;
+    }
+
+    @Override
     public TourModel createTour() {
         return tourModelDao.create(-1);
     }
@@ -64,5 +74,14 @@ public class TourAppManagerImpl implements TourAppManager {
     @Override
     public void updateLog(TourLog log) {
         tourLogDao.update(log);
+    }
+
+    @Override
+    public void generateTourReport(TourModel tourModel) {
+        var tour = getTour(tourModel.getTourId());
+        if(tour != null){
+            var logs = getAllTourLogsForTour(tour);
+            reportGenerator.generateReport(tour, logs);
+        }
     }
 }
