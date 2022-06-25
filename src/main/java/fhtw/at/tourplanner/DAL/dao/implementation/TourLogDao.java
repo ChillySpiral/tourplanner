@@ -43,7 +43,7 @@ public class TourLogDao implements Dao<TourLog> {
 
     @Override
     public TourLog create(int tourId) {
-        var queryString = "INSERT INTO public.\"log\" (\"TourId\") VALUES(?);";
+        var queryString = "INSERT INTO public.\"log\" (\"TourId\") VALUES(CAST(? AS INTEGER));";
         var newItem = new TourLog();
         List<Object> paramsId = new ArrayList<>();
         paramsId.add(tourId);

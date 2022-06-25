@@ -33,8 +33,14 @@ public class ReportGeneratorImpl implements ReportGenerator {
                     .setFontColor(ColorConstants.BLACK);
             document.add(tourTitle);
 
-            ImageData imageData = ImageDataFactory.create(ConfigurationLoader.getConfig("ImageFolder") + DalFactory.GetFileSystem().findFile(tour).aObject);
-            document.add(new Image(imageData));
+            try {
+                ImageData imageData = ImageDataFactory.create(ConfigurationLoader.getConfig("ImageFolder") + DalFactory.GetFileSystem().findFile(tour).aObject);
+                document.add(new Image(imageData));
+            }catch(NullPointerException e){
+                e. printStackTrace();
+            }finally{
+                document.add(new Paragraph("<Image could not be found>").setItalic());
+            }
 
             Paragraph listHeader = new Paragraph("Details")
                     .setFont(PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN))
