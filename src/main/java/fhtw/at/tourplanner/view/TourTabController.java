@@ -31,6 +31,7 @@ public class TourTabController {
         this.tourTabViewModel = tourTabViewModel;
     }
 
+    //ToDo: Marker: Fields are all going to be readonly, and should not affect the data in the Viewmodel
     @FXML
     public void initialize() {
         tourTitle.disableProperty().bind(Bindings.isNull(tourTabViewModel.titleProperty()));
@@ -42,6 +43,7 @@ public class TourTabController {
         detailsTo.textProperty().bindBidirectional(tourTabViewModel.detailsToProperty());
     }
 
+    //ToDo: Marker: We have access to the ViewModel that Updates the data and sends it to the DB
     public void editTour(ActionEvent actionEvent) {
 
         //ToDo: Implement Text fields Description, From, To, etc. and add them here
@@ -50,7 +52,6 @@ public class TourTabController {
         var dialog = new EditDialog(tourTitle.getScene().getWindow(), result);
 
         dialog.showAndWait().ifPresent(x -> {
-
                 tourTitle.setText(result.getTitle());
                 descriptionText.setText((result.getDescription()));
                 detailsFrom.setText(result.getFrom());
