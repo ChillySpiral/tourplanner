@@ -53,6 +53,8 @@ public class TourTabController {
 
                 tourTitle.setText(result.getTitle());
                 descriptionText.setText((result.getDescription()));
+                detailsFrom.setText(result.getFrom());
+                detailsTo.setText(result.getTo());
         });
     }
 }
