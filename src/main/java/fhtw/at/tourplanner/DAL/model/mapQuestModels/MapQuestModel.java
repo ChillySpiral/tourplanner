@@ -10,6 +10,10 @@ public class MapQuestModel {
     @Setter
     private Route route;
 
+    @Getter
+    @Setter
+    private Info info;
+
     @Override
     public String toString() {
         return "Route: SessionId: " + route.getSessionId() + " Formatted Time: " + route.getFormattedTime() + " Distance: " + route.getDistance();

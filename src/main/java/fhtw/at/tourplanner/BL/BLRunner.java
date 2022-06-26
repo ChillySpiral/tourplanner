@@ -1,7 +1,6 @@
 package fhtw.at.tourplanner.BL;
 
-import fhtw.at.tourplanner.DAL.model.TourLog;
-import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -9,9 +8,11 @@ import java.time.LocalTime;
 public class BLRunner {
 
     public static void main(String[] args) {
+
         var test = TourAppManagerFactory.getTourAppManager();
-        var testTour = new TourModel();
-        testTour.setTourId(1);
+        var testTour = test.getTour(1);
+        testTour.setTransportType(TransportType.Foot);
+        test.updateTour(testTour);
 
         var log = test.createLog(1);
         log.setDateTime(LocalDateTime.now());

@@ -1,16 +1,13 @@
-package fhtw.at.tourplanner.DAL.model.fileSystem;
+package fhtw.at.tourplanner.DAL.FileSystem.implementation;
 
 import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
-import fhtw.at.tourplanner.DAL.FileSystem.implementation.ImageProperties;
 import fhtw.at.tourplanner.DAL.helper.ConfigurationLoader;
 import fhtw.at.tourplanner.DAL.model.TourModel;
-import lombok.Getter;
-import lombok.Setter;
+import fhtw.at.tourplanner.DAL.model.fileSystem.ImageProperties;
+import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
 import okhttp3.ResponseBody;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
 
 public class FileSystemTourImage implements FileSystem {
 
@@ -90,8 +87,6 @@ public class FileSystemTourImage implements FileSystem {
         result.setTourId(-1);
         try{
             result.setTourId(Integer.parseInt(props[1]));
-            result.setFrom(props[3]);
-            result.setTo(props[5]);
         } catch(Exception e){
             e.printStackTrace();
         }
