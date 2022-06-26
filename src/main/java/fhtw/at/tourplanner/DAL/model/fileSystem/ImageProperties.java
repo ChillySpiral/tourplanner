@@ -1,4 +1,4 @@
-package fhtw.at.tourplanner.DAL.FileSystem.implementation;
+package fhtw.at.tourplanner.DAL.model.fileSystem;
 
 import lombok.Getter;
 import lombok.Setter;

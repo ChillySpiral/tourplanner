@@ -4,9 +4,11 @@ import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
 import fhtw.at.tourplanner.DAL.DalFactory;
 import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
+import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public class TourAppManagerImpl implements TourAppManager {
@@ -14,11 +16,13 @@ public class TourAppManagerImpl implements TourAppManager {
     private final TourDaoExtension tourModelDao;
     private final Dao<TourLog> tourLogDao;
     private final ReportGenerator reportGenerator;
+    private final MapQuestRepository mapQuestRepository;
 
-    public TourAppManagerImpl(ReportGenerator reportGenerator){
+    public TourAppManagerImpl(ReportGenerator reportGenerator, MapQuestRepository mapQuestRepository){
         tourModelDao = DalFactory.GetTourModelDao();
         tourLogDao = DalFactory.GetTourLogDao();
         this.reportGenerator = reportGenerator;
+        this.mapQuestRepository = mapQuestRepository;
     }
 
     @Override
@@ -48,6 +52,21 @@ public class TourAppManagerImpl implements TourAppManager {
 
     @Override
     public void updateTour(TourModel tourModel) {
+
+        var dbTour = getTour(tourModel.getTourId());
+
+        if(dbTour == null)
+            throw new NullPointerException("Tour not found in DB");
+
+        if(mapQuestQueryNecessary(tourModel, dbTour)){
+            var result = mapQuestRepository.getRouteImage(tourModel);
+            if(result != null){
+                tourModel.setTourDistance(Double.parseDouble(result.bObject.getDistance()));
+                tourModel.setEstimatedTime(LocalTime.parse(result.bObject.getFormattedTime()));
+                tourModel.setImageFilename(result.aObject);
+            }
+        }
+
         tourModelDao.update(tourModel);
     }
 
@@ -83,5 +102,15 @@ public class TourAppManagerImpl implements TourAppManager {
             var logs = getAllTourLogsForTour(tour);
             reportGenerator.generateReport(tour, logs);
         }
+    }
+
+    private boolean mapQuestQueryNecessary(TourModel newValue, TourModel oldValue){
+        if(newValue.getTo().isEmpty() || newValue.getFrom().isEmpty())
+            return false;
+
+        if(newValue.getFrom() == oldValue.getFrom() && newValue.getTo() == oldValue.getTo() && newValue.getTransportType() == oldValue.getTransportType())
+            return false;
+
+        return true;
     }
 }

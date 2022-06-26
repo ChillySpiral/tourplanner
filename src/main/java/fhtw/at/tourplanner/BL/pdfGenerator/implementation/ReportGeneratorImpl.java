@@ -38,7 +38,6 @@ public class ReportGeneratorImpl implements ReportGenerator {
                 document.add(new Image(imageData));
             }catch(NullPointerException e){
                 e. printStackTrace();
-            }finally{
                 document.add(new Paragraph("<Image could not be found>").setItalic());
             }
 
@@ -53,7 +52,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
                     .setFont(PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN));
             list.add(new ListItem("From: " + tour.getFrom()))
                     .add(new ListItem("To: " +  tour.getTo()))
-                    .add(new ListItem("Distance: " + tour.getTourDistance()))
+                    .add(new ListItem("Distance: " + tour.getTourDistance() + "km"))
                     .add(new ListItem("Estimated Time: " + tour.getEstimatedTime())) //ToDo: Format
                     .add(new ListItem("Transport Type: " + tour.getTransportType()));
             document.add(listHeader);
