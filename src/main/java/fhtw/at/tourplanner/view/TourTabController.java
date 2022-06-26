@@ -1,5 +1,6 @@
 package fhtw.at.tourplanner.view;
 
+import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.viewmodel.TourEditViewModel;
 import fhtw.at.tourplanner.viewmodel.TourTabViewModel;
 import javafx.beans.binding.Bindings;
@@ -35,12 +36,12 @@ public class TourTabController {
     @FXML
     public void initialize() {
         tourTitle.disableProperty().bind(Bindings.isNull(tourTabViewModel.titleProperty()));
-        tourTitle.textProperty().bindBidirectional(tourTabViewModel.titleProperty());
+        tourTitle.textProperty().bind(tourTabViewModel.titleProperty());
         editButton.disableProperty().bind(Bindings.isNull(tourTabViewModel.titleProperty()));
         //ToDo: Alle Properties müssen hier gebindet werden (nicht umbedingt immer BiDirectional)
-        descriptionText.textProperty().bindBidirectional(tourTabViewModel.descriptionProperty());
-        detailsFrom.textProperty().bindBidirectional(tourTabViewModel.detailsFromProperty());
-        detailsTo.textProperty().bindBidirectional(tourTabViewModel.detailsToProperty());
+        descriptionText.textProperty().bind(tourTabViewModel.descriptionProperty());
+        detailsFrom.textProperty().bind(tourTabViewModel.detailsFromProperty());
+        detailsTo.textProperty().bind(tourTabViewModel.detailsToProperty());
     }
 
     //ToDo: Marker: We have access to the ViewModel that Updates the data and sends it to the DB
@@ -52,10 +53,13 @@ public class TourTabController {
         var dialog = new EditDialog(tourTitle.getScene().getWindow(), result);
 
         dialog.showAndWait().ifPresent(x -> {
-                tourTitle.setText(result.getTitle());
-                descriptionText.setText((result.getDescription()));
-                detailsFrom.setText(result.getFrom());
-                detailsTo.setText(result.getTo());
+                TourModel tourModel = new TourModel();
+                tourModel.setTitle(result.getTitle());
+                tourModel.setDescription((result.getDescription()));
+                tourModel.setFrom(result.getFrom());
+                tourModel.setTo(result.getTo());
+
+                tourTabViewModel.updateTourModel(tourModel);
         });
     }
 }

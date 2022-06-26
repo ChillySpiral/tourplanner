@@ -68,7 +68,7 @@
             </tabs>
         </TabPane>
         <Label text="Title: " />
-        <TextField fx:id="tourTitle" GridPane.columnIndex="1" />
+        <TextField fx:id="tourTitle" editable="false" GridPane.columnIndex="1" />
         <Button fx:id="editButton" onAction="#editTour" text="Edit" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
         <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
             <columns>

@@ -63,10 +63,12 @@ public class TourTabViewModel {
 
     //ToDo: Marker: Manually trigger the update, since we use a dialog
     private void registerPropertyListeners() {
+        /*
         title.addListener((arg, oldVal, newVal) -> updateTourModel());
         description.addListener((arg, oldVal, newVal) -> updateTourModel());
         detailsFrom.addListener((arg, oldVal, newVal) -> updateTourModel());
         detailsTo.addListener((arg, oldVal, newVal) -> updateTourModel());
+         */
         //ToDo: Alle Properties müssen hier registriert werden, sodass jede Änderung dieser auch das Model Updated
     }
 
@@ -87,13 +89,20 @@ public class TourTabViewModel {
     }
 
     //ToDo: Marker: Add Paramter, set ViewModel Properties and data -> send to DB
-    public void updateTourModel() {
+    public void updateTourModel(TourModel tourModel) {
         if(isInitialValue)
             return;
+
+        this.title.setValue(tourModel.getTitle());
+        this.description.setValue(tourModel.getDescription());
+        this.detailsFrom.setValue(tourModel.getFrom());
+        this.detailsTo.setValue(tourModel.getTo());
+
         data.setTitle(this.getTitle());
         data.setDescription(this.getDescription());
         data.setFrom(this.getDetailsFrom());
         data.setTo(this.getDetailsTo());
+
         tourAppManager.updateTour(data);
         //ToDo: Alle weiteren Property Updates müssen hier eingefügt werden
     }
