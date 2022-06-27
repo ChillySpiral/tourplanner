@@ -18,4 +18,5 @@ public interface TourAppManager {
     void updateLog(TourLog log);
 
     void generateTourReport(TourModel tourModel);
+    void generateSummaryReport();
 }

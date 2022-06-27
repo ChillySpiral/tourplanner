@@ -11,7 +11,7 @@ public class BLRunner {
 
         var test = TourAppManagerFactory.getTourAppManager();
         var testTour = test.getTour(1);
-        testTour.setTransportType(TransportType.Foot);
+        testTour.setTo("Zagreb");
         test.updateTour(testTour);
 
         var log = test.createLog(1);
@@ -23,5 +23,7 @@ public class BLRunner {
         test.updateLog(log);
 
         test.generateTourReport(testTour);
+
+        test.generateSummaryReport();
     }
 }
