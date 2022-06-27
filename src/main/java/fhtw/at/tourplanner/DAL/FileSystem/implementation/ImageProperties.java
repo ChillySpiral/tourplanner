@@ -6,6 +6,9 @@ import lombok.Setter;
 public class ImageProperties {
     @Getter
     @Setter
+    public String path;
+    @Getter
+    @Setter
     public int tourId;
     @Getter
     @Setter
@@ -13,4 +16,8 @@ public class ImageProperties {
     @Getter
     @Setter
     public String to;
+
+    public String get() {
+        return path;
+    }
 }
