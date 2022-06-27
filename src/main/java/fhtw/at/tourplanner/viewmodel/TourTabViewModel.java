@@ -4,6 +4,7 @@ import fhtw.at.tourplanner.BL.TourAppManager;
 import fhtw.at.tourplanner.BL.TourAppManagerFactory;
 import fhtw.at.tourplanner.DAL.helper.ConfigurationLoader;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,6 +22,8 @@ public class TourTabViewModel {
     private final StringProperty detailsFrom = new SimpleStringProperty();
     private final StringProperty detailsTo = new SimpleStringProperty();
     private final ObjectProperty<Image> imageProperty = new SimpleObjectProperty<>();
+
+    private final ObjectProperty<TransportType> transportType = new SimpleObjectProperty<>();
     private final TourAppManager tourAppManager = TourAppManagerFactory.getTourAppManager();
 
     public TourTabViewModel() {
@@ -41,6 +44,9 @@ public class TourTabViewModel {
 
     public String getDetailsTo() { return detailsTo.get(); }
 
+    public TransportType getTransportType() {
+        return transportType.getValue();
+    }
     public StringProperty titleProperty() {
         return title;
     }
@@ -59,6 +65,10 @@ public class TourTabViewModel {
 
     public ObjectProperty<Image> imageProperty() {
         return imageProperty;
+    }
+
+    public ObjectProperty<TransportType> transportTypeProperty() {
+        return transportType;
     }
 
     public void setTourModel(TourModel selectedItem) {
@@ -90,12 +100,14 @@ public class TourTabViewModel {
             detailsFrom.setValue(null);
             detailsTo.setValue(null);
             imageProperty.setValue(null);
+            transportTypeProperty().setValue(null);
             //ToDo: Alle weiteren Properties müssen einen Initial-Wert bekommen
         } else {
             title.setValue(data.getTitle());
             description.setValue(data.getDescription());
             detailsFrom.setValue(data.getFrom());
             detailsTo.setValue(data.getTo());
+            transportTypeProperty().setValue(data.getTransportType());
             updateImage();
             //ToDo: Alle weiteren Properties müssen hier gesetzt werden
         }
@@ -110,11 +122,13 @@ public class TourTabViewModel {
         this.description.setValue(tourModel.getDescription());
         this.detailsFrom.setValue(tourModel.getFrom());
         this.detailsTo.setValue(tourModel.getTo());
+        this.transportTypeProperty().setValue(tourModel.getTransportType());
 
         data.setTitle(this.getTitle());
         data.setDescription(this.getDescription());
         data.setFrom(this.getDetailsFrom());
         data.setTo(this.getDetailsTo());
+        data.setTransportType(this.getTransportType());
 
         var tmpFileName = new String(data.getImageFilename());
         tourAppManager.updateTour(data);
