@@ -3,6 +3,7 @@ package fhtw.at.tourplanner.viewmodel;
 import fhtw.at.tourplanner.BL.TourAppManager;
 import fhtw.at.tourplanner.BL.TourAppManagerFactory;
 import fhtw.at.tourplanner.DAL.helper.ConfigurationLoader;
+import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -11,6 +12,8 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TourTabViewModel {
 
@@ -22,6 +25,13 @@ public class TourTabViewModel {
     private final StringProperty detailsTo = new SimpleStringProperty();
     private final ObjectProperty<Image> imageProperty = new SimpleObjectProperty<>();
     private final TourAppManager tourAppManager = TourAppManagerFactory.getTourAppManager();
+    private final List<TourLog> tourLogs = new LinkedList<>();
+    private final StringProperty date = new SimpleStringProperty();
+    private final StringProperty duration = new SimpleStringProperty();
+    private final StringProperty difficulty = new SimpleStringProperty();
+    private final StringProperty comment = new SimpleStringProperty();
+    private final StringProperty rating = new SimpleStringProperty();
+
 
     public TourTabViewModel() {
         registerPropertyListeners();
@@ -41,6 +51,14 @@ public class TourTabViewModel {
 
     public String getDetailsTo() { return detailsTo.get(); }
 
+    public String getDate() { return date.get(); }
+    public String getDuration() { return duration.get(); }
+    public String getDifficulty() { return difficulty.get(); }
+    public String getCommen() { return comment.get(); }
+    public String getRating() { return rating.get(); }
+
+
+
     public StringProperty titleProperty() {
         return title;
     }
@@ -52,6 +70,23 @@ public class TourTabViewModel {
     public StringProperty detailsFromProperty() {
         return detailsFrom;
     }
+
+    public StringProperty dateProperty() {
+        return date;
+    }
+    public StringProperty durationProperty() {
+        return duration;
+    }
+    public StringProperty difficultyProperty() {
+        return difficulty;
+    }
+    public StringProperty commentProperty() {
+        return comment;
+    }
+    public StringProperty ratingProperty() {
+        return rating;
+    }
+
 
     public StringProperty detailsToProperty() {
         return detailsTo;
@@ -97,6 +132,7 @@ public class TourTabViewModel {
             detailsFrom.setValue(data.getFrom());
             detailsTo.setValue(data.getTo());
             updateImage();
+            List<TourLog> tourLogs = tourAppManager.getAllTourLogs();
             //ToDo: Alle weiteren Properties müssen hier gesetzt werden
         }
     }
@@ -134,4 +170,6 @@ public class TourTabViewModel {
             imageProperty.setValue(null);
         }
     }
+
+
 }

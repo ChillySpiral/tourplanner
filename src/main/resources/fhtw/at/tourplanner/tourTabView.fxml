@@ -74,13 +74,13 @@
         <Label text="Title: " />
         <TextField fx:id="tourTitle" editable="false" GridPane.columnIndex="1" />
         <Button fx:id="editButton" onAction="#editTour" text="Edit" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-        <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+        <TableView fx:id="logTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
             <columns>
-                <TableColumn prefWidth="75.0" text="Date" />
-                <TableColumn prefWidth="75.0" text="Duration" />
-                <TableColumn prefWidth="75.0" text="Difficulty" />
-                <TableColumn prefWidth="75.0" text="Comment" />
-                <TableColumn prefWidth="75.0" text="Rating" />
+                <TableColumn fx:id="logDate" prefWidth="75.0" text="Date" />
+                <TableColumn fx:id="logDuration" prefWidth="75.0" text="Duration" />
+                <TableColumn fx:id="logDifficulty" prefWidth="75.0" text="Difficulty" />
+                <TableColumn fx:id="logComment" prefWidth="75.0" text="Comment" />
+                <TableColumn fx:id="logRating" prefWidth="75.0" text="Rating" />
             </columns>
         </TableView>
         <Label text="Logs: " GridPane.rowIndex="2" />

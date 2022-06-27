@@ -1,15 +1,18 @@
 package fhtw.at.tourplanner.view;
 
+import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.viewmodel.TourEditViewModel;
 import fhtw.at.tourplanner.viewmodel.TourTabViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class TourTabController {
     @FXML
@@ -30,6 +33,24 @@ public class TourTabController {
     @FXML
     public ImageView image;
 
+    @FXML
+    private TableView<TourLog> logTableView;
+
+    @FXML
+    private TableColumn<TourLog, LocalDateTime> logDate;
+
+    @FXML
+    private TableColumn<TourLog, LocalTime> logDuration;
+
+    @FXML
+    private TableColumn<TourLog, String> logDifficulty;
+
+    @FXML
+    private TableColumn<TourLog, String> logComment;
+
+    @FXML
+    private TableColumn<TourLog, String> logRating;
+
     private final TourTabViewModel tourTabViewModel;
 
     public TourTabController(TourTabViewModel tourTabViewModel) {
@@ -47,6 +68,18 @@ public class TourTabController {
         detailsFrom.textProperty().bind(tourTabViewModel.detailsFromProperty());
         detailsTo.textProperty().bind(tourTabViewModel.detailsToProperty());
         image.imageProperty().bind(tourTabViewModel.imageProperty());
+
+        logDate.setCellValueFactory(new PropertyValueFactory<TourLog, LocalDateTime>("date"));
+        logDuration.setCellValueFactory(new PropertyValueFactory<TourLog, LocalTime>("duration"));
+        logDifficulty.setCellValueFactory(new PropertyValueFactory<TourLog, String>("difficulty"));
+        logComment.setCellValueFactory(new PropertyValueFactory<TourLog, String>("comment"));
+        logRating.setCellValueFactory(new PropertyValueFactory<TourLog, String>("rating"));
+        logDate.textProperty().bind(tourTabViewModel.dateProperty());
+        logDuration.textProperty().bind(tourTabViewModel.durationProperty());
+        logDifficulty.textProperty().bind(tourTabViewModel.difficultyProperty());
+        logComment.textProperty().bind(tourTabViewModel.commentProperty());
+        logRating.textProperty().bind(tourTabViewModel.ratingProperty());
+
     }
 
     //ToDo: Marker: We have access to the ViewModel that Updates the data and sends it to the DB
