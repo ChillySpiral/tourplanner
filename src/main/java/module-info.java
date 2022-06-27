@@ -7,6 +7,9 @@ module fhtw.at.tourplanner {
     requires retrofit2.converter.jackson;
     requires com.fasterxml.jackson.annotation;
     requires okhttp3;
+    requires kernel;
+    requires io;
+    requires layout;
 
 
     opens fhtw.at.tourplanner to javafx.fxml;

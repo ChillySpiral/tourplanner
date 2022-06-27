@@ -16,7 +16,7 @@ public class TestMapQuestApiRunner {
         var test = new MapQuestRepositoryImpl();
         var testModel = new TourModel();
         testModel.setFrom("Vienna");
-        testModel.setTo("Salzburg");
+        testModel.setTo("Berlin");
         testModel.setTransportType(TransportType.Bicycle);
         //var result = test.getRouteInfo(testModel);
         //System.out.println(result);

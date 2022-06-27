@@ -2,19 +2,18 @@ package fhtw.at.tourplanner.DAL.mapQuestAPI.implementation;
 
 import fhtw.at.tourplanner.DAL.DalFactory;
 import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
-import fhtw.at.tourplanner.DAL.FileSystem.implementation.ImageProperties;
 import fhtw.at.tourplanner.DAL.helper.ConfigurationLoader;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestService;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.converter.TransportTypeConverter;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
 import fhtw.at.tourplanner.DAL.model.mapQuestModels.MapQuestModel;
-import javafx.scene.image.Image;
+import fhtw.at.tourplanner.DAL.model.mapQuestModels.Route;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class MapQuestRepositoryImpl implements MapQuestRepository {
 
@@ -48,22 +47,15 @@ public class MapQuestRepositoryImpl implements MapQuestRepository {
     }
 
     @Override
-    public String getRouteImage(TourModel tourModel) {
-        var foundImage = fileSystem.findFile(tourModel);
-        if(foundImage != null){
-            if(!checkIfRouteForImageChanged(tourModel, foundImage.bObject)){
-                return foundImage.aObject;
-            }
-        }
-
+    public Pair<String, Route> getRouteImage(TourModel tourModel) {
         try{
             var routeInfo = getRouteInfo(tourModel);
-            if(routeInfo != null){
+            if(checkIfRouteSuccessful(routeInfo)){
                 var imageResponseBody = service.downloadImage(mapQuestKey, "640,480", routeInfo.getRoute().getSessionId(), routeInfo.getRoute().getBoundingBox().toString()).execute().body();
-                var filename = "tourImage_" + tourModel.getTourId() + "_from_" + tourModel.getFrom() + "_to_" + tourModel.getTo() + "_" + ".jpeg";
+                var filename = "tourImage_" + tourModel.getTourId() +"_.jpeg";
 
                 if(fileSystem.writeResponseBody(imageResponseBody, filename)){
-                    return imagePath + filename;
+                    return new Pair<>(filename, routeInfo.getRoute());
                 }
             }
         } catch (IOException e) {
@@ -72,7 +64,25 @@ public class MapQuestRepositoryImpl implements MapQuestRepository {
         return null;
     }
 
-    private boolean checkIfRouteForImageChanged(TourModel tourModel, ImageProperties checkImage){
-        return !checkImage.getFrom().equalsIgnoreCase(tourModel.getFrom()) || !checkImage.getTo().equalsIgnoreCase(tourModel.getTo());
+    private boolean checkIfRouteSuccessful(MapQuestModel route){
+        if(route.getRoute().getSessionId() != null){
+            return true;
+        }
+        var errorMessage = route.getInfo().getMessages();
+
+        String breaker = "\n";
+        StringBuilder sb = new StringBuilder();
+
+        int i = 0;
+        while (i < errorMessage.size() - 1)
+        {
+            sb.append(errorMessage.get(i));
+            sb.append(breaker);
+            i++;
+        }
+        sb.append(errorMessage.get(i));
+        String result = sb.toString();
+
+        throw new RuntimeException(result);
     }
 }

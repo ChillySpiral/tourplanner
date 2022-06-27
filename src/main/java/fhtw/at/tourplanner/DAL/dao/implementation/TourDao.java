@@ -25,7 +25,7 @@ public class TourDao implements TourDaoExtension {
 
     @Override
     public Optional<TourModel> get(int id) {
-        var queryString = "SELECT * FROM public.\"tour\" WHERE Id = CAST(? AS INTEGER);";
+        var queryString = "SELECT * FROM public.\"tour\" WHERE \"Id\" = CAST(? AS INTEGER);";
 
         List<Object> params = new ArrayList<>();
         params.add(id);
