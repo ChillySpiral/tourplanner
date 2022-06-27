@@ -96,11 +96,7 @@ public class TourTabViewModel {
             description.setValue(data.getDescription());
             detailsFrom.setValue(data.getFrom());
             detailsTo.setValue(data.getTo());
-            if(null != data.getImageFilename()) {
-                var path = ConfigurationLoader.getConfig("ImageFolder")+data.getImageFilename();
-                Image image = new Image(new File(path).toURI().toString());
-                imageProperty.setValue(image);
-            }
+            updateImage();
             //ToDo: Alle weiteren Properties müssen hier gesetzt werden
         }
     }
@@ -120,7 +116,22 @@ public class TourTabViewModel {
         data.setFrom(this.getDetailsFrom());
         data.setTo(this.getDetailsTo());
 
+        var tmpFileName = new String(data.getImageFilename());
         tourAppManager.updateTour(data);
+
+        if(tmpFileName != data.getImageFilename()){
+            updateImage();
+        }
         //ToDo: Alle weiteren Property Updates müssen hier eingefügt werden
+    }
+
+    private void updateImage(){
+        if(null != data.getImageFilename()) {
+            var path = ConfigurationLoader.getConfig("ImageFolder")+data.getImageFilename();
+            Image image = new Image(new File(path).toURI().toString());
+            imageProperty.setValue(image);
+        }else{
+            imageProperty.setValue(null);
+        }
     }
 }
