@@ -1,6 +1,7 @@
 package fhtw.at.tourplanner.BL.pdfGenerator.implementation;
 
 import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
+import fhtw.at.tourplanner.BL.pdfGenerator.helper.Calculator;
 import fhtw.at.tourplanner.DAL.DalFactory;
 import fhtw.at.tourplanner.DAL.helper.ConfigurationLoader;
 import fhtw.at.tourplanner.DAL.model.TourLog;
@@ -14,8 +15,12 @@ import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.UnitValue;
+import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.stream.Collectors;
 
 public class ReportGeneratorImpl implements ReportGenerator {
     @Override
@@ -93,6 +98,49 @@ public class ReportGeneratorImpl implements ReportGenerator {
 
             document.close();
             return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean generateSummary(java.util.List<Pair<TourModel, java.util.List<TourLog>>> allTours) {
+        try {
+            PdfWriter writer = new PdfWriter(ConfigurationLoader.getConfig("PdfFolder") + "summaryReport_" + LocalDate.now() +".pdf");
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            Paragraph tourTitle = new Paragraph("Summary Report " +  LocalDate.now())
+                    .setFont(PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN))
+                    .setFontSize(24)
+                    .setBold()
+                    .setFontColor(ColorConstants.BLACK);
+            document.add(tourTitle);
+
+            Table table = new Table(4);
+            table.addHeaderCell(getHeaderCell("Tour"));
+            table.addHeaderCell(getHeaderCell("Average Time"));
+            table.addHeaderCell(getHeaderCell("Average Difficulty"));
+            table.addHeaderCell(getHeaderCell("Average Rating"));
+            table.setFontSize(12).setBackgroundColor(ColorConstants.WHITE);
+
+            for (var tour: allTours) {
+                table.addCell(new Paragraph(tour.aObject.getTitle()).setMaxWidth(100));
+                var avgTime = Calculator.calculateAverageTime(tour.bObject.stream().map(TourLog::getTotalTime).collect(Collectors.toList()));
+                if(avgTime != null){
+                    table.addCell(new Paragraph(avgTime.toString()).setMaxWidth(150));
+                } else {
+                    table.addCell(new Paragraph("Average Time could not be calculated").setMaxWidth(150));
+                }
+                //ToDo: Implement
+                table.addCell(new Paragraph("<Implement Enum for Difficulty>").setMaxWidth(90));
+                table.addCell(new Paragraph("<Implement Enum for Rating>").setMaxWidth(90));
+            }
+            document.add(table);
+            document.close();
+            return true;
+
         }catch(Exception e){
             e.printStackTrace();
             return false;

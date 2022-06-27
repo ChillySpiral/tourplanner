@@ -7,8 +7,10 @@ import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TourAppManagerImpl implements TourAppManager {
@@ -102,6 +104,20 @@ public class TourAppManagerImpl implements TourAppManager {
             var logs = getAllTourLogsForTour(tour);
             reportGenerator.generateReport(tour, logs);
         }
+    }
+
+    @Override
+    public void generateSummaryReport() {
+        var tours = getAllTours();
+        List<Pair<TourModel, List<TourLog>>> result = new ArrayList<>();
+
+        for (var tour: tours) {
+            var logs = getAllTourLogsForTour(tour);
+            var tmpPair = new Pair<>(tour, logs);
+            result.add(tmpPair);
+        }
+
+        reportGenerator.generateSummary(result);
     }
 
     private boolean mapQuestQueryNecessary(TourModel newValue, TourModel oldValue){
