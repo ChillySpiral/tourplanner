@@ -2,9 +2,15 @@ package fhtw.at.tourplanner.viewmodel;
 
 import fhtw.at.tourplanner.BL.TourAppManager;
 import fhtw.at.tourplanner.BL.TourAppManagerFactory;
+import fhtw.at.tourplanner.DAL.helper.ConfigurationLoader;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.image.Image;
+
+import java.io.File;
 
 public class TourTabViewModel {
 
@@ -14,6 +20,7 @@ public class TourTabViewModel {
     private final StringProperty description = new SimpleStringProperty();
     private final StringProperty detailsFrom = new SimpleStringProperty();
     private final StringProperty detailsTo = new SimpleStringProperty();
+    private final ObjectProperty<Image> imageProperty = new SimpleObjectProperty<>();
     private final TourAppManager tourAppManager = TourAppManagerFactory.getTourAppManager();
 
     public TourTabViewModel() {
@@ -50,6 +57,10 @@ public class TourTabViewModel {
         return detailsTo;
     }
 
+    public ObjectProperty<Image> imageProperty() {
+        return imageProperty;
+    }
+
     public void setTourModel(TourModel selectedItem) {
 
         if (selectedItem == null) {
@@ -78,12 +89,18 @@ public class TourTabViewModel {
             description.setValue(null);
             detailsFrom.setValue(null);
             detailsTo.setValue(null);
+            imageProperty.setValue(null);
             //ToDo: Alle weiteren Properties müssen einen Initial-Wert bekommen
         } else {
             title.setValue(data.getTitle());
             description.setValue(data.getDescription());
             detailsFrom.setValue(data.getFrom());
             detailsTo.setValue(data.getTo());
+            if(null != data.getImageFilename()) {
+                var path = ConfigurationLoader.getConfig("ImageFolder")+data.getImageFilename();
+                Image image = new Image(new File(path).toURI().toString());
+                imageProperty.setValue(image);
+            }
             //ToDo: Alle weiteren Properties müssen hier gesetzt werden
         }
     }

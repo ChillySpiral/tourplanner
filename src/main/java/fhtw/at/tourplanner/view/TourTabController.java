@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
 public class TourTabController {
     @FXML
@@ -26,6 +27,9 @@ public class TourTabController {
     @FXML
     public TextField detailsTo;
 
+    @FXML
+    public ImageView image;
+
     private final TourTabViewModel tourTabViewModel;
 
     public TourTabController(TourTabViewModel tourTabViewModel) {
@@ -42,6 +46,7 @@ public class TourTabController {
         descriptionText.textProperty().bind(tourTabViewModel.descriptionProperty());
         detailsFrom.textProperty().bind(tourTabViewModel.detailsFromProperty());
         detailsTo.textProperty().bind(tourTabViewModel.detailsToProperty());
+        image.imageProperty().bind(tourTabViewModel.imageProperty());
     }
 
     //ToDo: Marker: We have access to the ViewModel that Updates the data and sends it to the DB
