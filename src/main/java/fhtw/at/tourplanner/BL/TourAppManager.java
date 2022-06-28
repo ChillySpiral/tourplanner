@@ -3,6 +3,7 @@ package fhtw.at.tourplanner.BL;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 
+import java.io.File;
 import java.util.List;
 
 public interface TourAppManager {
@@ -19,4 +20,7 @@ public interface TourAppManager {
 
     void generateTourReport(TourModel tourModel);
     void generateSummaryReport();
+
+    void exportTour(TourModel tourModel);
+    void importTour(File importFile);
 }

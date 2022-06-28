@@ -7,11 +7,24 @@ import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.export.exportTourModel;
 import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class TourAppManagerImpl implements TourAppManager {
 
@@ -120,6 +133,44 @@ public class TourAppManagerImpl implements TourAppManager {
         reportGenerator.generateSummary(result);
     }
 
+    @Override
+    public void exportTour(TourModel tourModel) {
+        var logs = getAllTourLogsForTour(tourModel);
+        var export = new exportTourModel(tourModel, logs);
+        try{
+        writeJSON(export);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void importTour(File importFile) {
+        try {
+            var importModel = readJSON();
+            var newTour = createTour();
+            newTour.setTitle(importModel.getTour().getTitle());
+            newTour.setTransportType(importModel.getTour().getTransportType());
+            newTour.setFrom(importModel.getTour().getFrom());
+            newTour.setTo(importModel.getTour().getTo());
+            newTour.setDescription(importModel.getTour().getDescription());
+            updateTour(newTour);
+
+            for (var log: importModel.tourLogs) {
+                var newLog = createLog(newTour.getTourId());
+                newLog.setDateTime(log.getDateTime());
+                newLog.setTotalTime(log.getTotalTime());
+                newLog.setComment(log.getComment());
+                newLog.setDifficulty(log.getDifficulty());
+                newLog.setRating(log.getRating());
+                updateLog(newLog);
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
     private boolean mapQuestQueryNecessary(TourModel newValue, TourModel oldValue){
         if(newValue.getTo().isEmpty() || newValue.getFrom().isEmpty())
             return false;
@@ -129,4 +180,18 @@ public class TourAppManagerImpl implements TourAppManager {
 
         return true;
     }
+
+    private void writeJSON(exportTourModel exportTour) throws JsonGenerationException, JsonMappingException, IOException{
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.writeValue(new File("./export/exportTour.json"), exportTour);
+    }
+
+    private exportTourModel readJSON() throws JsonParseException, JsonMappingException, IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        exportTourModel student = mapper.readValue(new File("./export/exportTour.json"), exportTourModel.class);
+        return student;
+    }
+
 }

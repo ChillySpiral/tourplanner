@@ -10,6 +10,9 @@ module fhtw.at.tourplanner {
     requires kernel;
     requires io;
     requires layout;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.datatype.jsr310;
 
 
     opens fhtw.at.tourplanner to javafx.fxml;
@@ -20,4 +23,6 @@ module fhtw.at.tourplanner {
     exports fhtw.at.tourplanner.DAL.mapQuestAPI.implementation;
     exports fhtw.at.tourplanner.DAL.model;
     exports fhtw.at.tourplanner.DAL.model.mapQuestModels;
+    exports fhtw.at.tourplanner.DAL.model.export;
+    exports fhtw.at.tourplanner.DAL.model.enums;
 }
