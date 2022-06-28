@@ -130,7 +130,7 @@ public class TourTabViewModel {
         data.setTo(this.getDetailsTo());
         data.setTransportType(this.getTransportType());
 
-        var tmpFileName = new String(data.getImageFilename());
+        var tmpFileName = new String(data.getImageFilename() != null ? data.getImageFilename() : "");
         tourAppManager.updateTour(data);
 
         if(tmpFileName != data.getImageFilename()){
