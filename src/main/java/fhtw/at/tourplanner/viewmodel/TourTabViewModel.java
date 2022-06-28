@@ -9,11 +9,13 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class TourTabViewModel {
 
@@ -25,12 +27,7 @@ public class TourTabViewModel {
     private final StringProperty detailsTo = new SimpleStringProperty();
     private final ObjectProperty<Image> imageProperty = new SimpleObjectProperty<>();
     private final TourAppManager tourAppManager = TourAppManagerFactory.getTourAppManager();
-    private final List<TourLog> tourLogs = new LinkedList<>();
-    private final StringProperty date = new SimpleStringProperty();
-    private final StringProperty duration = new SimpleStringProperty();
-    private final StringProperty difficulty = new SimpleStringProperty();
-    private final StringProperty comment = new SimpleStringProperty();
-    private final StringProperty rating = new SimpleStringProperty();
+    private final ObservableList<TourLog> logData = FXCollections.observableArrayList();
 
 
     public TourTabViewModel() {
@@ -51,13 +48,6 @@ public class TourTabViewModel {
 
     public String getDetailsTo() { return detailsTo.get(); }
 
-    public String getDate() { return date.get(); }
-    public String getDuration() { return duration.get(); }
-    public String getDifficulty() { return difficulty.get(); }
-    public String getCommen() { return comment.get(); }
-    public String getRating() { return rating.get(); }
-
-
 
     public StringProperty titleProperty() {
         return title;
@@ -70,23 +60,6 @@ public class TourTabViewModel {
     public StringProperty detailsFromProperty() {
         return detailsFrom;
     }
-
-    public StringProperty dateProperty() {
-        return date;
-    }
-    public StringProperty durationProperty() {
-        return duration;
-    }
-    public StringProperty difficultyProperty() {
-        return difficulty;
-    }
-    public StringProperty commentProperty() {
-        return comment;
-    }
-    public StringProperty ratingProperty() {
-        return rating;
-    }
-
 
     public StringProperty detailsToProperty() {
         return detailsTo;
@@ -125,6 +98,7 @@ public class TourTabViewModel {
             detailsFrom.setValue(null);
             detailsTo.setValue(null);
             imageProperty.setValue(null);
+            logData.clear();
             //ToDo: Alle weiteren Properties müssen einen Initial-Wert bekommen
         } else {
             title.setValue(data.getTitle());
@@ -132,7 +106,7 @@ public class TourTabViewModel {
             detailsFrom.setValue(data.getFrom());
             detailsTo.setValue(data.getTo());
             updateImage();
-            List<TourLog> tourLogs = tourAppManager.getAllTourLogs();
+            updateTourLogData();
             //ToDo: Alle weiteren Properties müssen hier gesetzt werden
         }
     }
@@ -170,6 +144,16 @@ public class TourTabViewModel {
             imageProperty.setValue(null);
         }
     }
+
+    public ObservableList<TourLog> getLogData() {
+        return logData;
+    }
+
+    public void updateTourLogData() {
+        logData.clear();
+        logData.setAll(tourAppManager.getAllTourLogsForTour(data));
+    }
+
 
 
 }

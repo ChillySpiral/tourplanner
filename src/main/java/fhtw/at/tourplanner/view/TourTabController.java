@@ -69,17 +69,13 @@ public class TourTabController {
         detailsTo.textProperty().bind(tourTabViewModel.detailsToProperty());
         image.imageProperty().bind(tourTabViewModel.imageProperty());
 
-        logDate.setCellValueFactory(new PropertyValueFactory<TourLog, LocalDateTime>("date"));
-        logDuration.setCellValueFactory(new PropertyValueFactory<TourLog, LocalTime>("duration"));
+        logDate.setCellValueFactory(new PropertyValueFactory<TourLog, LocalDateTime>("dateTime"));
+        logDuration.setCellValueFactory(new PropertyValueFactory<TourLog, LocalTime>("totalTime"));
         logDifficulty.setCellValueFactory(new PropertyValueFactory<TourLog, String>("difficulty"));
         logComment.setCellValueFactory(new PropertyValueFactory<TourLog, String>("comment"));
         logRating.setCellValueFactory(new PropertyValueFactory<TourLog, String>("rating"));
-        logDate.textProperty().bind(tourTabViewModel.dateProperty());
-        logDuration.textProperty().bind(tourTabViewModel.durationProperty());
-        logDifficulty.textProperty().bind(tourTabViewModel.difficultyProperty());
-        logComment.textProperty().bind(tourTabViewModel.commentProperty());
-        logRating.textProperty().bind(tourTabViewModel.ratingProperty());
 
+        logTableView.setItems(tourTabViewModel.getLogData());
     }
 
     //ToDo: Marker: We have access to the ViewModel that Updates the data and sends it to the DB
