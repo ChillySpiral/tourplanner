@@ -9,11 +9,11 @@ import okhttp3.ResponseBody;
 
 import java.io.*;
 
-public class FileSystemTourImage implements FileSystem {
+public class FileSystemImpl implements FileSystem {
 
     public final String path;
 
-    public FileSystemTourImage(){
+    public FileSystemImpl(){
         this.path = ConfigurationLoader.getConfig("ImageFolder");
     }
     @Override
@@ -71,11 +71,13 @@ public class FileSystemTourImage implements FileSystem {
 
         String[] fileNameList = directory.list();
 
+        if(fileNameList == null)
+            return null;
+
         for (var image : fileNameList) {
             var tmpOutImage = getImageProperties(image);
             if(tourModel.getTourId() == tmpOutImage.getTourId()){
-                var result = new Pair<>(image, tmpOutImage);
-                return result;
+                return new Pair<>(image, tmpOutImage);
             }
         }
         return null;
