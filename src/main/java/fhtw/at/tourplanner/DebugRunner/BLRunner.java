@@ -1,6 +1,6 @@
-package fhtw.at.tourplanner.BL;
+package fhtw.at.tourplanner.DebugRunner;
 
-import fhtw.at.tourplanner.DAL.model.enums.TransportType;
+import fhtw.at.tourplanner.BL.BLFactory;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ public class BLRunner {
         var test1 = false;
         var test2 = false;
         var test3 = true;
-        var test = TourAppManagerFactory.getTourAppManager();
+        var test = BLFactory.getTourAppManager();
         if(test1) {
 
 

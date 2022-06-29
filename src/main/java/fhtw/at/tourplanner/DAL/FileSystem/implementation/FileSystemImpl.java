@@ -1,7 +1,7 @@
 package fhtw.at.tourplanner.DAL.FileSystem.implementation;
 
+import fhtw.at.tourplanner.Configuration.AppConfiguration;
 import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
-import fhtw.at.tourplanner.DAL.helper.ConfigurationLoader;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.fileSystem.ImageProperties;
 import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
@@ -13,8 +13,8 @@ public class FileSystemImpl implements FileSystem {
 
     public final String path;
 
-    public FileSystemImpl(){
-        this.path = ConfigurationLoader.getConfig("ImageFolder");
+    public FileSystemImpl(AppConfiguration appConfiguration){
+        this.path = appConfiguration.getImageFolder();
     }
     @Override
     public boolean writeResponseBody(ResponseBody body, String imageFileName) {

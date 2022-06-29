@@ -1,7 +1,7 @@
 package fhtw.at.tourplanner.viewmodel;
 
-import fhtw.at.tourplanner.BL.TourAppManager;
-import fhtw.at.tourplanner.BL.TourAppManagerFactory;
+import fhtw.at.tourplanner.BL.appManager.TourAppManager;
+import fhtw.at.tourplanner.BL.BLFactory;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 
 import java.io.File;
@@ -11,7 +11,7 @@ public class HomeViewModel {
     private TourListViewModel tourListViewModel;
     public TourTabViewModel tourTabViewModel;
 
-    private final TourAppManager tourAppManager = TourAppManagerFactory.getTourAppManager();
+    private final TourAppManager tourAppManager = BLFactory.getTourAppManager();
 
     public HomeViewModel(SearchBarViewModel searchBarViewModel, TourListViewModel tourListViewModel, TourTabViewModel tourTabViewModel) {
         this.searchBarViewModel = searchBarViewModel;

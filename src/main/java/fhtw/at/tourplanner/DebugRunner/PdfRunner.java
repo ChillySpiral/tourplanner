@@ -1,6 +1,8 @@
-package fhtw.at.tourplanner.BL.pdfGenerator;
+package fhtw.at.tourplanner.DebugRunner;
 
 import fhtw.at.tourplanner.BL.pdfGenerator.implementation.ReportGeneratorImpl;
+import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
+import fhtw.at.tourplanner.DAL.FileSystem.implementation.FileSystemImpl;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.implementation.MapQuestRepositoryImpl;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
@@ -36,7 +38,7 @@ public class PdfRunner {
             logs.add(log);
         }
 
-        var pdfGenerator = new ReportGeneratorImpl();
+        var pdfGenerator = new ReportGeneratorImpl(AppConfigurationLoader.getInstance().getAppConfiguration(), new FileSystemImpl(AppConfigurationLoader.getInstance().getAppConfiguration()));
 
         pdfGenerator.generateReport(testModel, logs, new File("./pdf/pdfRunner.pdf"));
     }

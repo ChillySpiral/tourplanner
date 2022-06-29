@@ -1,4 +1,4 @@
-package fhtw.at.tourplanner.BL;
+package fhtw.at.tourplanner.BL.appManager;
 
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;

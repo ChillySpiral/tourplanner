@@ -1,5 +1,7 @@
-package fhtw.at.tourplanner.DAL.mapQuestAPI;
+package fhtw.at.tourplanner.DebugRunner;
 
+import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
+import fhtw.at.tourplanner.DAL.FileSystem.implementation.FileSystemImpl;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.implementation.MapQuestRepositoryImpl;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
@@ -13,7 +15,7 @@ import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 
 public class TestMapQuestApiRunner {
     public static void main(String[] args) {
-        var test = new MapQuestRepositoryImpl();
+        var test = new MapQuestRepositoryImpl(AppConfigurationLoader.getInstance().getAppConfiguration(), new FileSystemImpl(AppConfigurationLoader.getInstance().getAppConfiguration()));
         var testModel = new TourModel();
         testModel.setFrom("Vienna");
         testModel.setTo("Berlin");

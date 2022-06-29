@@ -1,7 +1,7 @@
 package fhtw.at.tourplanner.viewmodel;
 
-import fhtw.at.tourplanner.BL.TourAppManager;
-import fhtw.at.tourplanner.BL.TourAppManagerFactory;
+import fhtw.at.tourplanner.BL.appManager.TourAppManager;
+import fhtw.at.tourplanner.BL.BLFactory;
 import fhtw.at.tourplanner.listener.TourSelectionListener;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import javafx.beans.value.ChangeListener;
@@ -15,7 +15,7 @@ public class TourListViewModel {
 
     private final ObservableList<TourModel> data = FXCollections.observableArrayList();
     private final List<TourSelectionListener> listeners = new ArrayList<>();
-    private final TourAppManager tourAppManager = TourAppManagerFactory.getTourAppManager();
+    private final TourAppManager tourAppManager = BLFactory.getTourAppManager();
 
     public TourListViewModel() {
         var tours = tourAppManager.getAllTours();

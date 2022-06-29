@@ -1,5 +1,6 @@
 package fhtw.at.tourplanner.DAL;
 
+import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
 import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
 import fhtw.at.tourplanner.DAL.FileSystem.implementation.FileSystemImpl;
 import fhtw.at.tourplanner.DAL.dao.Dao;
@@ -42,14 +43,14 @@ public class DalFactory {
 
     public static FileSystem GetFileSystem(){
         if(fileSystem == null){
-            fileSystem = new FileSystemImpl();
+            fileSystem = new FileSystemImpl(AppConfigurationLoader.getInstance().getAppConfiguration());
         }
         return fileSystem;
     }
 
     public static MapQuestRepository GetMapQuestRepository(){
         if(mapQuestRepository == null){
-            mapQuestRepository = new MapQuestRepositoryImpl();
+            mapQuestRepository = new MapQuestRepositoryImpl(AppConfigurationLoader.getInstance().getAppConfiguration(), GetFileSystem());
         }
         return mapQuestRepository;
     }

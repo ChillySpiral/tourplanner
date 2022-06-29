@@ -25,4 +25,5 @@ module fhtw.at.tourplanner {
     exports fhtw.at.tourplanner.DAL.model.mapQuestModels;
     exports fhtw.at.tourplanner.DAL.model.export;
     exports fhtw.at.tourplanner.DAL.model.enums;
+    exports fhtw.at.tourplanner.DebugRunner;
 }

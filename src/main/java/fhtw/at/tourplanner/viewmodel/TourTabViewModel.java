@@ -1,8 +1,8 @@
 package fhtw.at.tourplanner.viewmodel;
 
-import fhtw.at.tourplanner.BL.TourAppManager;
-import fhtw.at.tourplanner.BL.TourAppManagerFactory;
-import fhtw.at.tourplanner.DAL.helper.ConfigurationLoader;
+import fhtw.at.tourplanner.BL.appManager.TourAppManager;
+import fhtw.at.tourplanner.BL.BLFactory;
+import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 import javafx.beans.property.ObjectProperty;
@@ -26,7 +26,7 @@ public class TourTabViewModel {
     private final ObjectProperty<Image> imageProperty = new SimpleObjectProperty<>();
 
     private final ObjectProperty<TransportType> transportType = new SimpleObjectProperty<>();
-    private final TourAppManager tourAppManager = TourAppManagerFactory.getTourAppManager();
+    private final TourAppManager tourAppManager = BLFactory.getTourAppManager();
 
     public TourTabViewModel() {
         registerPropertyListeners();
@@ -143,7 +143,7 @@ public class TourTabViewModel {
 
     private void updateImage(){
         if(null != data.getImageFilename()) {
-            var path = ConfigurationLoader.getConfig("ImageFolder")+data.getImageFilename();
+            var path = AppConfigurationLoader.getInstance().getAppConfiguration().getImageFolder() +data.getImageFilename();
             Image image = new Image(new File(path).toURI().toString());
             imageProperty.setValue(image);
         }else{
