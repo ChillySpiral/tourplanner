@@ -1,5 +1,6 @@
 package fhtw.at.tourplanner.DAL.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @AllArgsConstructor
 @NoArgsConstructor
