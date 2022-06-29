@@ -1,5 +1,6 @@
 package fhtw.at.tourplanner.BL;
 
+import fhtw.at.tourplanner.BL.jsonGenerator.JsonGenerator;
 import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
 import fhtw.at.tourplanner.DAL.DalFactory;
 import fhtw.at.tourplanner.DAL.dao.Dao;
@@ -33,11 +34,14 @@ public class TourAppManagerImpl implements TourAppManager {
     private final ReportGenerator reportGenerator;
     private final MapQuestRepository mapQuestRepository;
 
-    public TourAppManagerImpl(ReportGenerator reportGenerator, MapQuestRepository mapQuestRepository){
+    private final JsonGenerator jsonGenerator;
+
+    public TourAppManagerImpl(ReportGenerator reportGenerator, MapQuestRepository mapQuestRepository, JsonGenerator jsonGenerator){
         tourModelDao = DalFactory.GetTourModelDao();
         tourLogDao = DalFactory.GetTourLogDao();
         this.reportGenerator = reportGenerator;
         this.mapQuestRepository = mapQuestRepository;
+        this.jsonGenerator = jsonGenerator;
     }
 
     @Override
@@ -138,7 +142,7 @@ public class TourAppManagerImpl implements TourAppManager {
         var logs = getAllTourLogsForTour(tourModel);
         var export = new exportTourModel(tourModel, logs);
         try{
-        writeJSON(exportFile, export);
+            jsonGenerator.writeJSON(exportFile, export);
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -147,7 +151,7 @@ public class TourAppManagerImpl implements TourAppManager {
     @Override
     public TourModel importTour(File importFile) {
         try {
-            var importModel = readJSON(importFile);
+            var importModel = jsonGenerator.readJSON(importFile);
             var newTour = createTour();
             newTour.setTitle(importModel.getTour().getTitle());
             newTour.setTransportType(importModel.getTour().getTransportType());
@@ -181,19 +185,6 @@ public class TourAppManagerImpl implements TourAppManager {
             return false;
 
         return true;
-    }
-
-    private void writeJSON(File exportFile,exportTourModel exportTour) throws JsonGenerationException, JsonMappingException, IOException{
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.writeValue(exportFile, exportTour);
-    }
-
-    private exportTourModel readJSON(File importFile) throws JsonParseException, JsonMappingException, IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        exportTourModel student = mapper.readValue(importFile, exportTourModel.class);
-        return student;
     }
 
 }
