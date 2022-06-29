@@ -1,11 +1,17 @@
 package fhtw.at.tourplanner.viewmodel;
 
+import fhtw.at.tourplanner.BL.TourAppManager;
+import fhtw.at.tourplanner.BL.TourAppManagerFactory;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+
+import java.io.File;
 
 public class HomeViewModel {
     private SearchBarViewModel searchBarViewModel;
     private TourListViewModel tourListViewModel;
-    private TourTabViewModel tourTabViewModel;
+    public TourTabViewModel tourTabViewModel;
+
+    private final TourAppManager tourAppManager = TourAppManagerFactory.getTourAppManager();
 
     public HomeViewModel(SearchBarViewModel searchBarViewModel, TourListViewModel tourListViewModel, TourTabViewModel tourTabViewModel) {
         this.searchBarViewModel = searchBarViewModel;
@@ -28,5 +34,25 @@ public class HomeViewModel {
     * */
     private void registerListeners(){
         this.tourListViewModel.addTourSelectionListener(selectedTourItem -> selectTour(selectedTourItem));
+    }
+
+    public void exportTour(File tourFile){
+        if(tourTabViewModel != null && tourTabViewModel.getData() != null)
+            tourAppManager.exportTour(tourFile, tourTabViewModel.getData());
+    }
+
+    public void importTour(File tourFile){
+        var importedTour = tourAppManager.importTour(tourFile);
+        if(importedTour != null)
+            tourListViewModel.addImportTour(importedTour);
+    }
+
+    public void generateReportPdf(File pdfFile){
+        if(tourTabViewModel != null && tourTabViewModel.getData() != null)
+            tourAppManager.generateTourReport(tourTabViewModel.getData(), pdfFile);
+    }
+
+    public void generateSummaryPdf(File pdfFile){
+        tourAppManager.generateSummaryReport(pdfFile);
     }
 }

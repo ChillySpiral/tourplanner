@@ -9,11 +9,13 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
+import lombok.Getter;
 
 import java.io.File;
 
 public class TourTabViewModel {
 
+    @Getter
     private TourModel data;
     private volatile boolean isInitialValue = false;
     private final StringProperty title = new SimpleStringProperty();

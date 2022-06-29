@@ -111,16 +111,16 @@ public class TourAppManagerImpl implements TourAppManager {
     }
 
     @Override
-    public void generateTourReport(TourModel tourModel) {
+    public void generateTourReport(TourModel tourModel, File pdfFile) {
         var tour = getTour(tourModel.getTourId());
         if(tour != null){
             var logs = getAllTourLogsForTour(tour);
-            reportGenerator.generateReport(tour, logs);
+            reportGenerator.generateReport(tour, logs, pdfFile);
         }
     }
 
     @Override
-    public void generateSummaryReport() {
+    public void generateSummaryReport(File pdfFile) {
         var tours = getAllTours();
         List<Pair<TourModel, List<TourLog>>> result = new ArrayList<>();
 
@@ -130,24 +130,24 @@ public class TourAppManagerImpl implements TourAppManager {
             result.add(tmpPair);
         }
 
-        reportGenerator.generateSummary(result);
+        reportGenerator.generateSummary(result, pdfFile);
     }
 
     @Override
-    public void exportTour(TourModel tourModel) {
+    public void exportTour(File exportFile,TourModel tourModel) {
         var logs = getAllTourLogsForTour(tourModel);
         var export = new exportTourModel(tourModel, logs);
         try{
-        writeJSON(export);
+        writeJSON(exportFile, export);
         } catch(Exception e){
             e.printStackTrace();
         }
     }
 
     @Override
-    public void importTour(File importFile) {
+    public TourModel importTour(File importFile) {
         try {
-            var importModel = readJSON();
+            var importModel = readJSON(importFile);
             var newTour = createTour();
             newTour.setTitle(importModel.getTour().getTitle());
             newTour.setTransportType(importModel.getTour().getTransportType());
@@ -165,9 +165,11 @@ public class TourAppManagerImpl implements TourAppManager {
                 newLog.setRating(log.getRating());
                 updateLog(newLog);
             }
+            return newTour;
 
         } catch(Exception e){
             e.printStackTrace();
+            return null;
         }
     }
 
@@ -181,16 +183,16 @@ public class TourAppManagerImpl implements TourAppManager {
         return true;
     }
 
-    private void writeJSON(exportTourModel exportTour) throws JsonGenerationException, JsonMappingException, IOException{
+    private void writeJSON(File exportFile,exportTourModel exportTour) throws JsonGenerationException, JsonMappingException, IOException{
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        mapper.writeValue(new File("./export/exportTour.json"), exportTour);
+        mapper.writeValue(exportFile, exportTour);
     }
 
-    private exportTourModel readJSON() throws JsonParseException, JsonMappingException, IOException {
+    private exportTourModel readJSON(File importFile) throws JsonParseException, JsonMappingException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        exportTourModel student = mapper.readValue(new File("./export/exportTour.json"), exportTourModel.class);
+        exportTourModel student = mapper.readValue(importFile, exportTourModel.class);
         return student;
     }
 

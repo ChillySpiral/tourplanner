@@ -18,9 +18,9 @@ public interface TourAppManager {
     void deleteLog(TourLog log);
     void updateLog(TourLog log);
 
-    void generateTourReport(TourModel tourModel);
-    void generateSummaryReport();
+    void generateTourReport(TourModel tourModel, File pdfFile);
+    void generateSummaryReport(File pdfFile);
 
-    void exportTour(TourModel tourModel);
-    void importTour(File importFile);
+    void exportTour(File exportFile, TourModel tourModel);
+    TourModel importTour(File importFile);
 }
