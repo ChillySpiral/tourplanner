@@ -9,9 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TourDatabase implements Database {
-    private final Connection dbConnection;
+    private final Connection dbConnection = ConnectionManager.getConnection();
     public TourDatabase(){
-        dbConnection = ConnectionManager.getConnection();
     }
 
     @Override

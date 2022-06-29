@@ -8,7 +8,9 @@ import java.sql.SQLException;
 
 public class ConnectionManager {
     private static Connection dbConnection;
+    private ConnectionManager(){
 
+    }
     public static Connection getConnection(){
         if(dbConnection == null) {
             try{
