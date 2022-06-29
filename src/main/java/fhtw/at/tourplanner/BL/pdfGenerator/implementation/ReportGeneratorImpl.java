@@ -47,7 +47,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
             document.add(tourTitle);
 
             try {
-                ImageData imageData = ImageDataFactory.create(appConfiguration.getImageFolder() + DalFactory.GetFileSystem().findFile(tour).aObject);
+                ImageData imageData = ImageDataFactory.create(appConfiguration.getImageFolder() + DalFactory.GetFileSystem().findFile(tour));
                 document.add(new Image(imageData));
             }catch(NullPointerException e){
                 e. printStackTrace();

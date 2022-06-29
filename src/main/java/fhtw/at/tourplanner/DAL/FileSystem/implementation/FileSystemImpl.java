@@ -3,8 +3,6 @@ package fhtw.at.tourplanner.DAL.FileSystem.implementation;
 import fhtw.at.tourplanner.Configuration.AppConfiguration;
 import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
 import fhtw.at.tourplanner.DAL.model.TourModel;
-import fhtw.at.tourplanner.DAL.model.fileSystem.ImageProperties;
-import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
 import okhttp3.ResponseBody;
 
 import java.io.*;
@@ -66,7 +64,7 @@ public class FileSystemImpl implements FileSystem {
     }
 
     @Override
-    public Pair<String, ImageProperties> findFile(TourModel tourModel) {
+    public String findFile(TourModel tourModel) {
         File directory = new File(path);
 
         String[] fileNameList = directory.list();
@@ -75,25 +73,23 @@ public class FileSystemImpl implements FileSystem {
             return null;
 
         for (var image : fileNameList) {
-            var tmpOutImage = getImageProperties(image);
-            if(tourModel.getTourId() == tmpOutImage.getTourId()){
-                return new Pair<>(image, tmpOutImage);
+            var tmpOutTourId = getTourIdFromImage(image);
+            if(tourModel.getTourId() == tmpOutTourId){
+                return image;
             }
         }
         return null;
     }
 
-    private ImageProperties getImageProperties(String fileName){
+    private int getTourIdFromImage(String fileName){
         var props = fileName.split("_");
-        var result = new ImageProperties();
-        result.setTourId(-1);
         try{
-            result.setTourId(Integer.parseInt(props[1]));
+            var tourId = Integer.parseInt(props[1]);
+            return tourId;
         } catch(Exception e){
             e.printStackTrace();
+            return -1;
         }
-
-        return result;
     }
 }
 
