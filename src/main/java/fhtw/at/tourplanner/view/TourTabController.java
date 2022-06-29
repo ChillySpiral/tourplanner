@@ -3,6 +3,7 @@ package fhtw.at.tourplanner.view;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.viewmodel.TourEditViewModel;
+import fhtw.at.tourplanner.viewmodel.TourListViewModel;
 import fhtw.at.tourplanner.viewmodel.TourTabViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -96,4 +97,13 @@ public class TourTabController {
                 tourTabViewModel.updateTourModel(tourModel);
         });
     }
+
+    public void addNewLog(ActionEvent actionEvent) {
+        tourTabViewModel.addNewLog();
+    }
+
+    public void deleteLog(ActionEvent actionEvent){
+        tourTabViewModel.deleteLog(logTableView.getSelectionModel().getSelectedItem());
+    }
+
 }

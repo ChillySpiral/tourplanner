@@ -5,6 +5,7 @@ import fhtw.at.tourplanner.DAL.database.Database;
 import fhtw.at.tourplanner.DAL.database.converter.ModelConverter;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,10 +44,12 @@ public class TourLogDao implements Dao<TourLog> {
 
     @Override
     public TourLog create(int tourId) {
-        var queryString = "INSERT INTO public.\"log\" (\"TourId\") VALUES(CAST(? AS INTEGER));";
+        var queryString = "INSERT INTO public.\"log\" (\"TourId\", \"DateTime\") VALUES(CAST(? AS INTEGER), ?);";
         var newItem = new TourLog();
+        newItem.setDateTime(LocalDateTime.now());
         List<Object> paramsId = new ArrayList<>();
         paramsId.add(tourId);
+        paramsId.add(newItem.getDateTime());
 
         var newId = database.insert(queryString, paramsId);
 
