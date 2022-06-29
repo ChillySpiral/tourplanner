@@ -2,7 +2,11 @@ package fhtw.at.tourplanner.view;
 
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
+import fhtw.at.tourplanner.DAL.model.enums.Rating;
+import fhtw.at.tourplanner.viewmodel.LogEditViewModel;
 import fhtw.at.tourplanner.viewmodel.TourEditViewModel;
+import fhtw.at.tourplanner.viewmodel.TourListViewModel;
 import fhtw.at.tourplanner.viewmodel.TourTabViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -43,13 +47,13 @@ public class TourTabController {
     private TableColumn<TourLog, LocalTime> logDuration;
 
     @FXML
-    private TableColumn<TourLog, String> logDifficulty;
+    private TableColumn<TourLog, Difficulty> logDifficulty;
 
     @FXML
     private TableColumn<TourLog, String> logComment;
 
     @FXML
-    private TableColumn<TourLog, String> logRating;
+    private TableColumn<TourLog, Rating> logRating;
 
     private final TourTabViewModel tourTabViewModel;
 
@@ -71,9 +75,9 @@ public class TourTabController {
 
         logDate.setCellValueFactory(new PropertyValueFactory<TourLog, LocalDateTime>("dateTime"));
         logDuration.setCellValueFactory(new PropertyValueFactory<TourLog, LocalTime>("totalTime"));
-        logDifficulty.setCellValueFactory(new PropertyValueFactory<TourLog, String>("difficulty"));
+        logDifficulty.setCellValueFactory(new PropertyValueFactory<TourLog, Difficulty>("difficulty"));
         logComment.setCellValueFactory(new PropertyValueFactory<TourLog, String>("comment"));
-        logRating.setCellValueFactory(new PropertyValueFactory<TourLog, String>("rating"));
+        logRating.setCellValueFactory(new PropertyValueFactory<TourLog, Rating>("rating"));
 
         logTableView.setItems(tourTabViewModel.getLogData());
     }
@@ -96,4 +100,32 @@ public class TourTabController {
                 tourTabViewModel.updateTourModel(tourModel);
         });
     }
+
+    public void addNewLog(ActionEvent actionEvent) {
+        tourTabViewModel.addNewLog();
+    }
+
+    public void deleteLog(ActionEvent actionEvent){
+        tourTabViewModel.deleteLog(logTableView.getSelectionModel().getSelectedItem());
+    }
+
+    public void editLog(ActionEvent actionEvent) {
+        TourLog log = logTableView.getSelectionModel().getSelectedItem();
+        var result = new LogEditViewModel(log.getDateTime().toString(), log.getComment(), log.getDifficulty(), log.getRating());
+        var dialog = new LogEditDialog(tourTitle.getScene().getWindow(), result);
+
+        dialog.showAndWait().ifPresent(x -> {
+            TourLog tourLog = new TourLog();
+
+            tourLog.setLogId(log.getLogId());
+            //tourLog.setTotalTime(result.ge);
+            tourLog.setComment((result.getComment()));
+            tourLog.setDifficulty(result.getDifficulty());
+            tourLog.setRating(result.getRating());
+
+            tourTabViewModel.editTourLogData(tourLog);
+            tourTabViewModel.updateTourLogData();
+        });
+    }
+
 }

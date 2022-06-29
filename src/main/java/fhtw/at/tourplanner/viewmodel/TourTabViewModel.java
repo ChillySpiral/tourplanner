@@ -9,6 +9,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
@@ -154,6 +155,25 @@ public class TourTabViewModel {
         logData.setAll(tourAppManager.getAllTourLogsForTour(data));
     }
 
+    public void editTourLogData(TourLog tourLog) {
+        var log = logData.stream().filter(x -> x.getLogId() == tourLog.getLogId()).findFirst().get();
+        if(null != log) {
+            log.setComment(tourLog.getComment());
+            log.setDifficulty(tourLog.getDifficulty());
+            log.setRating(tourLog.getRating());
+            //log.setTotalTime(tourLog.getTotalTime());
+            tourAppManager.updateLog(log);
+        }
+    }
 
+    public void addNewLog() {
+        var newItem = tourAppManager.createLog(data.getTourId());
+        logData.add(newItem);
+    }
+
+    public void deleteLog(TourLog tourItem) {
+        tourAppManager.deleteLog(tourItem);
+        logData.remove(tourItem);
+    }
 
 }

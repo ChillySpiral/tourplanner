@@ -90,8 +90,8 @@ public class ReportGeneratorImpl implements ReportGenerator {
             for (var log: logs) {
                 table.addCell(new Paragraph(log.getDateTime().toString()).setMaxWidth(100));
                 table.addCell(new Paragraph(log.getComment()).setMaxWidth(150));
-                table.addCell(new Paragraph(log.getDifficulty()).setMaxWidth(90));
-                table.addCell(new Paragraph(log.getRating()).setMaxWidth(90));
+                table.addCell(new Paragraph(String.valueOf(log.getDifficulty())).setMaxWidth(90));
+                table.addCell(new Paragraph(String.valueOf(log.getRating())).setMaxWidth(90));
                 table.addCell(new Paragraph(log.getTotalTime().toString()).setMaxWidth(100));
             }
             document.add(table);

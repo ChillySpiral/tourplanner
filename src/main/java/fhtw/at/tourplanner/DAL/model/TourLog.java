@@ -1,5 +1,7 @@
 package fhtw.at.tourplanner.DAL.model;
 
+import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
+import fhtw.at.tourplanner.DAL.model.enums.Rating;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +28,7 @@ public class TourLog {
 
     @Getter
     @Setter
-    private String difficulty; //ToDo: Enum
+    private Difficulty difficulty; //ToDo: Enum
 
     @Getter
     @Setter
@@ -34,7 +36,7 @@ public class TourLog {
 
     @Getter
     @Setter
-    private String rating; //ToDo: Enum
+    private Rating rating; //ToDo: Enum
 
     @Getter
     @Setter

@@ -4,6 +4,8 @@ import fhtw.at.tourplanner.BL.pdfGenerator.implementation.ReportGeneratorImpl;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.implementation.MapQuestRepositoryImpl;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
+import fhtw.at.tourplanner.DAL.model.enums.Rating;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 
 import java.time.LocalDateTime;
@@ -29,8 +31,8 @@ public class PdfRunner {
             var log = new TourLog();
             log.setComment("This is a comment for log number This is a comment for log number This is a comment for log number This is a comment for log number This is a comment for log number This is a comment for log number This is a comment for log number aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + i);
             log.setDateTime(LocalDateTime.now());
-            log.setRating("Rating of " + i);
-            log.setDifficulty("Difficulty abc " + i);
+            log.setRating(Rating.Bad);
+            log.setDifficulty(Difficulty.Beginner);
             log.setTotalTime(LocalTime.now());
             logs.add(log);
         }
