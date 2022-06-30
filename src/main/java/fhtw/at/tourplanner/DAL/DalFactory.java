@@ -22,7 +22,7 @@ public class DalFactory {
 
     public static TourDaoExtension GetTourModelDao(){
         if(tourDao == null){
-            tourDao = new TourDao(GetDatabase());
+            tourDao = new TourDao(GetDatabase(), GetFileSystem());
         }
         return tourDao;
     }

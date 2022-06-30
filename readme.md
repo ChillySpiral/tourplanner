@@ -1,7 +1,11 @@
-Add config File in src/main/resources/app.config and add those plus values (add enter between each Key):
+Add config File in src/main/resources/app.properties and add those plus values (add enter between each Key):
 
-DBConnectionString=value
-MapQuestKey=value
-ImageFolder=value
-DBUser=value
-DBPw=value
+name=Tourplanner
+version=1.0
+
+folder.image=<folder>
+datasource.url=<connectionString>
+datasource.username=<username>
+datasource.password=<password>
+
+api.key=<key>

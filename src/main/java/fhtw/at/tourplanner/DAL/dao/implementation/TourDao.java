@@ -1,5 +1,6 @@
 package fhtw.at.tourplanner.DAL.dao.implementation;
 
+import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.database.Database;
 import fhtw.at.tourplanner.DAL.database.converter.ModelConverter;
@@ -14,9 +15,11 @@ import java.util.Optional;
 public class TourDao implements TourDaoExtension {
 
     private final Database database;
+    private final FileSystem fileSystem;
 
-    public TourDao(Database database) {
+    public TourDao(Database database, FileSystem fileSystem) {
         this.database = database;
+        this.fileSystem = fileSystem;
     }
 
     @Override
@@ -70,6 +73,7 @@ public class TourDao implements TourDaoExtension {
         var queryString = "DELETE FROM public.\"tour\" WHERE \"Id\" = CAST(? AS INTEGER);";
         List<Object> paramsId = new ArrayList<>();
         paramsId.add(tourModel.getTourId());
+        fileSystem.deleteFile(tourModel);
         database.delete(queryString, paramsId);
     }
 

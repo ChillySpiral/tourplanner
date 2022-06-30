@@ -23,7 +23,6 @@ public class TourAppManagerImpl implements TourAppManager {
     private final Dao<TourLog> tourLogDao;
     private final ReportGenerator reportGenerator;
     private final MapQuestRepository mapQuestRepository;
-
     private final JsonGenerator jsonGenerator;
 
     public TourAppManagerImpl(ReportGenerator reportGenerator, MapQuestRepository mapQuestRepository, JsonGenerator jsonGenerator){
@@ -56,6 +55,7 @@ public class TourAppManagerImpl implements TourAppManager {
 
     @Override
     public void deleteTour(TourModel tourModel) {
+
         tourModelDao.delete(tourModel);
     }
 

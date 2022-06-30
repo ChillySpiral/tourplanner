@@ -59,8 +59,12 @@ public class FileSystemImpl implements FileSystem {
 
     @Override
     public boolean deleteFile(TourModel tourModel) {
-        //ToDo: Implement
-        return false;
+        var fileName = findFile(tourModel);
+        if(fileName == null)
+            return false;
+        var file = new File(path + fileName);
+        file.delete();
+        return true;
     }
 
     @Override
