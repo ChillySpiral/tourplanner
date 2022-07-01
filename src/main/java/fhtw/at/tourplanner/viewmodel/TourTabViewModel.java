@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import lombok.Getter;
 
 import java.io.File;
+import java.time.format.DateTimeFormatter;
 
 public class TourTabViewModel {
 
@@ -27,14 +28,14 @@ public class TourTabViewModel {
     private final StringProperty detailsFrom = new SimpleStringProperty();
     private final StringProperty detailsTo = new SimpleStringProperty();
     private final ObjectProperty<Image> imageProperty = new SimpleObjectProperty<>();
-
     private final ObjectProperty<TransportType> transportType = new SimpleObjectProperty<>();
+    private final StringProperty estimatedTime = new SimpleStringProperty();
+    private final StringProperty distance = new SimpleStringProperty();
     private final TourAppManager tourAppManager = BLFactory.getTourAppManager();
     private final ObservableList<TourLog> logData = FXCollections.observableArrayList();
 
 
     public TourTabViewModel() {
-        registerPropertyListeners();
     }
 
     public String getTitle() {
@@ -53,6 +54,12 @@ public class TourTabViewModel {
 
     public TransportType getTransportType() {
         return transportType.getValue();
+    }
+    public String getEstimatedTime(){
+        return estimatedTime.get();
+    }
+    public String getDistance(){
+        return distance.get();
     }
     public StringProperty titleProperty() {
         return title;
@@ -77,6 +84,12 @@ public class TourTabViewModel {
     public ObjectProperty<TransportType> transportTypeProperty() {
         return transportType;
     }
+    public StringProperty estimatedTimeProperty() {
+        return estimatedTime;
+    }
+    public StringProperty distanceProperty() {
+        return distance;
+    }
 
     public void setTourModel(TourModel selectedItem) {
 
@@ -89,17 +102,6 @@ public class TourTabViewModel {
         setTourTabProperties();
     }
 
-    //ToDo: Marker: Manually trigger the update, since we use a dialog
-    private void registerPropertyListeners() {
-        /*
-        title.addListener((arg, oldVal, newVal) -> updateTourModel());
-        description.addListener((arg, oldVal, newVal) -> updateTourModel());
-        detailsFrom.addListener((arg, oldVal, newVal) -> updateTourModel());
-        detailsTo.addListener((arg, oldVal, newVal) -> updateTourModel());
-         */
-        //ToDo: Alle Properties müssen hier registriert werden, sodass jede Änderung dieser auch das Model Updated
-    }
-
     private void setTourTabProperties() {
         if (this.isInitialValue) {
             title.setValue(null);
@@ -108,21 +110,22 @@ public class TourTabViewModel {
             detailsTo.setValue(null);
             imageProperty.setValue(null);
             transportTypeProperty().setValue(null);
+            estimatedTime.setValue(null);
+            distance.setValue(null);
             logData.clear();
-            //ToDo: Alle weiteren Properties müssen einen Initial-Wert bekommen
         } else {
             title.setValue(data.getTitle());
             description.setValue(data.getDescription());
             detailsFrom.setValue(data.getFrom());
             detailsTo.setValue(data.getTo());
             transportTypeProperty().setValue(data.getTransportType());
+            estimatedTime.setValue(data.getEstimatedTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+            distance.setValue(String.format("%.1f", data.getTourDistance()) + "km");
             updateImage();
             updateTourLogData();
-            //ToDo: Alle weiteren Properties müssen hier gesetzt werden
         }
     }
 
-    //ToDo: Marker: Add Paramter, set ViewModel Properties and data -> send to DB
     public void updateTourModel(TourModel tourModel) {
         if(isInitialValue)
             return;

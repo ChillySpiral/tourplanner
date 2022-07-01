@@ -8,6 +8,8 @@ import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
+import fhtw.at.tourplanner.DAL.model.enums.Rating;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
 import fhtw.at.tourplanner.DAL.model.mapQuestModels.Route;
@@ -67,9 +69,9 @@ class TourAppManagerImplTest {
     @BeforeEach
     private void initTourLogsList(){
         tourLogs = new ArrayList<>();
-        tourLogs.add(new TourLog(1, LocalDateTime.of(2022,7,3,17,5), "Comment 1", "Hard", LocalTime.of(22,2,2), "Great 1", 1));
-        tourLogs.add(new TourLog(2, LocalDateTime.of(2022,3,23,7,5), "Comment 2", "Easy", LocalTime.of(12,22,32), "Great 2", 1));
-        tourLogs.add(new TourLog(3, LocalDateTime.of(2021,3,4,14,2), "Comment 3", "Medium", LocalTime.of(1,27,29), "Great 3", 1));
+        tourLogs.add(new TourLog(1, LocalDateTime.of(2022,7,3,17,5), "Comment 1", Difficulty.Advanced, LocalTime.of(22,2,2), Rating.Bad, 1));
+        tourLogs.add(new TourLog(2, LocalDateTime.of(2022,3,23,7,5), "Comment 2", Difficulty.Beginner, LocalTime.of(12,22,32), Rating.Good, 1));
+        tourLogs.add(new TourLog(3, LocalDateTime.of(2021,3,4,14,2), "Comment 3", Difficulty.Expert, LocalTime.of(1,27,29), Rating.Neutral, 1));
 
     }
 

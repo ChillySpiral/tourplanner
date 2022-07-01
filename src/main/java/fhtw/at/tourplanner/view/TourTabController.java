@@ -44,6 +44,12 @@ public class TourTabController {
     public ComboBox<TransportType> detailsTransportType;
 
     @FXML
+    public TextField detailsEstimatedTime;
+
+    @FXML
+    public TextField detailsDistance;
+
+    @FXML
     private TableView<TourLog> logTableView;
 
     @FXML
@@ -61,40 +67,38 @@ public class TourTabController {
     @FXML
     private TableColumn<TourLog, Rating> logRating;
 
+    @FXML
+    private Button editLogButton;
+
     private final TourTabViewModel tourTabViewModel;
 
     public TourTabController(TourTabViewModel tourTabViewModel) {
         this.tourTabViewModel = tourTabViewModel;
     }
 
-    //ToDo: Marker: Fields are all going to be readonly, and should not affect the data in the Viewmodel
     @FXML
     public void initialize() {
         tourTitle.disableProperty().bind(Bindings.isNull(tourTabViewModel.titleProperty()));
         tourTitle.textProperty().bind(tourTabViewModel.titleProperty());
         editButton.disableProperty().bind(Bindings.isNull(tourTabViewModel.titleProperty()));
-        //ToDo: Alle Properties müssen hier gebindet werden (nicht umbedingt immer BiDirectional)
         descriptionText.textProperty().bind(tourTabViewModel.descriptionProperty());
         detailsFrom.textProperty().bind(tourTabViewModel.detailsFromProperty());
         detailsTo.textProperty().bind(tourTabViewModel.detailsToProperty());
         image.imageProperty().bind(tourTabViewModel.imageProperty());
         detailsTransportType.getItems().addAll(TransportType.Bicycle, TransportType.Car, TransportType.Foot);
         detailsTransportType.valueProperty().bind(tourTabViewModel.transportTypeProperty());
+        detailsEstimatedTime.textProperty().bind(tourTabViewModel.estimatedTimeProperty());
+        detailsDistance.textProperty().bind(tourTabViewModel.distanceProperty());
 
         logDate.setCellValueFactory(new PropertyValueFactory<TourLog, LocalDateTime>("dateTime"));
         logDuration.setCellValueFactory(new PropertyValueFactory<TourLog, LocalTime>("totalTime"));
         logDifficulty.setCellValueFactory(new PropertyValueFactory<TourLog, Difficulty>("difficulty"));
         logComment.setCellValueFactory(new PropertyValueFactory<TourLog, String>("comment"));
         logRating.setCellValueFactory(new PropertyValueFactory<TourLog, Rating>("rating"));
-
         logTableView.setItems(tourTabViewModel.getLogData());
     }
 
-    //ToDo: Marker: We have access to the ViewModel that Updates the data and sends it to the DB
     public void editTour(ActionEvent actionEvent) {
-
-        //ToDo: Implement Text fields Description, From, To, etc. and add them here
-        //ToDo: Implement ComboBox with Enum for TransportType !Warning: This has to be addressed separately
         var result = new TourEditViewModel(tourTitle.getText(), descriptionText.getText(), detailsFrom.getText(), detailsTo.getText(), detailsTransportType.getValue());
         var dialog = new TourEditDialog(tourTitle.getScene().getWindow(), result);
 
@@ -111,7 +115,6 @@ public class TourTabController {
     }
 
     public void addNewLog(ActionEvent actionEvent) {
-
         TourLog log = tourTabViewModel.addNewLog();
         var result = new LogEditViewModel(null, log.getComment(), log.getDifficulty(), log.getRating());
         var dialog = new LogEditDialog(tourTitle.getScene().getWindow(), result);
@@ -140,11 +143,16 @@ public class TourTabController {
     }
 
     public void deleteLog(ActionEvent actionEvent){
-        tourTabViewModel.deleteLog(logTableView.getSelectionModel().getSelectedItem());
+        TourLog log = logTableView.getSelectionModel().getSelectedItem();
+        if(log == null)
+            return;
+        tourTabViewModel.deleteLog(log);
     }
 
     public void editLog(ActionEvent actionEvent) {
         TourLog log = logTableView.getSelectionModel().getSelectedItem();
+        if(log == null)
+            return;
         var result = new LogEditViewModel(log.getTotalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")), log.getComment(), log.getDifficulty(), log.getRating());
         var dialog = new LogEditDialog(tourTitle.getScene().getWindow(), result);
 
