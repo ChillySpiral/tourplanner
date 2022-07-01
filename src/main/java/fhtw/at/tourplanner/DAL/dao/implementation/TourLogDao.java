@@ -4,7 +4,11 @@ import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.DAL.database.Database;
 import fhtw.at.tourplanner.DAL.database.converter.ModelConverter;
 import fhtw.at.tourplanner.DAL.model.TourLog;
+import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
+import fhtw.at.tourplanner.DAL.model.enums.Rating;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,10 +47,16 @@ public class TourLogDao implements Dao<TourLog> {
 
     @Override
     public TourLog create(int tourId) {
-        var queryString = "INSERT INTO public.\"log\" (\"TourId\") VALUES(CAST(? AS INTEGER));";
+        var queryString = "INSERT INTO public.\"log\" (\"TourId\", \"DateTime\", \"Difficulty\", \"Rating\") VALUES(CAST(? AS INTEGER), ?, ?, ?);";
         var newItem = new TourLog();
+        newItem.setDateTime(LocalDateTime.now());
+        newItem.setDifficulty(Difficulty.Advanced);
+        newItem.setRating(Rating.Neutral);
         List<Object> paramsId = new ArrayList<>();
         paramsId.add(tourId);
+        paramsId.add(newItem.getDateTime());
+        paramsId.add(newItem.getDifficulty().toString());
+        paramsId.add(newItem.getRating().toString());
 
         var newId = database.insert(queryString, paramsId);
 
@@ -77,7 +87,7 @@ public class TourLogDao implements Dao<TourLog> {
         params.add(newItem.getDateTime());
         params.add(newItem.getComment());
         params.add(newItem.getDifficulty());
-        params.add(newItem.getTotalTime());
+        params.add(newItem.getTotalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         params.add(newItem.getRating());
         params.add(newItem.getLogId());
 

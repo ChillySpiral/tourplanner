@@ -2,6 +2,8 @@ package fhtw.at.tourplanner.DAL.database.converter;
 
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
+import fhtw.at.tourplanner.DAL.model.enums.Rating;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,6 +35,6 @@ public  class ModelConverter {
         var rating = (String) params.get("Rating");
         var tourId = Integer.parseInt(params.get("Id").toString());
 
-        return new TourLog(id, dateTime, comment, difficulty, totalTime, rating, tourId);
+        return new TourLog(id, dateTime, comment, Difficulty.valueOf(difficulty), totalTime, Rating.valueOf(rating), tourId);
     }
 }
