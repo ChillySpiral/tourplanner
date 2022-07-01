@@ -49,11 +49,15 @@ public class TourDao implements TourDaoExtension {
 
     @Override
     public TourModel create(int optId) {
-        var queryString = "INSERT INTO public.\"tour\" (\"Title\") VALUES(?);";
+        var queryString = "INSERT INTO public.\"tour\" (\"Title\", \"TransportType\") VALUES(?, ?);";
         var newItem = new TourModel();
         newItem.setTitle("New Tour");
         newItem.setTransportType(TransportType.Foot);
-        var newId = database.insert(queryString, getParameters(newItem));
+
+        List<Object> paramsId = new ArrayList<>();
+        paramsId.add(newItem.getTitle());
+        paramsId.add(newItem.getTransportType().toString());
+        var newId = database.insert(queryString, paramsId);
 
         if (newId == -1) {
             return null;

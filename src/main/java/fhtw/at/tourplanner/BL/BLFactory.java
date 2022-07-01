@@ -17,7 +17,7 @@ public final class BLFactory {
 
     public static TourAppManager getTourAppManager(){
         if(tourAM == null){
-            tourAM = new TourAppManagerImpl(getReportGenerator(), DalFactory.GetMapQuestRepository(), getJsonGenerator());
+            tourAM = new TourAppManagerImpl(getReportGenerator(), DalFactory.GetMapQuestRepository(), getJsonGenerator(), DalFactory.GetTourModelDao(), DalFactory.GetTourLogDao());
         }
         return tourAM;
     }

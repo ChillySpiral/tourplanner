@@ -25,9 +25,9 @@ public class TourAppManagerImpl implements TourAppManager {
     private final MapQuestRepository mapQuestRepository;
     private final JsonGenerator jsonGenerator;
 
-    public TourAppManagerImpl(ReportGenerator reportGenerator, MapQuestRepository mapQuestRepository, JsonGenerator jsonGenerator){
-        tourModelDao = DalFactory.GetTourModelDao();
-        tourLogDao = DalFactory.GetTourLogDao();
+    public TourAppManagerImpl(ReportGenerator reportGenerator, MapQuestRepository mapQuestRepository, JsonGenerator jsonGenerator, TourDaoExtension tourModelDao, Dao<TourLog> tourLogDao){
+        this.tourModelDao = tourModelDao;
+        this.tourLogDao = tourLogDao;
         this.reportGenerator = reportGenerator;
         this.mapQuestRepository = mapQuestRepository;
         this.jsonGenerator = jsonGenerator;
@@ -168,6 +168,9 @@ public class TourAppManagerImpl implements TourAppManager {
     }
 
     private boolean mapQuestQueryNecessary(TourModel newValue, TourModel oldValue){
+        if(newValue.getTo() == null || newValue.getFrom() == null || newValue.getTransportType() == null || oldValue.getTo() == null || oldValue.getFrom() == null || oldValue.getTransportType() == null)
+            return false;
+
         if(newValue.getTo().isEmpty() || newValue.getFrom().isEmpty())
             return false;
 
