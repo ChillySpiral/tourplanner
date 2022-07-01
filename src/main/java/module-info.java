@@ -20,4 +20,6 @@ module fhtw.at.tourplanner {
     exports fhtw.at.tourplanner.DAL.mapQuestAPI.implementation;
     exports fhtw.at.tourplanner.DAL.model;
     exports fhtw.at.tourplanner.DAL.model.mapQuestModels;
+    exports fhtw.at.tourplanner.view.dialog;
+    opens fhtw.at.tourplanner.view.dialog to javafx.fxml;
 }

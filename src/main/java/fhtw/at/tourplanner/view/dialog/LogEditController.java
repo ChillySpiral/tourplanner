@@ -1,17 +1,14 @@
-package fhtw.at.tourplanner.view;
+package fhtw.at.tourplanner.view.dialog;
 
 import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.Rating;
-import fhtw.at.tourplanner.viewmodel.LogEditViewModel;
-import fhtw.at.tourplanner.viewmodel.TourEditViewModel;
+import fhtw.at.tourplanner.viewmodel.dialog.LogEditViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.converter.DateTimeStringConverter;
-import javafx.util.converter.IntegerStringConverter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.function.UnaryOperator;
 
 public class LogEditController {
 

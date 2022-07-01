@@ -1,4 +1,4 @@
-package fhtw.at.tourplanner.viewmodel;
+package fhtw.at.tourplanner.viewmodel.dialog;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 

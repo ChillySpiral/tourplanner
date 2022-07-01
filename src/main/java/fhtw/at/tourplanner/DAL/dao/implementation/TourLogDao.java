@@ -8,6 +8,7 @@ import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.Rating;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -86,7 +87,7 @@ public class TourLogDao implements Dao<TourLog> {
         params.add(newItem.getDateTime());
         params.add(newItem.getComment());
         params.add(newItem.getDifficulty());
-        params.add(newItem.getTotalTime());
+        params.add(newItem.getTotalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         params.add(newItem.getRating());
         params.add(newItem.getLogId());
 

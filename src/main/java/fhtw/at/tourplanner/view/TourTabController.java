@@ -4,9 +4,10 @@ import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.Rating;
-import fhtw.at.tourplanner.viewmodel.LogEditViewModel;
-import fhtw.at.tourplanner.viewmodel.TourEditViewModel;
-import fhtw.at.tourplanner.viewmodel.TourListViewModel;
+import fhtw.at.tourplanner.view.dialog.TourEditDialog;
+import fhtw.at.tourplanner.view.dialog.LogEditDialog;
+import fhtw.at.tourplanner.viewmodel.dialog.LogEditViewModel;
+import fhtw.at.tourplanner.viewmodel.dialog.TourEditViewModel;
 import fhtw.at.tourplanner.viewmodel.TourTabViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -14,8 +15,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.util.converter.DateTimeStringConverter;
-import javafx.util.converter.LocalTimeStringConverter;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -91,7 +90,7 @@ public class TourTabController {
         //ToDo: Implement Text fields Description, From, To, etc. and add them here
         //ToDo: Implement ComboBox with Enum for TransportType !Warning: This has to be addressed separately
         var result = new TourEditViewModel(tourTitle.getText(), descriptionText.getText(), detailsFrom.getText(), detailsTo.getText());
-        var dialog = new EditDialog(tourTitle.getScene().getWindow(), result);
+        var dialog = new TourEditDialog(tourTitle.getScene().getWindow(), result);
 
         dialog.showAndWait().ifPresent(x -> {
                 TourModel tourModel = new TourModel();
@@ -112,16 +111,13 @@ public class TourTabController {
         final boolean[] set = {false};
 
         dialog.showAndWait().ifPresent(x -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
             TourLog tourLog = new TourLog();
 
             tourLog.setLogId(log.getLogId());
             tourLog.setComment((result.getComment()));
             tourLog.setDifficulty(result.getDifficulty());
             tourLog.setRating(result.getRating());
-            var duration = result.getDuration();
-            var localtime = LocalTime.parse(duration, formatter);
-            tourLog.setTotalTime(LocalTime.parse(result.getDuration(), formatter));
+            tourLog.setTotalTime(LocalTime.parse(result.getDuration(), DateTimeFormatter.ISO_LOCAL_TIME));
 
             tourTabViewModel.editTourLogData(tourLog);
             set[0] =true;
@@ -142,22 +138,20 @@ public class TourTabController {
 
     public void editLog(ActionEvent actionEvent) {
         TourLog log = logTableView.getSelectionModel().getSelectedItem();
-        var result = new LogEditViewModel(log.getTotalTime().toString(), log.getComment(), log.getDifficulty(), log.getRating());
+        var result = new LogEditViewModel(log.getTotalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")), log.getComment(), log.getDifficulty(), log.getRating());
         var dialog = new LogEditDialog(tourTitle.getScene().getWindow(), result);
 
         dialog.showAndWait().ifPresent(x -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
             TourLog tourLog = new TourLog();
 
             tourLog.setLogId(log.getLogId());
-            //tourLog.setTotalTime(result.ge);
             tourLog.setComment((result.getComment()));
             tourLog.setDifficulty(result.getDifficulty());
             tourLog.setRating(result.getRating());
-            var duration = result.getDuration();
-            var localtime = LocalTime.parse(duration, formatter);
-            tourLog.setTotalTime(LocalTime.parse(result.getDuration(), formatter)); //DateTimeFormatter.ISO_LOCAL_TIME
+            if(!result.getDuration().isEmpty())
+                tourLog.setTotalTime(LocalTime.parse(result.getDuration(), DateTimeFormatter.ISO_LOCAL_TIME));
+            else
+                tourLog.setTotalTime(log.getTotalTime());
 
             tourTabViewModel.editTourLogData(tourLog);
             tourTabViewModel.updateTourLogData();

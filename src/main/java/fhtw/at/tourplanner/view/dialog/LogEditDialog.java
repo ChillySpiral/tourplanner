@@ -1,7 +1,7 @@
-package fhtw.at.tourplanner.view;
+package fhtw.at.tourplanner.view.dialog;
 
-import fhtw.at.tourplanner.DAL.model.TourModel;
-import fhtw.at.tourplanner.viewmodel.TourEditViewModel;
+import fhtw.at.tourplanner.DAL.model.TourLog;
+import fhtw.at.tourplanner.viewmodel.dialog.LogEditViewModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Dialog;
@@ -11,24 +11,25 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 import java.util.Objects;
+
 //ToDo: Refactor
-public class EditDialog extends Dialog<TourModel> {
-    public EditDialog(Window owner, TourEditViewModel tourEditViewModel){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fhtw/at/tourplanner/tourEditDialog.fxml"));
+public class LogEditDialog extends Dialog<TourLog> {
+    public LogEditDialog(Window owner, LogEditViewModel logEditViewModel){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fhtw/at/tourplanner/logEditDialog.fxml"));
         try {
-            loader.setControllerFactory(controllerClass -> new TourEditController(tourEditViewModel));
+            loader.setControllerFactory(controllerClass -> new LogEditController(logEditViewModel));
             DialogPane dialogPane = loader.load();
             initOwner(owner);
             initModality(Modality.APPLICATION_MODAL);
             setResizable(true);
-            setTitle("Edit Tour");
+            setTitle("Edit Log");
             setDialogPane(dialogPane);
 
             setResultConverter(buttonType -> {
                 if(!Objects.equals(ButtonBar.ButtonData.OK_DONE, buttonType.getButtonData())){
                     return null;
                 }else {
-                    var result = new TourModel();
+                    var result = new TourLog();
                     return result;
                 }
             });
