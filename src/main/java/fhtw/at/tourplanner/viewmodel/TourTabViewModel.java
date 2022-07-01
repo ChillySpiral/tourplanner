@@ -161,14 +161,15 @@ public class TourTabViewModel {
             log.setComment(tourLog.getComment());
             log.setDifficulty(tourLog.getDifficulty());
             log.setRating(tourLog.getRating());
-            //log.setTotalTime(tourLog.getTotalTime());
+            log.setTotalTime(tourLog.getTotalTime());
             tourAppManager.updateLog(log);
         }
     }
 
-    public void addNewLog() {
+    public TourLog addNewLog() {
         var newItem = tourAppManager.createLog(data.getTourId());
         logData.add(newItem);
+        return newItem;
     }
 
     public void deleteLog(TourLog tourItem) {

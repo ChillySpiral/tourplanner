@@ -5,10 +5,13 @@ import fhtw.at.tourplanner.DAL.model.enums.Rating;
 import fhtw.at.tourplanner.viewmodel.LogEditViewModel;
 import fhtw.at.tourplanner.viewmodel.TourEditViewModel;
 import javafx.fxml.FXML;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.util.converter.DateTimeStringConverter;
+import javafx.util.converter.IntegerStringConverter;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.function.UnaryOperator;
 
 public class LogEditController {
 
@@ -23,19 +26,20 @@ public class LogEditController {
     private TextArea comment;
 
     @FXML
-    public void initialize() {
-        /*
-        title.textProperty().bindBidirectional(tourEditViewModel.titleProperty());
-        description.textProperty().bindBidirectional(tourEditViewModel.descriptionProperty());
-        from.textProperty().bindBidirectional(tourEditViewModel.fromProperty());
-        to.textProperty().bindBidirectional(tourEditViewModel.toProperty());
-        transportType.getItems().addAll(TransportType.Bicycle, TransportType.Car, TransportType.Foot);
-        transportType.valueProperty().bindBidirectional(tourEditViewModel.transportTypeProperty()); */
+    private TextField duration;
+
+    @FXML
+    public void initialize() throws ParseException {
+
         comment.textProperty().bindBidirectional(logEditViewModel.commentProperty());
         difficulty.getItems().addAll(Difficulty.Beginner, Difficulty.Intermediate, Difficulty.Advanced, Difficulty.Expert);
         difficulty.valueProperty().bindBidirectional(logEditViewModel.difficultyProperty());
         rating.getItems().addAll(Rating.Perfect, Rating.Good, Rating.Neutral, Rating.Bad, Rating.Terrible);
         rating.valueProperty().bindBidirectional(logEditViewModel.ratingProperty());
+        duration.textProperty().bindBidirectional(logEditViewModel.durationProperty());
+
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        duration.setTextFormatter(new TextFormatter<>(new DateTimeStringConverter(format), format.parse(duration.getText())));
 
     }
 

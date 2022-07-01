@@ -7,44 +7,31 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.time.LocalTime;
-
 public class LogEditViewModel {
 
-    private final StringProperty durationSeconds = new SimpleStringProperty();
-    private final StringProperty durationMinutes = new SimpleStringProperty();
-    private final StringProperty durationHours = new SimpleStringProperty();
-    private LocalTime duration = LocalTime.now();
+    private final StringProperty duration = new SimpleStringProperty();
     private final StringProperty comment = new SimpleStringProperty();
     private final ObjectProperty<Difficulty> difficulty = new SimpleObjectProperty<>();
     private final ObjectProperty<Rating> rating = new SimpleObjectProperty<>();
 
     public LogEditViewModel(String duration, String comment, Difficulty difficulty, Rating rating){
+        if(null != duration){
+            this.duration.setValue(duration);
+        }
+        else {
+            this.duration.setValue("00:00:00");
+        }
 
         this.comment.setValue(comment);
         this.difficulty.setValue(difficulty);
         this.rating.setValue(rating);
     }
 
-    public String getDurationSeconds() {
-        return durationSeconds.toString();
+    public String getDuration() {
+        return duration.get();
     }
-    public StringProperty durationSecondsProperty() {
-        return durationSeconds;
-    }
-
-    public String getDurationMinutes() {
-        return durationMinutes.toString();
-    }
-    public StringProperty durationMinutesProperty() {
-        return durationMinutes;
-    }
-
-    public String getDurationHours() {
-        return durationHours.toString();
-    }
-    public StringProperty durationHoursProperty() {
-        return durationHours;
+    public StringProperty durationProperty() {
+        return duration;
     }
 
     public String getComment() {
@@ -70,6 +57,6 @@ public class LogEditViewModel {
 
     @Override
     public String toString(){
-        return getDurationHours() + " " + getDurationMinutes() + " " + getComment() + " " + getDifficulty() + " " + getRating();
+        return getDuration() + " " + getComment() + " " + getDifficulty() + " " + getRating();
     }
 }

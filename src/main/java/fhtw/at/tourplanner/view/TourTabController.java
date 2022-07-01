@@ -14,9 +14,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.util.converter.DateTimeStringConverter;
+import javafx.util.converter.LocalTimeStringConverter;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class TourTabController {
     @FXML
@@ -102,7 +105,35 @@ public class TourTabController {
     }
 
     public void addNewLog(ActionEvent actionEvent) {
-        tourTabViewModel.addNewLog();
+
+        TourLog log = tourTabViewModel.addNewLog();
+        var result = new LogEditViewModel(null, log.getComment(), log.getDifficulty(), log.getRating());
+        var dialog = new LogEditDialog(tourTitle.getScene().getWindow(), result);
+        final boolean[] set = {false};
+
+        dialog.showAndWait().ifPresent(x -> {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            TourLog tourLog = new TourLog();
+
+            tourLog.setLogId(log.getLogId());
+            tourLog.setComment((result.getComment()));
+            tourLog.setDifficulty(result.getDifficulty());
+            tourLog.setRating(result.getRating());
+            var duration = result.getDuration();
+            var localtime = LocalTime.parse(duration, formatter);
+            tourLog.setTotalTime(LocalTime.parse(result.getDuration(), formatter));
+
+            tourTabViewModel.editTourLogData(tourLog);
+            set[0] =true;
+        });
+
+        if(!set[0]) {
+            tourTabViewModel.deleteLog(log);
+        }
+        else {
+            tourTabViewModel.updateTourLogData();
+        }
+
     }
 
     public void deleteLog(ActionEvent actionEvent){
@@ -111,10 +142,12 @@ public class TourTabController {
 
     public void editLog(ActionEvent actionEvent) {
         TourLog log = logTableView.getSelectionModel().getSelectedItem();
-        var result = new LogEditViewModel(log.getDateTime().toString(), log.getComment(), log.getDifficulty(), log.getRating());
+        var result = new LogEditViewModel(log.getTotalTime().toString(), log.getComment(), log.getDifficulty(), log.getRating());
         var dialog = new LogEditDialog(tourTitle.getScene().getWindow(), result);
 
         dialog.showAndWait().ifPresent(x -> {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
             TourLog tourLog = new TourLog();
 
             tourLog.setLogId(log.getLogId());
@@ -122,6 +155,9 @@ public class TourTabController {
             tourLog.setComment((result.getComment()));
             tourLog.setDifficulty(result.getDifficulty());
             tourLog.setRating(result.getRating());
+            var duration = result.getDuration();
+            var localtime = LocalTime.parse(duration, formatter);
+            tourLog.setTotalTime(LocalTime.parse(result.getDuration(), formatter)); //DateTimeFormatter.ISO_LOCAL_TIME
 
             tourTabViewModel.editTourLogData(tourLog);
             tourTabViewModel.updateTourLogData();
