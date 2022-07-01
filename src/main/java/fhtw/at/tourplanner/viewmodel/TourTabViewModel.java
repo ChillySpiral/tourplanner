@@ -127,13 +127,12 @@ public class TourTabViewModel {
         data.setFrom(this.getDetailsFrom());
         data.setTo(this.getDetailsTo());
 
-        var tmpFileName = new String(data.getImageFilename());
+        String tmpFileName = data.getImageFilename() != null ? data.getImageFilename() : "";
         tourAppManager.updateTour(data);
 
         if(tmpFileName != data.getImageFilename()){
             updateImage();
         }
-        //ToDo: Alle weiteren Property Updates müssen hier eingefügt werden
     }
 
     private void updateImage(){
@@ -168,7 +167,7 @@ public class TourTabViewModel {
 
     public TourLog addNewLog() {
         var newItem = tourAppManager.createLog(data.getTourId());
-        logData.add(newItem);
+        logData.add(0, newItem);
         return newItem;
     }
 

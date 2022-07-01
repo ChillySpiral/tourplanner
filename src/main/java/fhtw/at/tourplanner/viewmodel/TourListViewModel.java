@@ -49,13 +49,18 @@ public class TourListViewModel {
         data.addAll(tourItems);
     }
 
-    public void addNewTour() {
+    public TourModel addNewTour() {
         var newItem = tourAppManager.createTour();
-        data.add(newItem);
+        data.add(0, newItem);
+        return newItem;
     }
 
     public void deleteTour(TourModel tourItem) {
         tourAppManager.deleteTour(tourItem);
         data.remove(tourItem);
+    }
+
+    public void updateTour(TourModel tourItem){
+        tourAppManager.updateTour(tourItem);
     }
 }
