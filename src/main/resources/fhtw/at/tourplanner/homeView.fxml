@@ -8,7 +8,10 @@
      <menus>
        <Menu mnemonicParsing="false" text="File">
          <items>
-           <MenuItem mnemonicParsing="false" text="Close" />
+             <MenuItem mnemonicParsing="false" text="Export Tour" onAction="#exportTour"/>
+             <MenuItem mnemonicParsing="false" text="Import Tour" onAction="#importTour"/>
+             <MenuItem mnemonicParsing="false" text="Create Tour Report" onAction="#tourReport"/>
+             <MenuItem mnemonicParsing="false" text="Create Summary Report" onAction="#summaryReport"/>
          </items>
        </Menu>
        <Menu mnemonicParsing="false" text="Edit">

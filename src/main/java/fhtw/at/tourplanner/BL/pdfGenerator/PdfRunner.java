@@ -8,6 +8,7 @@ import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.Rating;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -39,6 +40,6 @@ public class PdfRunner {
 
         var pdfGenerator = new ReportGeneratorImpl();
 
-        pdfGenerator.generateReport(testModel, logs);
+        pdfGenerator.generateReport(testModel, logs, new File("./pdf/pdfRunner.pdf"));
     }
 }

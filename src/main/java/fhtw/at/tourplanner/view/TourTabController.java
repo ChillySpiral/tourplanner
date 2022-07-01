@@ -4,11 +4,12 @@ import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.Rating;
-import fhtw.at.tourplanner.view.dialog.TourEditDialog;
+import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 import fhtw.at.tourplanner.view.dialog.LogEditDialog;
+import fhtw.at.tourplanner.view.dialog.TourEditDialog;
+import fhtw.at.tourplanner.viewmodel.TourTabViewModel;
 import fhtw.at.tourplanner.viewmodel.dialog.LogEditViewModel;
 import fhtw.at.tourplanner.viewmodel.dialog.TourEditViewModel;
-import fhtw.at.tourplanner.viewmodel.TourTabViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,6 +39,9 @@ public class TourTabController {
 
     @FXML
     public ImageView image;
+
+    @FXML
+    public ComboBox<TransportType> detailsTransportType;
 
     @FXML
     private TableView<TourLog> logTableView;
@@ -74,6 +78,8 @@ public class TourTabController {
         detailsFrom.textProperty().bind(tourTabViewModel.detailsFromProperty());
         detailsTo.textProperty().bind(tourTabViewModel.detailsToProperty());
         image.imageProperty().bind(tourTabViewModel.imageProperty());
+        detailsTransportType.getItems().addAll(TransportType.Bicycle, TransportType.Car, TransportType.Foot);
+        detailsTransportType.valueProperty().bind(tourTabViewModel.transportTypeProperty());
 
         logDate.setCellValueFactory(new PropertyValueFactory<TourLog, LocalDateTime>("dateTime"));
         logDuration.setCellValueFactory(new PropertyValueFactory<TourLog, LocalTime>("totalTime"));
@@ -89,7 +95,7 @@ public class TourTabController {
 
         //ToDo: Implement Text fields Description, From, To, etc. and add them here
         //ToDo: Implement ComboBox with Enum for TransportType !Warning: This has to be addressed separately
-        var result = new TourEditViewModel(tourTitle.getText(), descriptionText.getText(), detailsFrom.getText(), detailsTo.getText());
+        var result = new TourEditViewModel(tourTitle.getText(), descriptionText.getText(), detailsFrom.getText(), detailsTo.getText(), detailsTransportType.getValue());
         var dialog = new TourEditDialog(tourTitle.getScene().getWindow(), result);
 
         dialog.showAndWait().ifPresent(x -> {
@@ -98,6 +104,7 @@ public class TourTabController {
                 tourModel.setDescription((result.getDescription()));
                 tourModel.setFrom(result.getFrom());
                 tourModel.setTo(result.getTo());
+                tourModel.setTransportType(result.getTransportType());
 
                 tourTabViewModel.updateTourModel(tourModel);
         });

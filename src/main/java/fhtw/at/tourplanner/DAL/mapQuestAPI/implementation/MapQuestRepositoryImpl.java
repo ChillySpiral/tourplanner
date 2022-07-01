@@ -65,7 +65,7 @@ public class MapQuestRepositoryImpl implements MapQuestRepository {
     }
 
     private boolean checkIfRouteSuccessful(MapQuestModel route){
-        if(route.getRoute().getSessionId() != null){
+        if(route != null && route.getRoute().getSessionId() != null){
             return true;
         }
         var errorMessage = route.getInfo().getMessages();

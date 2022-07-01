@@ -55,6 +55,10 @@ public class TourListViewModel {
         return newItem;
     }
 
+    public void addImportTour(TourModel tourModel){
+        data.add(tourModel);
+    }
+
     public void deleteTour(TourModel tourItem) {
         tourAppManager.deleteTour(tourItem);
         data.remove(tourItem);

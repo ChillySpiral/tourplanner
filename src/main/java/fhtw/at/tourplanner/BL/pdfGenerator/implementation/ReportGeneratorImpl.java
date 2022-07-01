@@ -17,6 +17,7 @@ import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.UnitValue;
 import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -24,10 +25,10 @@ import java.util.stream.Collectors;
 
 public class ReportGeneratorImpl implements ReportGenerator {
     @Override
-    public boolean generateReport(TourModel tour, java.util.List<TourLog> logs) {
+    public boolean generateReport(TourModel tour, java.util.List<TourLog> logs, File pdfFile) {
         try {
 
-            PdfWriter writer = new PdfWriter(ConfigurationLoader.getConfig("PdfFolder") + "tourReport_" + tour.getTourId() + ".pdf");
+            PdfWriter writer = new PdfWriter(pdfFile);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
 
@@ -105,9 +106,9 @@ public class ReportGeneratorImpl implements ReportGenerator {
     }
 
     @Override
-    public boolean generateSummary(java.util.List<Pair<TourModel, java.util.List<TourLog>>> allTours) {
+    public boolean generateSummary(java.util.List<Pair<TourModel, java.util.List<TourLog>>> allTours, File pdfFile) {
         try {
-            PdfWriter writer = new PdfWriter(ConfigurationLoader.getConfig("PdfFolder") + "summaryReport_" + LocalDate.now() +".pdf");
+            PdfWriter writer = new PdfWriter(pdfFile);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
 
