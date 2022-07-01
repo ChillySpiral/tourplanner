@@ -1,9 +1,12 @@
-package fhtw.at.tourplanner.view;
+package fhtw.at.tourplanner.view.dialog;
 
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
-import fhtw.at.tourplanner.viewmodel.TourEditViewModel;
+import fhtw.at.tourplanner.viewmodel.dialog.TourEditViewModel;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class TourEditController {
 

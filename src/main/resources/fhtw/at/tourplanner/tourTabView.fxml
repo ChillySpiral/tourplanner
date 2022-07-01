@@ -78,17 +78,18 @@
         <Label text="Title: " />
         <TextField fx:id="tourTitle" editable="false" GridPane.columnIndex="1" />
         <Button fx:id="editButton" onAction="#editTour" text="Edit" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-        <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+        <TableView fx:id="logTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
             <columns>
-                <TableColumn prefWidth="75.0" text="Date" />
-                <TableColumn prefWidth="75.0" text="Duration" />
-                <TableColumn prefWidth="75.0" text="Difficulty" />
-                <TableColumn prefWidth="75.0" text="Comment" />
-                <TableColumn prefWidth="75.0" text="Rating" />
+                <TableColumn fx:id="logDate" prefWidth="75.0" text="Date" />
+                <TableColumn fx:id="logDuration" prefWidth="75.0" text="Duration" />
+                <TableColumn fx:id="logDifficulty" prefWidth="75.0" text="Difficulty" />
+                <TableColumn fx:id="logComment" prefWidth="75.0" text="Comment" />
+                <TableColumn fx:id="logRating" prefWidth="75.0" text="Rating" />
             </columns>
         </TableView>
         <Label text="Logs: " GridPane.rowIndex="2" />
-        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="+" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="-" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+        <Button fx:id="addLogButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addNewLog" prefHeight="25.0" prefWidth="25.0" text="+" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Button fx:id="deleteLogButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#deleteLog" prefHeight="25.0" prefWidth="25.0" text="-" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+      <Button fx:id="editLogButton" layoutX="103.0" layoutY="73.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#editLog" prefHeight="25.0" prefWidth="40.0" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="2" />
     </children>
 </GridPane>

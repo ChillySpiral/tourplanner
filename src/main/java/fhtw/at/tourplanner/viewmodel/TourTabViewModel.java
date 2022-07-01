@@ -1,14 +1,17 @@
 package fhtw.at.tourplanner.viewmodel;
 
-import fhtw.at.tourplanner.BL.appManager.TourAppManager;
 import fhtw.at.tourplanner.BL.BLFactory;
+import fhtw.at.tourplanner.BL.appManager.TourAppManager;
 import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
+import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import lombok.Getter;
 
@@ -27,6 +30,8 @@ public class TourTabViewModel {
 
     private final ObjectProperty<TransportType> transportType = new SimpleObjectProperty<>();
     private final TourAppManager tourAppManager = BLFactory.getTourAppManager();
+    private final ObservableList<TourLog> logData = FXCollections.observableArrayList();
+
 
     public TourTabViewModel() {
         registerPropertyListeners();
@@ -103,6 +108,7 @@ public class TourTabViewModel {
             detailsTo.setValue(null);
             imageProperty.setValue(null);
             transportTypeProperty().setValue(null);
+            logData.clear();
             //ToDo: Alle weiteren Properties müssen einen Initial-Wert bekommen
         } else {
             title.setValue(data.getTitle());
@@ -111,6 +117,7 @@ public class TourTabViewModel {
             detailsTo.setValue(data.getTo());
             transportTypeProperty().setValue(data.getTransportType());
             updateImage();
+            updateTourLogData();
             //ToDo: Alle weiteren Properties müssen hier gesetzt werden
         }
     }
@@ -132,13 +139,12 @@ public class TourTabViewModel {
         data.setTo(this.getDetailsTo());
         data.setTransportType(this.getTransportType());
 
-        var tmpFileName = new String(data.getImageFilename() != null ? data.getImageFilename() : "");
+        String tmpFileName = data.getImageFilename() != null ? data.getImageFilename() : "";
         tourAppManager.updateTour(data);
 
         if(tmpFileName != data.getImageFilename()){
             updateImage();
         }
-        //ToDo: Alle weiteren Property Updates müssen hier eingefügt werden
     }
 
     private void updateImage(){
@@ -150,4 +156,36 @@ public class TourTabViewModel {
             imageProperty.setValue(null);
         }
     }
+
+    public ObservableList<TourLog> getLogData() {
+        return logData;
+    }
+
+    public void updateTourLogData() {
+        logData.clear();
+        logData.setAll(tourAppManager.getAllTourLogsForTour(data));
+    }
+
+    public void editTourLogData(TourLog tourLog) {
+        var log = logData.stream().filter(x -> x.getLogId() == tourLog.getLogId()).findFirst().get();
+        if(null != log) {
+            log.setComment(tourLog.getComment());
+            log.setDifficulty(tourLog.getDifficulty());
+            log.setRating(tourLog.getRating());
+            log.setTotalTime(tourLog.getTotalTime());
+            tourAppManager.updateLog(log);
+        }
+    }
+
+    public TourLog addNewLog() {
+        var newItem = tourAppManager.createLog(data.getTourId());
+        logData.add(0, newItem);
+        return newItem;
+    }
+
+    public void deleteLog(TourLog tourItem) {
+        tourAppManager.deleteLog(tourItem);
+        logData.remove(tourItem);
+    }
+
 }
