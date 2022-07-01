@@ -1,8 +1,7 @@
 package fhtw.at.tourplanner.DAL.mapQuestAPI.implementation;
 
-import fhtw.at.tourplanner.DAL.DalFactory;
+import fhtw.at.tourplanner.Configuration.AppConfiguration;
 import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
-import fhtw.at.tourplanner.DAL.helper.ConfigurationLoader;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestService;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.converter.TransportTypeConverter;
@@ -22,16 +21,16 @@ public class MapQuestRepositoryImpl implements MapQuestRepository {
     private final String mapQuestKey;
     private final String imagePath;
 
-    public MapQuestRepositoryImpl(){
+    public MapQuestRepositoryImpl(AppConfiguration appConfiguration, FileSystem fileSystem){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://www.mapquestapi.com/")
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
 
         service = retrofit.create(MapQuestService.class);
-        mapQuestKey = ConfigurationLoader.getConfig("MapQuestKey");
-        imagePath = ConfigurationLoader.getConfig("ImageFolder");
-        fileSystem = DalFactory.GetFileSystem();
+        mapQuestKey = appConfiguration.getApiKey();
+        imagePath = appConfiguration.getImageFolder();
+        this.fileSystem = fileSystem;
     }
 
     @Override

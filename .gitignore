@@ -1,4 +1,4 @@
 /target/
-/src/main/resources/app.config
+/src/main/resources/app.properties
 /img/*
 /pdf/*

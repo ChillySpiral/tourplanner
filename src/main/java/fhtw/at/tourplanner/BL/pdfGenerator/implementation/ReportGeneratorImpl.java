@@ -1,29 +1,36 @@
 package fhtw.at.tourplanner.BL.pdfGenerator.implementation;
 
-import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
-import fhtw.at.tourplanner.BL.pdfGenerator.helper.Calculator;
-import fhtw.at.tourplanner.DAL.DalFactory;
-import fhtw.at.tourplanner.DAL.helper.ConfigurationLoader;
-import fhtw.at.tourplanner.DAL.model.TourLog;
-import fhtw.at.tourplanner.DAL.model.TourModel;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.kernel.pdf.*;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
-import com.itextpdf.layout.properties.UnitValue;
+import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
+import fhtw.at.tourplanner.BL.pdfGenerator.helper.Calculator;
+import fhtw.at.tourplanner.Configuration.AppConfiguration;
+import fhtw.at.tourplanner.DAL.DalFactory;
+import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
+import fhtw.at.tourplanner.DAL.model.TourLog;
+import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.stream.Collectors;
 
 public class ReportGeneratorImpl implements ReportGenerator {
+
+    private final AppConfiguration appConfiguration;
+    private final FileSystem fileSystem;
+    public ReportGeneratorImpl(AppConfiguration appConfiguration, FileSystem fileSystem){
+        this.appConfiguration = appConfiguration;
+        this.fileSystem = fileSystem;
+    }
+
     @Override
     public boolean generateReport(TourModel tour, java.util.List<TourLog> logs, File pdfFile) {
         try {
@@ -40,7 +47,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
             document.add(tourTitle);
 
             try {
-                ImageData imageData = ImageDataFactory.create(ConfigurationLoader.getConfig("ImageFolder") + DalFactory.GetFileSystem().findFile(tour).aObject);
+                ImageData imageData = ImageDataFactory.create(appConfiguration.getImageFolder() + fileSystem.findFile(tour));
                 document.add(new Image(imageData));
             }catch(NullPointerException e){
                 e. printStackTrace();

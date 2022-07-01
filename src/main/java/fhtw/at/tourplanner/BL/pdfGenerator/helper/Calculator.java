@@ -10,7 +10,8 @@ public class Calculator {
         long nanoSum = 0;
 
         for (var time : times) {
-            nanoSum += time.toNanoOfDay();
+            if(time != null)
+                nanoSum += time.toNanoOfDay();
         }
         return LocalTime.ofNanoOfDay(nanoSum / (times.size()));
     }

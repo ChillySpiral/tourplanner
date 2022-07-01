@@ -28,7 +28,7 @@ public class TourListController {
 
     public void addNewTour(ActionEvent actionEvent) {
         var newTour = tourListViewModel.addNewTour();
-        var result = new TourEditViewModel(newTour.getTitle(), newTour.getDescription(), newTour.getFrom(), newTour.getTo());
+        var result = new TourEditViewModel(newTour.getTitle(), newTour.getDescription(), newTour.getFrom(), newTour.getTo(), newTour.getTransportType());
         Window owner = Stage.getWindows().stream().filter(Window::isShowing).findFirst().get();
         var dialog = new TourEditDialog(owner, result);
 
