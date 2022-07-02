@@ -3,6 +3,7 @@ package fhtw.at.tourplanner.BL.appManager.implementation;
 import fhtw.at.tourplanner.BL.appManager.TourAppManager;
 import fhtw.at.tourplanner.BL.jsonGenerator.JsonGenerator;
 import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
+import fhtw.at.tourplanner.BL.searchHelper.SearchHelper;
 import fhtw.at.tourplanner.DAL.DalFactory;
 import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
@@ -14,8 +15,9 @@ import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
 
 import java.io.File;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TourAppManagerImpl implements TourAppManager {
 
@@ -24,13 +26,15 @@ public class TourAppManagerImpl implements TourAppManager {
     private final ReportGenerator reportGenerator;
     private final MapQuestRepository mapQuestRepository;
     private final JsonGenerator jsonGenerator;
+    private final SearchHelper searchHelper;
 
-    public TourAppManagerImpl(ReportGenerator reportGenerator, MapQuestRepository mapQuestRepository, JsonGenerator jsonGenerator, TourDaoExtension tourModelDao, Dao<TourLog> tourLogDao){
+    public TourAppManagerImpl(ReportGenerator reportGenerator, MapQuestRepository mapQuestRepository, JsonGenerator jsonGenerator, TourDaoExtension tourModelDao, Dao<TourLog> tourLogDao, SearchHelper searchHelper){
         this.tourModelDao = tourModelDao;
         this.tourLogDao = tourLogDao;
         this.reportGenerator = reportGenerator;
         this.mapQuestRepository = mapQuestRepository;
         this.jsonGenerator = jsonGenerator;
+        this.searchHelper = searchHelper;
     }
 
     @Override
@@ -165,6 +169,30 @@ public class TourAppManagerImpl implements TourAppManager {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public List<TourModel> searchTours(String searchText) {
+        var allTours = tourModelDao.getAll();
+        var allLogs = tourLogDao.getAll();
+
+        var tourSearchResult = searchHelper.searchTours(allTours, searchText);
+        var logSearchResult = searchHelper.searchLogs(allLogs, searchText);
+
+        List<Integer> tourIds = Stream.of(tourSearchResult, logSearchResult)
+                .flatMap(List::stream)
+                .distinct()
+                .collect(Collectors.toList());
+
+        Set<Integer> ids = new HashSet<Integer>(tourIds);
+        Iterator<TourModel> it = allTours.iterator();
+        while (it.hasNext()) {
+            if (!ids.contains(it.next().getTourId())) {
+                it.remove();
+            }
+        }
+
+        return allTours;
     }
 
     private boolean mapQuestQueryNecessary(TourModel newValue, TourModel oldValue){

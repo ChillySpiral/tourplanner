@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -70,6 +71,9 @@ public class TourTabController {
     @FXML
     private Button editLogButton;
 
+    @FXML
+    private AnchorPane imageAnchorPane;
+
     private final TourTabViewModel tourTabViewModel;
 
     public TourTabController(TourTabViewModel tourTabViewModel) {
@@ -96,6 +100,9 @@ public class TourTabController {
         logComment.setCellValueFactory(new PropertyValueFactory<TourLog, String>("comment"));
         logRating.setCellValueFactory(new PropertyValueFactory<TourLog, Rating>("rating"));
         logTableView.setItems(tourTabViewModel.getLogData());
+
+        image.fitHeightProperty().bind(imageAnchorPane.heightProperty());
+        image.fitWidthProperty().bind(imageAnchorPane.widthProperty());
     }
 
     public void editTour(ActionEvent actionEvent) {

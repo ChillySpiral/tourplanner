@@ -50,7 +50,7 @@ public class MapQuestRepositoryImpl implements MapQuestRepository {
         try{
             var routeInfo = getRouteInfo(tourModel);
             if(checkIfRouteSuccessful(routeInfo)){
-                var imageResponseBody = service.downloadImage(mapQuestKey, "640,480", routeInfo.getRoute().getSessionId(), routeInfo.getRoute().getBoundingBox().toString()).execute().body();
+                var imageResponseBody = service.downloadImage(mapQuestKey, "800,600", routeInfo.getRoute().getSessionId(), routeInfo.getRoute().getBoundingBox().toString()).execute().body();
                 var filename = "tourImage_" + tourModel.getTourId() +"_.jpeg";
 
                 if(fileSystem.writeResponseBody(imageResponseBody, filename)){

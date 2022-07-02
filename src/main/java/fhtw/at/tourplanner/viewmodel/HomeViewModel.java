@@ -5,6 +5,7 @@ import fhtw.at.tourplanner.BL.BLFactory;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 
 import java.io.File;
+import java.util.List;
 
 public class HomeViewModel {
     private SearchBarViewModel searchBarViewModel;
@@ -24,6 +25,9 @@ public class HomeViewModel {
     private void selectTour(TourModel selectedTourItem){
         this.tourTabViewModel.setTourModel(selectedTourItem);
     }
+    private void filterTours(List<TourModel> tours){
+        this.tourListViewModel.setTours(tours);
+    }
 
     /*
     * Info:
@@ -34,6 +38,7 @@ public class HomeViewModel {
     * */
     private void registerListeners(){
         this.tourListViewModel.addTourSelectionListener(selectedTourItem -> selectTour(selectedTourItem));
+        this.searchBarViewModel.addTourSearchListener(tourIds -> filterTours(tourIds));
     }
 
     public void exportTour(File tourFile){

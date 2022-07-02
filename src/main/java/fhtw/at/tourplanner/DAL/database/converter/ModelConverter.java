@@ -34,7 +34,7 @@ public  class ModelConverter {
         var difficulty = (String) params.get("Difficulty");
         LocalTime totalTime = params.get("TotalTime") == null ? LocalTime.of(0, 0, 0) : LocalTime.parse(params.get("TotalTime").toString());
         var rating = (String) params.get("Rating");
-        var tourId = Integer.parseInt(params.get("Id").toString());
+        var tourId = Integer.parseInt(params.get("TourId").toString());
 
         return new TourLog(id, dateTime, comment, Difficulty.valueOf(difficulty), totalTime, Rating.valueOf(rating), tourId);
     }

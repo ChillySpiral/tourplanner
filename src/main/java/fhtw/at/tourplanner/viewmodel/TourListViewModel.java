@@ -8,8 +8,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class TourListViewModel {
 
@@ -44,7 +43,7 @@ public class TourListViewModel {
         }
     }
 
-    private void setTours(List<TourModel> tourItems) {
+    public void setTours(List<TourModel> tourItems) {
         data.clear();
         data.addAll(tourItems);
     }

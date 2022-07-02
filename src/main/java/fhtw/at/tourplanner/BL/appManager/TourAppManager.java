@@ -23,4 +23,6 @@ public interface TourAppManager {
 
     void exportTour(File exportFile, TourModel tourModel);
     TourModel importTour(File importFile);
+
+    List<TourModel> searchTours(String searchText);
 }

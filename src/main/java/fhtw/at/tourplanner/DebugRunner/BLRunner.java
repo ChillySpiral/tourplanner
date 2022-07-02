@@ -14,7 +14,8 @@ public class BLRunner {
     public static void main(String[] args) {
         var test1 = false;
         var test2 = false;
-        var test3 = true;
+        var test3 = false;
+        var test4 = true;
         var test = BLFactory.getTourAppManager();
         if(test1) {
 
@@ -41,6 +42,9 @@ public class BLRunner {
         }
         if(test3){
             test.importTour(new File("./export/testTour.json"));
+        }
+        if(test4){
+            test.searchTours("Expert");
         }
     }
 }

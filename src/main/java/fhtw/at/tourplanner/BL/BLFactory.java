@@ -6,6 +6,8 @@ import fhtw.at.tourplanner.BL.jsonGenerator.JsonGenerator;
 import fhtw.at.tourplanner.BL.jsonGenerator.implementation.JsonGeneratorImpl;
 import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
 import fhtw.at.tourplanner.BL.pdfGenerator.implementation.ReportGeneratorImpl;
+import fhtw.at.tourplanner.BL.searchHelper.SearchHelper;
+import fhtw.at.tourplanner.BL.searchHelper.implementation.SearchHelperImpl;
 import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
 import fhtw.at.tourplanner.DAL.DalFactory;
 
@@ -14,10 +16,11 @@ public final class BLFactory {
     private static TourAppManager tourAM;
     private static ReportGenerator reportGenerator;
     private static JsonGenerator jsonGenerator;
+    private static SearchHelper searchHelper;
 
     public static TourAppManager getTourAppManager(){
         if(tourAM == null){
-            tourAM = new TourAppManagerImpl(getReportGenerator(), DalFactory.GetMapQuestRepository(), getJsonGenerator(), DalFactory.GetTourModelDao(), DalFactory.GetTourLogDao());
+            tourAM = new TourAppManagerImpl(getReportGenerator(), DalFactory.GetMapQuestRepository(), getJsonGenerator(), DalFactory.GetTourModelDao(), DalFactory.GetTourLogDao(), getSearchHelper());
         }
         return tourAM;
     }
@@ -34,5 +37,12 @@ public final class BLFactory {
             jsonGenerator = new JsonGeneratorImpl();
         }
         return jsonGenerator;
+    }
+
+    public static SearchHelper getSearchHelper(){
+        if(searchHelper == null){
+            searchHelper = new SearchHelperImpl();
+        }
+        return searchHelper;
     }
 }

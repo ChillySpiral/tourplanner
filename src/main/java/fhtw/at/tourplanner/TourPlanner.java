@@ -17,6 +17,8 @@ public class TourPlanner extends Application {
         Scene scene = new Scene(root, 800, 600);
         stage.setTitle("Tourplanner");
         stage.setScene(scene);
+        stage.setMinHeight(700);
+        stage.setMinWidth(800);
         stage.show();
     }
 
