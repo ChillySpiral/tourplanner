@@ -8,6 +8,7 @@ import fhtw.at.tourplanner.DAL.model.enums.Rating;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 public  class ModelConverter {
@@ -28,7 +29,7 @@ public  class ModelConverter {
 
     public static TourLog convertToTourLogModel(HashMap<String, Object> params) {
         var id = Integer.parseInt(params.get("Id").toString());
-        LocalDateTime dateTime = params.get("DateTime") == null ? LocalDateTime.of(LocalDate.MIN, LocalTime.of(0, 0, 0)) : LocalDateTime.parse(params.get("DateTime").toString());
+        LocalDateTime dateTime = params.get("DateTime") == null ? LocalDateTime.of(LocalDate.MIN, LocalTime.of(0, 0, 0)) : LocalDateTime.parse(params.get("DateTime").toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         var comment = (String) params.get("Comment");
         var difficulty = (String) params.get("Difficulty");
         LocalTime totalTime = params.get("TotalTime") == null ? LocalTime.of(0, 0, 0) : LocalTime.parse(params.get("TotalTime").toString());

@@ -20,6 +20,7 @@ import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
 public class ReportGeneratorImpl implements ReportGenerator {
@@ -51,7 +52,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
                 document.add(new Image(imageData));
             }catch(NullPointerException e){
                 e. printStackTrace();
-                document.add(new Paragraph("<Image could not be found>").setItalic());
+                document.add(new Paragraph("Image could not be found").setItalic());
             }
 
             Paragraph listHeader = new Paragraph("Details")
@@ -65,8 +66,8 @@ public class ReportGeneratorImpl implements ReportGenerator {
                     .setFont(PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN));
             list.add(new ListItem("From: " + tour.getFrom()))
                     .add(new ListItem("To: " +  tour.getTo()))
-                    .add(new ListItem("Distance: " + tour.getTourDistance() + "km"))
-                    .add(new ListItem("Estimated Time: " + tour.getEstimatedTime())) //ToDo: Format
+                    .add(new ListItem("Distance: " + String.format("%.1f", tour.getTourDistance()) + "km"))
+                    .add(new ListItem("Estimated Time: " + tour.getEstimatedTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")))) //ToDo: Format
                     .add(new ListItem("Transport Type: " + tour.getTransportType()));
             document.add(listHeader);
             document.add(list);
@@ -96,11 +97,11 @@ public class ReportGeneratorImpl implements ReportGenerator {
             table.addHeaderCell(getHeaderCell("Total Time"));
             table.setFontSize(12).setBackgroundColor(ColorConstants.WHITE);
             for (var log: logs) {
-                table.addCell(new Paragraph(log.getDateTime().toString()).setMaxWidth(100));
+                table.addCell(new Paragraph(log.getDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))).setMaxWidth(100));
                 table.addCell(new Paragraph(log.getComment()).setMaxWidth(150));
                 table.addCell(new Paragraph(String.valueOf(log.getDifficulty())).setMaxWidth(90));
                 table.addCell(new Paragraph(String.valueOf(log.getRating())).setMaxWidth(90));
-                table.addCell(new Paragraph(log.getTotalTime().toString()).setMaxWidth(100));
+                table.addCell(new Paragraph(log.getTotalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"))).setMaxWidth(100));
             }
             document.add(table);
 
@@ -137,13 +138,22 @@ public class ReportGeneratorImpl implements ReportGenerator {
                 table.addCell(new Paragraph(tour.aObject.getTitle()).setMaxWidth(100));
                 var avgTime = Calculator.calculateAverageTime(tour.bObject.stream().map(TourLog::getTotalTime).collect(Collectors.toList()));
                 if(avgTime != null){
-                    table.addCell(new Paragraph(avgTime.toString()).setMaxWidth(150));
+                    table.addCell(new Paragraph(avgTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))).setMaxWidth(150));
                 } else {
-                    table.addCell(new Paragraph("Average Time could not be calculated").setMaxWidth(150));
+                    table.addCell(new Paragraph("Not enough data").setMaxWidth(150));
                 }
-                //ToDo: Implement
-                table.addCell(new Paragraph("<Implement Enum for Difficulty>").setMaxWidth(90));
-                table.addCell(new Paragraph("<Implement Enum for Rating>").setMaxWidth(90));
+                var avgDifficulty = Calculator.calculateAverageDifficulty(tour.bObject.stream().map(TourLog::getDifficulty).collect(Collectors.toList()));
+                if(avgDifficulty != null){
+                    table.addCell(new Paragraph(avgDifficulty.toString()).setMaxWidth(150));
+                } else {
+                    table.addCell(new Paragraph("Not enough data").setMaxWidth(150));
+                }
+                var avgRating = Calculator.calculateAverageRating(tour.bObject.stream().map(TourLog::getRating).collect(Collectors.toList()));
+                if(avgRating != null){
+                    table.addCell(new Paragraph(avgRating.toString()).setMaxWidth(150));
+                } else {
+                    table.addCell(new Paragraph("Not enough data").setMaxWidth(150));
+                }
             }
             document.add(table);
             document.close();
