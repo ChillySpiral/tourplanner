@@ -31,15 +31,22 @@ public class TourListController {
         var result = new TourEditViewModel(newTour.getTitle(), newTour.getDescription(), newTour.getFrom(), newTour.getTo(), newTour.getTransportType());
         Window owner = Stage.getWindows().stream().filter(Window::isShowing).findFirst().get();
         var dialog = new TourEditDialog(owner, result);
+        final boolean[] set = {false};
 
         dialog.showAndWait().ifPresent(x -> {
             newTour.setTitle(result.getTitle());
             newTour.setDescription((result.getDescription()));
             newTour.setFrom(result.getFrom());
             newTour.setTo(result.getTo());
+            newTour.setTransportType(result.getTransportType());
 
             tourListViewModel.updateTour(newTour);
+            set[0] =true;
         });
+
+        if(!set[0]) {
+            tourListViewModel.deleteTour(newTour);
+        }
     }
 
     public void deleteTour(ActionEvent actionEvent){

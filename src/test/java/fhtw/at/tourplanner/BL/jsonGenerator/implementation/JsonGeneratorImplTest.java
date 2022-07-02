@@ -3,6 +3,8 @@ package fhtw.at.tourplanner.BL.jsonGenerator.implementation;
 import fhtw.at.tourplanner.BL.jsonGenerator.JsonGenerator;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
+import fhtw.at.tourplanner.DAL.model.enums.Rating;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 import fhtw.at.tourplanner.DAL.model.export.exportTourModel;
 import org.junit.jupiter.api.DisplayName;
@@ -37,18 +39,18 @@ class JsonGeneratorImplTest {
         var log1 = new TourLog();
         log1.setLogId(1);
         log1.setTourId(1);
-        log1.setRating("Test"); //ToDo: Enum
+        log1.setRating(Rating.Neutral); //ToDo: Enum
         log1.setDateTime(LocalDateTime.of(2022,03,27,12,12));
-        log1.setDifficulty("Hard"); //ToDo: Enum
+        log1.setDifficulty(Difficulty.Expert); //ToDo: Enum
         log1.setComment("Very difficult Route");
         log1.setTotalTime(LocalTime.of(4,12,33));
 
         var log2 = new TourLog();
         log2.setLogId(1);
         log2.setTourId(2);
-        log2.setRating("Test 2"); //ToDo: Enum
+        log2.setRating(Rating.Bad); //ToDo: Enum
         log2.setDateTime(LocalDateTime.of(2022,2,4,12,12));
-        log2.setDifficulty("Easy"); //ToDo: Enum
+        log2.setDifficulty(Difficulty.Advanced); //ToDo: Enum
         log2.setComment("Very easy Route");
         log2.setTotalTime(LocalTime.of(2,3,2));
 

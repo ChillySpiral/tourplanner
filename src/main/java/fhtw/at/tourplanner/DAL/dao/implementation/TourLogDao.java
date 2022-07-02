@@ -54,7 +54,7 @@ public class TourLogDao implements Dao<TourLog> {
         newItem.setRating(Rating.Neutral);
         List<Object> paramsId = new ArrayList<>();
         paramsId.add(tourId);
-        paramsId.add(newItem.getDateTime());
+        paramsId.add(newItem.getDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         paramsId.add(newItem.getDifficulty().toString());
         paramsId.add(newItem.getRating().toString());
 
@@ -84,7 +84,7 @@ public class TourLogDao implements Dao<TourLog> {
 
     private List<Object> getParameters(TourLog newItem) {
         List<Object> params = new ArrayList<>();
-        params.add(newItem.getDateTime());
+        params.add(newItem.getDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         params.add(newItem.getComment());
         params.add(newItem.getDifficulty());
         params.add(newItem.getTotalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));

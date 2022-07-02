@@ -168,11 +168,14 @@ public class TourAppManagerImpl implements TourAppManager {
     }
 
     private boolean mapQuestQueryNecessary(TourModel newValue, TourModel oldValue){
-        if(newValue.getTo() == null || newValue.getFrom() == null || newValue.getTransportType() == null || oldValue.getTo() == null || oldValue.getFrom() == null || oldValue.getTransportType() == null)
+        if(newValue.getTo() == null || newValue.getFrom() == null || newValue.getTransportType() == null)
             return false;
 
         if(newValue.getTo().isEmpty() || newValue.getFrom().isEmpty())
             return false;
+
+        if(oldValue.getTo() == null || oldValue.getFrom() == null || oldValue.getTransportType() == null)
+            return true;
 
         if(newValue.getFrom() == oldValue.getFrom() && newValue.getTo() == oldValue.getTo() && newValue.getTransportType() == oldValue.getTransportType())
             return false;
