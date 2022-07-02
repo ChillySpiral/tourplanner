@@ -127,7 +127,10 @@ public class TourTabController {
             tourLog.setComment((result.getComment()));
             tourLog.setDifficulty(result.getDifficulty());
             tourLog.setRating(result.getRating());
-            tourLog.setTotalTime(LocalTime.parse(result.getDuration(), DateTimeFormatter.ISO_LOCAL_TIME));
+            if(!result.getDuration().isEmpty())
+                tourLog.setTotalTime(LocalTime.parse(result.getDuration(), DateTimeFormatter.ISO_LOCAL_TIME));
+            else
+                tourLog.setTotalTime(LocalTime.of(0,0,0));
 
             tourTabViewModel.editTourLogData(tourLog);
             set[0] =true;
