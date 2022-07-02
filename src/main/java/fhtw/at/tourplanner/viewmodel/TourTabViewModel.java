@@ -2,9 +2,11 @@ package fhtw.at.tourplanner.viewmodel;
 
 import fhtw.at.tourplanner.BL.BLFactory;
 import fhtw.at.tourplanner.BL.appManager.TourAppManager;
+import fhtw.at.tourplanner.BL.pdfGenerator.helper.Calculator;
 import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -16,7 +18,10 @@ import javafx.scene.image.Image;
 import lombok.Getter;
 
 import java.io.File;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TourTabViewModel {
 
@@ -33,6 +38,9 @@ public class TourTabViewModel {
     private final StringProperty distance = new SimpleStringProperty();
     private final TourAppManager tourAppManager = BLFactory.getTourAppManager();
     private final ObservableList<TourLog> logData = FXCollections.observableArrayList();
+
+    private final StringProperty popularity = new SimpleStringProperty();
+    private final StringProperty childfriendliness = new SimpleStringProperty();
 
 
     public TourTabViewModel() {
@@ -113,6 +121,8 @@ public class TourTabViewModel {
             estimatedTime.setValue(null);
             distance.setValue(null);
             logData.clear();
+            popularity.setValue(null);
+            childfriendliness.setValue(null);
         } else {
             title.setValue(data.getTitle());
             description.setValue(data.getDescription());
@@ -123,6 +133,8 @@ public class TourTabViewModel {
             distance.setValue(String.format("%.1f", data.getTourDistance()) + "km");
             updateImage();
             updateTourLogData();
+            calculatePopularity();
+            calculateChildfriendliness();
         }
     }
 
@@ -189,6 +201,36 @@ public class TourTabViewModel {
     public void deleteLog(TourLog tourItem) {
         tourAppManager.deleteLog(tourItem);
         logData.remove(tourItem);
+    }
+
+    public void calculatePopularity() {
+
+    }
+
+    public void calculateChildfriendliness() {
+
+        List<TourLog> allLogs = tourAppManager.getAllTourLogs();
+        Difficulty averageDifficulty = Calculator.calculateAverageDifficulty(allLogs.stream().map(TourLog::getDifficulty).collect(Collectors.toList()));
+        LocalTime averageDuration = Calculator.calculateAverageTime(allLogs.stream().map(TourLog::getTotalTime).collect(Collectors.toList()));
+        double distance = data.getTourDistance();
+        TransportType transport = data.getTransportType();
+
+        //int num = averageDuration.getHour()*60 + averageDuration.getMinute();
+        //ToDo: Some marker with x points, for every transport type and factor(difficulty, time, distance) there is a threashold, if it gets over there x points deduction
+        //ToDo: The endpoints after all the factor checks, results in: Not child-friendly, neutral or child friendly
+
+        if(TransportType.Car == transport) {
+
+        }
+        else if(TransportType.Bicycle == transport) {
+
+        }
+        else { // Foot
+
+        }
+
+
+
     }
 
 }
