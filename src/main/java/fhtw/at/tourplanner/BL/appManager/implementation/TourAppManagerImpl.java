@@ -12,6 +12,7 @@ import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.export.exportTourModel;
 import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.time.LocalTime;
@@ -19,6 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Log4j2
 public class TourAppManagerImpl implements TourAppManager {
 
     private final TourDaoExtension tourModelDao;
@@ -49,6 +51,7 @@ public class TourAppManagerImpl implements TourAppManager {
         if(result.isPresent()){
             return result.get();
         }
+        log.warn("Get TourModel [Id: " + Id + " ] failed because the tour does not exist.");
         return null;
     }
 
@@ -68,8 +71,10 @@ public class TourAppManagerImpl implements TourAppManager {
 
         var dbTour = getTour(tourModel.getTourId());
 
-        if(dbTour == null)
+        if(dbTour == null) {
+            log.fatal("Update tour failed because tour [id: " + tourModel.getTourId() + " ] does not exist.");
             throw new NullPointerException("Tour not found in DB");
+        }
 
         if(mapQuestQueryNecessary(tourModel, dbTour)){
             var result = mapQuestRepository.getRouteImage(tourModel);
@@ -78,6 +83,9 @@ public class TourAppManagerImpl implements TourAppManager {
                 tourModel.setEstimatedTime(LocalTime.parse(result.bObject.getFormattedTime()));
                 tourModel.setImageFilename(result.aObject);
             }
+            else
+                log.warn("");//TODO: add log text
+
         }
 
         tourModelDao.update(tourModel);
@@ -115,6 +123,8 @@ public class TourAppManagerImpl implements TourAppManager {
             var logs = getAllTourLogsForTour(tour);
             reportGenerator.generateReport(tour, logs, pdfFile);
         }
+        else
+            log.warn("Generate tour report failed because getTour( [ Id: " + tourModel.getTourId() + "returned null.");
     }
 
     @Override
@@ -138,6 +148,7 @@ public class TourAppManagerImpl implements TourAppManager {
         try{
             jsonGenerator.writeJSON(exportFile, export);
         } catch(Exception e){
+            log.warn("Export Tour failed. [ error: " + e + " ]"); // TODO: this good?
             e.printStackTrace();
         }
     }
@@ -166,6 +177,7 @@ public class TourAppManagerImpl implements TourAppManager {
             return newTour;
 
         } catch(Exception e){
+            log.warn("Import Tour failed. [ error: " + e + " ]"); // TODO: this good?
             e.printStackTrace();
             return null;
         }

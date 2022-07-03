@@ -17,12 +17,14 @@ import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
+@Log4j2
 public class ReportGeneratorImpl implements ReportGenerator {
 
     private final AppConfiguration appConfiguration;
@@ -51,6 +53,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
                 ImageData imageData = ImageDataFactory.create(appConfiguration.getImageFolder() + fileSystem.findFile(tour));
                 document.add(new Image(imageData));
             }catch(NullPointerException e){
+                log.warn("Generate Report failed because image could not b found. [ error: " + e + " ]"); // TODO: ok?
                 e. printStackTrace();
                 document.add(new Paragraph("Image could not be found").setItalic());
             }
@@ -108,6 +111,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
             document.close();
             return true;
         }catch(Exception e){
+            log.warn("Generate Report failed because ???. [ error: " + e + " ]"); // TODO: Add reason
             e.printStackTrace();
             return false;
         }
@@ -160,6 +164,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
             return true;
 
         }catch(Exception e){
+            log.warn("Generate Summary failed because ???. [ error: " + e + " ]"); // TODO: Add reason
             e.printStackTrace();
             return false;
         }

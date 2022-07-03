@@ -2,11 +2,13 @@ package fhtw.at.tourplanner.DAL.database;
 
 import fhtw.at.tourplanner.Configuration.AppConfiguration;
 import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
+import lombok.extern.log4j.Log4j2;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+@Log4j2
 public class ConnectionManager {
     private static Connection dbConnection;
     private static AppConfiguration appConfiguration;
@@ -17,6 +19,7 @@ public class ConnectionManager {
             try{
                 dbConnection = DriverManager.getConnection(getAppConfiguration().getDatasourceUrl(), getAppConfiguration().getDatasourceUsername(), getAppConfiguration().getDatasourcePassword());
             } catch(SQLException e){
+                log.warn("Get Connection failed in ConnectionManager. [ error: " + e + " ]"); // TODO: ok?
                 e.printStackTrace();
             }
         }

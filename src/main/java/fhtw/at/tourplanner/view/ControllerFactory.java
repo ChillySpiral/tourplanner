@@ -1,7 +1,9 @@
 package fhtw.at.tourplanner.view;
 
 import fhtw.at.tourplanner.viewmodel.*;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class ControllerFactory {
     private final HomeViewModel homeViewModel;
     private final SearchBarViewModel searchBarViewModel;
@@ -33,6 +35,8 @@ public class ControllerFactory {
         if (controllerClass == TourTabController.class)
             return new TourTabController(tourTabViewModel);
 
+
+        log.fatal("COntrollerFactory failed: Unknown controller class. [class: " + controllerClass + " ]"); //TODO: ok?
         throw new IllegalArgumentException("Unknown controller class: " + controllerClass);
     }
 }
