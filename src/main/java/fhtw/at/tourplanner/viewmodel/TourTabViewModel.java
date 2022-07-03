@@ -149,17 +149,13 @@ public class TourTabViewModel {
         if(isInitialValue)
             return;
 
-        this.title.setValue(tourModel.getTitle());
-        this.description.setValue(tourModel.getDescription());
-        this.detailsFrom.setValue(tourModel.getFrom());
-        this.detailsTo.setValue(tourModel.getTo());
-        this.transportTypeProperty().setValue(tourModel.getTransportType());
 
-        data.setTitle(this.getTitle());
-        data.setDescription(this.getDescription());
-        data.setFrom(this.getDetailsFrom());
-        data.setTo(this.getDetailsTo());
-        data.setTransportType(this.getTransportType());
+
+        data.setTitle(tourModel.getTitle());
+        data.setDescription(tourModel.getDescription());
+        data.setFrom(tourModel.getFrom());
+        data.setTo(tourModel.getTo());
+        data.setTransportType(tourModel.getTransportType());
 
         String tmpFileName = data.getImageFilename() != null ? data.getImageFilename() : "";
         tourAppManager.updateTour(data);
@@ -167,6 +163,14 @@ public class TourTabViewModel {
         if(tmpFileName != data.getImageFilename()){
             updateImage();
         }
+
+        this.title.setValue(data.getTitle());
+        this.description.setValue(data.getDescription());
+        this.detailsFrom.setValue(data.getFrom());
+        this.detailsTo.setValue(data.getTo());
+        this.transportTypeProperty().setValue(data.getTransportType());
+        this.distance.setValue(String.format("%.1f", data.getTourDistance()) + "km");
+        this.estimatedTime.setValue(data.getEstimatedTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
         calculateChildfriendliness();
         calculatePopularity();
