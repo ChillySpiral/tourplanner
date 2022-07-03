@@ -1,6 +1,5 @@
 package fhtw.at.tourplanner.viewmodel;
 
-import fhtw.at.tourplanner.BL.BLFactory;
 import fhtw.at.tourplanner.BL.appManager.TourAppManager;
 import fhtw.at.tourplanner.BL.pdfGenerator.helper.Calculator;
 import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
@@ -36,14 +35,15 @@ public class TourTabViewModel {
     private final ObjectProperty<TransportType> transportType = new SimpleObjectProperty<>();
     private final StringProperty estimatedTime = new SimpleStringProperty();
     private final StringProperty distance = new SimpleStringProperty();
-    private final TourAppManager tourAppManager = BLFactory.getTourAppManager();
+    private final TourAppManager tourAppManager;
     private final ObservableList<TourLog> logData = FXCollections.observableArrayList();
 
     private final StringProperty popularity = new SimpleStringProperty();
     private final StringProperty childfriendliness = new SimpleStringProperty();
 
 
-    public TourTabViewModel() {
+    public TourTabViewModel(TourAppManager tourAppManager) {
+        this.tourAppManager = tourAppManager;
     }
 
     public String getTitle() {

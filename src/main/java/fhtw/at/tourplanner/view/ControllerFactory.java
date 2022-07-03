@@ -1,5 +1,6 @@
 package fhtw.at.tourplanner.view;
 
+import fhtw.at.tourplanner.BL.BLFactory;
 import fhtw.at.tourplanner.viewmodel.*;
 
 public class ControllerFactory {
@@ -13,7 +14,7 @@ public class ControllerFactory {
 
     public ControllerFactory() {
         searchBarViewModel = new SearchBarViewModel();
-        tourTabViewModel = new TourTabViewModel();
+        tourTabViewModel = new TourTabViewModel(BLFactory.getTourAppManager());
         tourListViewModel = new TourListViewModel();
         homeViewModel = new HomeViewModel(searchBarViewModel, tourListViewModel, tourTabViewModel);
     }
