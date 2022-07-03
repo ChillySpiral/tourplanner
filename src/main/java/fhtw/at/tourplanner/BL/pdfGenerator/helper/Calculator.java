@@ -2,14 +2,18 @@ package fhtw.at.tourplanner.BL.pdfGenerator.helper;
 
 import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.Rating;
+import lombok.extern.log4j.Log4j2;
 
 import java.time.LocalTime;
 import java.util.List;
 
+@Log4j2
 public class Calculator {
     public static LocalTime calculateAverageTime(List<LocalTime> times){
-        if(times == null || times.isEmpty())
+        if(times == null || times.isEmpty()) {
+            log.warn("Calculate average time failed because the list of values was null or empty.");
             return null;
+        }
         long nanoSum = 0;
 
         for (var time : times) {
@@ -20,8 +24,10 @@ public class Calculator {
     }
 
     public static Difficulty calculateAverageDifficulty(List<Difficulty> difficulties){
-        if(difficulties == null || difficulties.isEmpty())
+        if(difficulties == null || difficulties.isEmpty()) {
+            log.warn("Calculate average difficulty failed because the list of values was null or empty.");
             return null;
+        }
         int difficultySum = 0;
 
         for (var difficulty : difficulties) {
@@ -52,8 +58,10 @@ public class Calculator {
     }
 
     public static Rating calculateAverageRating(List<Rating> ratings){
-        if(ratings == null || ratings.isEmpty())
+        if(ratings == null || ratings.isEmpty()) {
+            log.warn("Calculate average rating failed because the list of values was null or empty.");
             return null;
+        }
         int ratingSum = 0;
 
         for (var rating : ratings) {

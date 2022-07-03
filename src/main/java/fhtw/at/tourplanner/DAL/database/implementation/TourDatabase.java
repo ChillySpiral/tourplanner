@@ -2,12 +2,14 @@ package fhtw.at.tourplanner.DAL.database.implementation;
 
 import fhtw.at.tourplanner.DAL.database.ConnectionManager;
 import fhtw.at.tourplanner.DAL.database.Database;
+import lombok.extern.log4j.Log4j2;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Log4j2
 public class TourDatabase implements Database {
     private final Connection dbConnection = ConnectionManager.getConnection();
     public TourDatabase(){
@@ -26,6 +28,7 @@ public class TourDatabase implements Database {
             var resultSet = statement.executeQuery();
             result =  processQueryResult(resultSet);
         } catch(SQLException e){
+            log.warn("Select failed in TourDatabase. [ error: " + e + " ]"); // TODO: ok?
             e.printStackTrace();
         }
         return result;
@@ -50,6 +53,7 @@ public class TourDatabase implements Database {
                 }
             }
         } catch (SQLException e) {
+            log.warn("Insert failed in TourDatabase. [ error: " + e + " ]"); // TODO: ok?
             e.printStackTrace();
             return -1;
         }
@@ -58,8 +62,10 @@ public class TourDatabase implements Database {
 
     @Override
     public boolean delete(String query, List<Object> sqlParams) {
-        if (query == null || query.isEmpty())
+        if (query == null || query.isEmpty()) {
+            log.warn("Select failed in TourDatabase because query was false."); // TODO: ok?
             return false;
+        }
 
         try {
             PreparedStatement statement = dbConnection.prepareStatement(query);
@@ -71,6 +77,7 @@ public class TourDatabase implements Database {
                 return true;
             }
         } catch (SQLException e) {
+            log.warn("Delete failed in TourDatabase. [ error: " + e + " ]"); // TODO: ok?
             e.printStackTrace();
             return false;
         }
@@ -79,8 +86,10 @@ public class TourDatabase implements Database {
 
     @Override
     public boolean update(String query, List<Object> sqlParams) {
-        if (query == null || query.isEmpty())
+        if (query == null || query.isEmpty()) {
+            log.warn("Update failed in TourDatabase because query was false."); // TODO: ok?
             return false;
+        }
 
         try {
             PreparedStatement statement = dbConnection.prepareStatement(query);
@@ -92,6 +101,7 @@ public class TourDatabase implements Database {
                 return true;
             }
         } catch (SQLException e) {
+            log.warn("Update failed in TourDatabase. [ error: " + e + " ]"); // TODO: ok?
             e.printStackTrace();
             return false;
         }

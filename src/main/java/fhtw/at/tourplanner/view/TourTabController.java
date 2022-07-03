@@ -17,11 +17,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import lombok.extern.log4j.Log4j2;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+@Log4j2
 public class TourTabController {
     @FXML
     public TextField tourTitle;
@@ -130,29 +132,31 @@ public class TourTabController {
     }
 
     public void addNewLog(ActionEvent actionEvent) {
-        TourLog log = tourTabViewModel.addNewLog();
-        var result = new LogEditViewModel(null, log.getComment(), log.getDifficulty(), log.getRating());
+        TourLog tourLog = tourTabViewModel.addNewLog();
+        var result = new LogEditViewModel(null, tourLog.getComment(), tourLog.getDifficulty(), tourLog.getRating());
         var dialog = new LogEditDialog(tourTitle.getScene().getWindow(), result);
         final boolean[] set = {false};
 
         dialog.showAndWait().ifPresent(x -> {
-            TourLog tourLog = new TourLog();
+            TourLog newTourLog = new TourLog();
 
-            tourLog.setLogId(log.getLogId());
-            tourLog.setComment((result.getComment()));
-            tourLog.setDifficulty(result.getDifficulty());
-            tourLog.setRating(result.getRating());
+            newTourLog.setLogId(tourLog.getLogId());
+            newTourLog.setComment((result.getComment()));
+            newTourLog.setDifficulty(result.getDifficulty());
+            newTourLog.setRating(result.getRating());
             if(!result.getDuration().isEmpty())
-                tourLog.setTotalTime(LocalTime.parse(result.getDuration(), DateTimeFormatter.ISO_LOCAL_TIME));
-            else
-                tourLog.setTotalTime(LocalTime.of(0,0,0));
+                newTourLog.setTotalTime(LocalTime.parse(result.getDuration(), DateTimeFormatter.ISO_LOCAL_TIME));
+            else {
+                log.warn("Duration was empty for new log in addNewLog. "); // TODO: ok?
+                newTourLog.setTotalTime(LocalTime.of(0, 0, 0));
+            }
 
-            tourTabViewModel.editTourLogData(tourLog);
+            tourTabViewModel.editTourLogData(newTourLog);
             set[0] =true;
         });
 
         if(!set[0]) {
-            tourTabViewModel.deleteLog(log);
+            tourTabViewModel.deleteLog(tourLog);
         }
         else {
             tourTabViewModel.updateTourLogData();
@@ -168,25 +172,27 @@ public class TourTabController {
     }
 
     public void editLog(ActionEvent actionEvent) {
-        TourLog log = logTableView.getSelectionModel().getSelectedItem();
+        TourLog tourLog = logTableView.getSelectionModel().getSelectedItem();
         if(log == null)
             return;
-        var result = new LogEditViewModel(log.getTotalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")), log.getComment(), log.getDifficulty(), log.getRating());
+        var result = new LogEditViewModel(tourLog.getTotalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")), tourLog.getComment(), tourLog.getDifficulty(), tourLog.getRating());
         var dialog = new LogEditDialog(tourTitle.getScene().getWindow(), result);
 
         dialog.showAndWait().ifPresent(x -> {
-            TourLog tourLog = new TourLog();
+            TourLog newTourLog = new TourLog();
 
-            tourLog.setLogId(log.getLogId());
-            tourLog.setComment((result.getComment()));
-            tourLog.setDifficulty(result.getDifficulty());
-            tourLog.setRating(result.getRating());
+            newTourLog.setLogId(tourLog.getLogId());
+            newTourLog.setComment((result.getComment()));
+            newTourLog.setDifficulty(result.getDifficulty());
+            newTourLog.setRating(result.getRating());
             if(!result.getDuration().isEmpty())
-                tourLog.setTotalTime(LocalTime.parse(result.getDuration(), DateTimeFormatter.ISO_LOCAL_TIME));
-            else
-                tourLog.setTotalTime(log.getTotalTime());
+                newTourLog.setTotalTime(LocalTime.parse(result.getDuration(), DateTimeFormatter.ISO_LOCAL_TIME));
+            else {
+                log.warn("Duration was empty for new log in editLog. "); // TODO: ok?
+                newTourLog.setTotalTime(tourLog.getTotalTime());
+            }
 
-            tourTabViewModel.editTourLogData(tourLog);
+            tourTabViewModel.editTourLogData(newTourLog);
             tourTabViewModel.updateTourLogData();
         });
     }

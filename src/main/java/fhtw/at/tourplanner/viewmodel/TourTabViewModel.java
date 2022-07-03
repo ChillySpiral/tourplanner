@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.time.LocalTime;
@@ -23,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 public class TourTabViewModel {
 
     @Getter
@@ -149,8 +151,6 @@ public class TourTabViewModel {
         if(isInitialValue)
             return;
 
-
-
         data.setTitle(tourModel.getTitle());
         data.setDescription(tourModel.getDescription());
         data.setFrom(tourModel.getFrom());
@@ -182,6 +182,7 @@ public class TourTabViewModel {
             Image image = new Image(new File(path).toURI().toString());
             imageProperty.setValue(image);
         }else{
+            log.warn("Image could not be updated because filename was null."); //TODO: ok?
             imageProperty.setValue(null);
         }
     }
@@ -228,8 +229,10 @@ public class TourTabViewModel {
         List<TourLog> myLogs = tourAppManager.getAllTourLogsForTour(data);
         double percentage;
 
-        if(allLogs.isEmpty())
-            percentage=0;
+        if(allLogs.isEmpty()) {
+            log.warn("Could not calculate popularity because there are no logs in existence."); //TODO: ok?
+            percentage = 0;
+        }
         else
             percentage = (double) myLogs.size()/allLogs.size();
 
@@ -257,10 +260,17 @@ public class TourTabViewModel {
     public void calculateChildfriendliness() {
 
         List<TourLog> allLogs = tourAppManager.getAllTourLogsForTour(data);
+        if(null == allLogs || allLogs.isEmpty()) {
+            log.warn("Could not calculate child-friendliness because there exist no logs for this tour. [ tourId: " + data.getTourId() + " ]"); //TODO: ok? what id date null
+            childfriendliness.setValue("Not enough data.");
+            return;
+        }
+
         Difficulty averageDifficulty = Calculator.calculateAverageDifficulty(allLogs.stream().map(TourLog::getDifficulty).collect(Collectors.toList()));
         LocalTime averageDuration = Calculator.calculateAverageTime(allLogs.stream().map(TourLog::getTotalTime).collect(Collectors.toList()));
 
         if(null == averageDifficulty || null == averageDuration) {
+            log.warn("Could not calculate child-friendliness because average difficulty or average duration did not return any values."); //TODO: ok?
             childfriendliness.setValue("Not enough data.");
             return;
         }

@@ -8,11 +8,13 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.stage.Modality;
 import javafx.stage.Window;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.util.Objects;
 
 //ToDo: Refactor
+@Log4j2
 public class LogEditDialog extends Dialog<TourLog> {
     public LogEditDialog(Window owner, LogEditViewModel logEditViewModel){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fhtw/at/tourplanner/logEditDialog.fxml"));
@@ -35,6 +37,7 @@ public class LogEditDialog extends Dialog<TourLog> {
             });
 
         } catch (IOException e) {
+            log.warn("Log Edit Dialog failed. [ error: " + e + " ]"); // TODO: ok?
             e.printStackTrace();
         }
     }
