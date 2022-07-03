@@ -2,9 +2,11 @@ package fhtw.at.tourplanner.viewmodel;
 
 import fhtw.at.tourplanner.BL.BLFactory;
 import fhtw.at.tourplanner.BL.appManager.TourAppManager;
+import fhtw.at.tourplanner.BL.pdfGenerator.helper.Calculator;
 import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -16,7 +18,10 @@ import javafx.scene.image.Image;
 import lombok.Getter;
 
 import java.io.File;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TourTabViewModel {
 
@@ -33,6 +38,9 @@ public class TourTabViewModel {
     private final StringProperty distance = new SimpleStringProperty();
     private final TourAppManager tourAppManager = BLFactory.getTourAppManager();
     private final ObservableList<TourLog> logData = FXCollections.observableArrayList();
+
+    private final StringProperty popularity = new SimpleStringProperty();
+    private final StringProperty childfriendliness = new SimpleStringProperty();
 
 
     public TourTabViewModel() {
@@ -81,6 +89,13 @@ public class TourTabViewModel {
         return imageProperty;
     }
 
+    public StringProperty popularityProperty() {
+        return popularity;
+    }
+    public StringProperty childfriendlinessProperty() {
+        return childfriendliness;
+    }
+
     public ObjectProperty<TransportType> transportTypeProperty() {
         return transportType;
     }
@@ -113,6 +128,8 @@ public class TourTabViewModel {
             estimatedTime.setValue(null);
             distance.setValue(null);
             logData.clear();
+            popularity.setValue(null);
+            childfriendliness.setValue(null);
         } else {
             title.setValue(data.getTitle());
             description.setValue(data.getDescription());
@@ -123,6 +140,8 @@ public class TourTabViewModel {
             distance.setValue(String.format("%.1f", data.getTourDistance()) + "km");
             updateImage();
             updateTourLogData();
+            calculatePopularity();
+            calculateChildfriendliness();
         }
     }
 
@@ -152,6 +171,9 @@ public class TourTabViewModel {
         this.transportTypeProperty().setValue(data.getTransportType());
         this.distance.setValue(String.format("%.1f", data.getTourDistance()) + "km");
         this.estimatedTime.setValue(data.getEstimatedTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+
+        calculateChildfriendliness();
+        calculatePopularity();
     }
 
     private void updateImage(){
@@ -171,6 +193,9 @@ public class TourTabViewModel {
     public void updateTourLogData() {
         logData.clear();
         logData.setAll(tourAppManager.getAllTourLogsForTour(data));
+
+        calculateChildfriendliness();
+        calculatePopularity();
     }
 
     public void editTourLogData(TourLog tourLog) {
@@ -193,6 +218,124 @@ public class TourTabViewModel {
     public void deleteLog(TourLog tourItem) {
         tourAppManager.deleteLog(tourItem);
         logData.remove(tourItem);
+
+        calculatePopularity();
+        calculateChildfriendliness();
+    }
+
+    public void calculatePopularity() {
+        List<TourLog> allLogs = tourAppManager.getAllTourLogs();
+        List<TourLog> myLogs = tourAppManager.getAllTourLogsForTour(data);
+        double percentage;
+
+        if(allLogs.isEmpty())
+            percentage=0;
+        else
+            percentage = (double) myLogs.size()/allLogs.size();
+
+        if(myLogs.isEmpty() || 0 == percentage)
+            popularity.setValue("Not popular.");
+        else if(0.5 < percentage)
+            popularity.setValue("The most popular! Over 50 % of all tour logs are for this tour.");
+        else if(0.5 == percentage)
+            popularity.setValue("Very popular! 50 % of tour all logs are for this tour.");
+        else if(0.3333 <= percentage)
+            popularity.setValue("Very popular! Over 33.33 % of all tour logs are for this tour.");
+        else if(0.25 <= percentage)
+            popularity.setValue("Very popular! Over 25 % of all tour logs are for this tour.");
+        else if(0.2 <= percentage)
+            popularity.setValue("Fairly popular! Over 20 % of all tour logs are for this tour.");
+        else if(0.1 <= percentage)
+            popularity.setValue("Somewhat popular. Over 10 % of all tour logs are for this tour.");
+        else if(0.05 <= percentage)
+            popularity.setValue("Slightly popular. Over 5 % of all tour logs are for this tour.");
+        else
+            popularity.setValue("Not very popular. Less than 5 % of all tour logs are for this tour.");
+
+    }
+
+    public void calculateChildfriendliness() {
+
+        List<TourLog> allLogs = tourAppManager.getAllTourLogsForTour(data);
+        Difficulty averageDifficulty = Calculator.calculateAverageDifficulty(allLogs.stream().map(TourLog::getDifficulty).collect(Collectors.toList()));
+        LocalTime averageDuration = Calculator.calculateAverageTime(allLogs.stream().map(TourLog::getTotalTime).collect(Collectors.toList()));
+
+        if(null == averageDifficulty || null == averageDuration) {
+            childfriendliness.setValue("Not enough data.");
+            return;
+        }
+
+        double distance = data.getTourDistance();
+        int durationMinutes = averageDuration.getMinute()+averageDuration.getHour()*60;
+        TransportType transport = data.getTransportType();
+
+        int friendlinessLevel = 6;
+
+        if(TransportType.Car == transport) {
+            if(350 < distance)
+                friendlinessLevel--;
+            if(600 < distance)
+                friendlinessLevel--;
+
+            if(Difficulty.Intermediate == averageDifficulty)
+                friendlinessLevel--;
+            else if(Difficulty.Expert == averageDifficulty)
+                friendlinessLevel-=2;
+
+            if(5*60 < durationMinutes)
+                friendlinessLevel--;
+            if(8*60 < durationMinutes)
+                friendlinessLevel--;
+        }
+        else if(TransportType.Bicycle == transport) {
+            //
+            if(30 < distance)
+                friendlinessLevel--;
+            if(60 < distance)
+                friendlinessLevel--;
+
+            if(Difficulty.Intermediate == averageDifficulty)
+                friendlinessLevel--;
+            else if(Difficulty.Expert == averageDifficulty)
+                friendlinessLevel-=2;
+
+            if(3*60 < durationMinutes)
+                friendlinessLevel--;
+            if(6*60 < durationMinutes)
+                friendlinessLevel--;
+        }
+        else { // Foot
+            // max 10km
+            if(10 < distance)
+                friendlinessLevel--;
+            if(20 < distance)
+                friendlinessLevel--;
+
+            if(Difficulty.Intermediate == averageDifficulty)
+                friendlinessLevel--;
+            else if(Difficulty.Expert == averageDifficulty)
+                friendlinessLevel-=2;
+
+            if(4*60 < durationMinutes)
+                friendlinessLevel--;
+            if(8*60 < durationMinutes)
+                friendlinessLevel--;
+        }
+
+        switch(friendlinessLevel){
+            case 6:
+            case 5: childfriendliness.setValue("Child friendly.");
+                    break;
+            case 4:
+            case 3: childfriendliness.setValue("For advanced or older children.");
+                    break;
+            case 2:
+            case 1:
+            case 0: childfriendliness.setValue("Not suitable for children.");
+                    break;
+
+        }
+
     }
 
 }
