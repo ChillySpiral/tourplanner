@@ -69,6 +69,12 @@ public class TourTabController {
     private TableColumn<TourLog, Rating> logRating;
 
     @FXML
+    private TextField popularity;
+
+    @FXML
+    private TextField childfriendliness;
+
+    @FXML
     private Button editLogButton;
 
     @FXML
@@ -93,6 +99,8 @@ public class TourTabController {
         detailsTransportType.valueProperty().bind(tourTabViewModel.transportTypeProperty());
         detailsEstimatedTime.textProperty().bind(tourTabViewModel.estimatedTimeProperty());
         detailsDistance.textProperty().bind(tourTabViewModel.distanceProperty());
+        popularity.textProperty().bind(tourTabViewModel.popularityProperty());
+        childfriendliness.textProperty().bind(tourTabViewModel.childfriendlinessProperty());
 
         logDate.setCellValueFactory(new PropertyValueFactory<TourLog, LocalDateTime>("dateTime"));
         logDuration.setCellValueFactory(new PropertyValueFactory<TourLog, LocalTime>("totalTime"));
