@@ -61,6 +61,8 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <Label text="Distance:" GridPane.rowIndex="4" />
@@ -73,6 +75,10 @@
                               <Label text="Estimated Time:" GridPane.rowIndex="3" />
                               <TextField fx:id="detailsEstimatedTime" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <TextField fx:id="detailsDistance" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField fx:id="popularity" editable="false" layoutX="110.0" layoutY="133.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <TextField fx:id="childfriendliness" editable="false" layoutX="110.0" layoutY="133.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <Label layoutX="10.0" layoutY="107.0" text="Popularity:" GridPane.rowIndex="5" />
+                              <Label layoutX="10.0" layoutY="107.0" text="Child-friendliness:" GridPane.rowIndex="6" />
                            </children>
                         </GridPane>
                      </children></AnchorPane>
@@ -89,7 +95,7 @@
                 <TableColumn fx:id="logDuration" prefWidth="75.0" text="Duration" />
                 <TableColumn fx:id="logDifficulty" prefWidth="75.0" text="Difficulty" />
                 <TableColumn fx:id="logRating" prefWidth="75.0" text="Rating" />
-                <TableColumn fx:id="logComment"  minWidth="250.0" text="Comment" />
+                <TableColumn fx:id="logComment" minWidth="250.0" text="Comment" />
             </columns>
         </TableView>
         <Label text="Logs: " GridPane.rowIndex="2" />

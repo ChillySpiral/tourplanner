@@ -3,6 +3,7 @@ package fhtw.at.tourplanner.BL.appManager.implementation;
 import fhtw.at.tourplanner.BL.appManager.TourAppManager;
 import fhtw.at.tourplanner.BL.jsonGenerator.JsonGenerator;
 import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
+import fhtw.at.tourplanner.BL.searchHelper.SearchHelper;
 import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
@@ -47,6 +48,9 @@ class TourAppManagerImplTest {
     @Mock
     Dao<TourLog> tourLogDao;
 
+    @Mock
+    SearchHelper searchHelper;
+
     private TourAppManager tourAppManager;
     private List<TourModel> tourModels;
 
@@ -54,7 +58,7 @@ class TourAppManagerImplTest {
 
     @BeforeEach
     private void initTourAppManager(){
-        tourAppManager = new TourAppManagerImpl(reportGenerator, mapQuestRepository, jsonGenerator, tourDao, tourLogDao);
+        tourAppManager = new TourAppManagerImpl(reportGenerator, mapQuestRepository, jsonGenerator, tourDao, tourLogDao, searchHelper);
     }
 
     @BeforeEach
