@@ -178,7 +178,7 @@ public class TourTabViewModel {
     }
 
     private void updateImage(){
-        if(null != data.getImageFilename()) {
+        if(null != data.getImageFilename() && !data.getImageFilename().isEmpty()) {
             var path = AppConfigurationLoader.getInstance().getAppConfiguration().getImageFolder() +data.getImageFilename();
             Image image = new Image(new File(path).toURI().toString());
             imageProperty.setValue(image);

@@ -8,6 +8,7 @@ import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +54,8 @@ public class TourDao implements TourDaoExtension {
         var newItem = new TourModel();
         newItem.setTitle("New Tour");
         newItem.setTransportType(TransportType.Foot);
+        newItem.setEstimatedTime(LocalTime.of(0,0,0));
+        newItem.setTourDistance(0.0);
 
         List<Object> paramsId = new ArrayList<>();
         paramsId.add(newItem.getTitle());
