@@ -1,15 +1,15 @@
-package fhtw.at.tourplanner.view;
+package fhtw.at.tourplanner.PL.view;
 
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.Rating;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
-import fhtw.at.tourplanner.view.dialog.LogEditDialog;
-import fhtw.at.tourplanner.view.dialog.TourEditDialog;
-import fhtw.at.tourplanner.viewmodel.TourTabViewModel;
-import fhtw.at.tourplanner.viewmodel.dialog.LogEditViewModel;
-import fhtw.at.tourplanner.viewmodel.dialog.TourEditViewModel;
+import fhtw.at.tourplanner.PL.view.dialog.LogEditDialog;
+import fhtw.at.tourplanner.PL.view.dialog.TourEditDialog;
+import fhtw.at.tourplanner.PL.viewmodel.TourTabViewModel;
+import fhtw.at.tourplanner.PL.viewmodel.dialog.LogEditViewModel;
+import fhtw.at.tourplanner.PL.viewmodel.dialog.TourEditViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

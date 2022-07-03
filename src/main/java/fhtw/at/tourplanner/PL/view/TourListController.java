@@ -1,9 +1,9 @@
-package fhtw.at.tourplanner.view;
+package fhtw.at.tourplanner.PL.view;
 
 import fhtw.at.tourplanner.DAL.model.TourModel;
-import fhtw.at.tourplanner.view.dialog.TourEditDialog;
-import fhtw.at.tourplanner.viewmodel.TourListViewModel;
-import fhtw.at.tourplanner.viewmodel.dialog.TourEditViewModel;
+import fhtw.at.tourplanner.PL.view.dialog.TourEditDialog;
+import fhtw.at.tourplanner.PL.viewmodel.TourListViewModel;
+import fhtw.at.tourplanner.PL.viewmodel.dialog.TourEditViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;

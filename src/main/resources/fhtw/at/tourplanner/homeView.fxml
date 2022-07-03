@@ -3,7 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox alignment="TOP_CENTER" minHeight="500" minWidth="500" snapToPixel="false" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fhtw.at.tourplanner.view.HomeController">
+<VBox alignment="TOP_CENTER" minHeight="500" minWidth="500" snapToPixel="false" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fhtw.at.tourplanner.PL.view.HomeController">
    <MenuBar>
      <menus>
        <Menu mnemonicParsing="false" text="File">

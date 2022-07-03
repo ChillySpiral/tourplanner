@@ -1,7 +1,7 @@
-package fhtw.at.tourplanner.view.dialog;
+package fhtw.at.tourplanner.PL.view.dialog;
 
 import fhtw.at.tourplanner.DAL.model.TourLog;
-import fhtw.at.tourplanner.viewmodel.dialog.LogEditViewModel;
+import fhtw.at.tourplanner.PL.viewmodel.dialog.LogEditViewModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Dialog;

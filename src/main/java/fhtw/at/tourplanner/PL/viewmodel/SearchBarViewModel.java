@@ -1,9 +1,9 @@
-package fhtw.at.tourplanner.viewmodel;
+package fhtw.at.tourplanner.PL.viewmodel;
 
 import fhtw.at.tourplanner.BL.BLFactory;
 import fhtw.at.tourplanner.BL.appManager.TourAppManager;
 import fhtw.at.tourplanner.DAL.model.TourModel;
-import fhtw.at.tourplanner.listener.TourSearchListener;
+import fhtw.at.tourplanner.PL.listener.TourSearchListener;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 

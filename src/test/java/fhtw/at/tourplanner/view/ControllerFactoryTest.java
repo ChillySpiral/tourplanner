@@ -1,6 +1,7 @@
 package fhtw.at.tourplanner.view;
 
-import fhtw.at.tourplanner.viewmodel.HomeViewModel;
+import fhtw.at.tourplanner.PL.view.*;
+import fhtw.at.tourplanner.PL.viewmodel.HomeViewModel;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

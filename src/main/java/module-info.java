@@ -18,14 +18,14 @@ module fhtw.at.tourplanner {
 
     opens fhtw.at.tourplanner to javafx.fxml;
     exports fhtw.at.tourplanner;
-    exports fhtw.at.tourplanner.view;
+    exports fhtw.at.tourplanner.PL.view;
     exports fhtw.at.tourplanner.DAL.mapQuestAPI;
-    opens fhtw.at.tourplanner.view to javafx.fxml;
+    opens fhtw.at.tourplanner.PL.view to javafx.fxml;
     exports fhtw.at.tourplanner.DAL.mapQuestAPI.implementation;
     exports fhtw.at.tourplanner.DAL.model;
     exports fhtw.at.tourplanner.DAL.model.mapQuestModels;
-    exports fhtw.at.tourplanner.view.dialog;
-    opens fhtw.at.tourplanner.view.dialog to javafx.fxml;
+    exports fhtw.at.tourplanner.PL.view.dialog;
+    opens fhtw.at.tourplanner.PL.view.dialog to javafx.fxml;
     exports fhtw.at.tourplanner.DAL.model.export;
     exports fhtw.at.tourplanner.DAL.model.enums;
     exports fhtw.at.tourplanner.DebugRunner;

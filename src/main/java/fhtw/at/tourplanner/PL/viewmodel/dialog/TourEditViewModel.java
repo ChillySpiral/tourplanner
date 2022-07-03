@@ -1,4 +1,4 @@
-package fhtw.at.tourplanner.viewmodel.dialog;
+package fhtw.at.tourplanner.PL.viewmodel.dialog;
 
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 import javafx.beans.property.ObjectProperty;

@@ -21,7 +21,6 @@ public class TestMapQuestApiRunner {
         testModel.setTo("Berlin");
         testModel.setTransportType(TransportType.Bicycle);
         //var result = test.getRouteInfo(testModel);
-        //System.out.println(result);
         test.getRouteImage(testModel);
     }
 }

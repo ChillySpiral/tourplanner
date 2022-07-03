@@ -19,7 +19,6 @@
         <Logger name="at.fhtw.bif" level="debug"/>
         <Root level="debug">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="FileAppender"/>
             <AppenderRef ref="RollingFile"/>
         </Root>
     </Loggers>

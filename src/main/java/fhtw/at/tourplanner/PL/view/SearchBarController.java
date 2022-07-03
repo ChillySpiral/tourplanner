@@ -1,6 +1,6 @@
-package fhtw.at.tourplanner.view;
+package fhtw.at.tourplanner.PL.view;
 
-import fhtw.at.tourplanner.viewmodel.SearchBarViewModel;
+import fhtw.at.tourplanner.PL.viewmodel.SearchBarViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

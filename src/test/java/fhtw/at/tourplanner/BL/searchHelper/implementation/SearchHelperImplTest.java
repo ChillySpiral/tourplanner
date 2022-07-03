@@ -60,8 +60,6 @@ class SearchHelperImplTest {
     void searchTours(String searchText, List<Integer> expectedTourIds) {
         var searchResult = searchHelper.searchTours(tourModels, searchText);
         Collections.sort(searchResult);
-
-        System.out.println(searchResult);
         assertThat(searchResult.size()).isEqualTo(expectedTourIds.size());
         for(int i = 0; i<searchResult.size();i++){
             assertThat(searchResult.get(i)).isEqualTo(expectedTourIds.get(i));
@@ -83,8 +81,6 @@ class SearchHelperImplTest {
     void searchLogs(String searchText, List<Integer> expectedTourIds) {
         var searchResult = searchHelper.searchLogs(tourLogs, searchText);
         Collections.sort(searchResult);
-
-        System.out.println(searchResult);
         assertThat(searchResult.size()).isEqualTo(expectedTourIds.size());
         for(int i = 0; i<searchResult.size();i++){
             assertThat(searchResult.get(i)).isEqualTo(expectedTourIds.get(i));

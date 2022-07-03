@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fhtw.at.tourplanner.view.SearchBarController">
+<GridPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fhtw.at.tourplanner.PL.view.SearchBarController">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="200.0" />
         <ColumnConstraints fillWidth="false" hgrow="NEVER" minWidth="10.0" prefWidth="40.0" />

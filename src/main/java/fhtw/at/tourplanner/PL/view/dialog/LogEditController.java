@@ -1,8 +1,8 @@
-package fhtw.at.tourplanner.view.dialog;
+package fhtw.at.tourplanner.PL.view.dialog;
 
 import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.Rating;
-import fhtw.at.tourplanner.viewmodel.dialog.LogEditViewModel;
+import fhtw.at.tourplanner.PL.viewmodel.dialog.LogEditViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.converter.DateTimeStringConverter;

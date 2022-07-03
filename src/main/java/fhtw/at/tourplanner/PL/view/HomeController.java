@@ -1,11 +1,9 @@
-package fhtw.at.tourplanner.view;
+package fhtw.at.tourplanner.PL.view;
 
-import fhtw.at.tourplanner.viewmodel.HomeViewModel;
-import fhtw.at.tourplanner.viewmodel.TourTabViewModel;
-import javafx.beans.binding.Bindings;
+import fhtw.at.tourplanner.PL.viewmodel.HomeViewModel;
+import fhtw.at.tourplanner.PL.viewmodel.TourTabViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;

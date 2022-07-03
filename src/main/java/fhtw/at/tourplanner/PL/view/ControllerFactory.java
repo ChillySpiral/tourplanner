@@ -1,7 +1,10 @@
-package fhtw.at.tourplanner.view;
+package fhtw.at.tourplanner.PL.view;
 
 import fhtw.at.tourplanner.BL.BLFactory;
-import fhtw.at.tourplanner.viewmodel.*;
+import fhtw.at.tourplanner.PL.viewmodel.HomeViewModel;
+import fhtw.at.tourplanner.PL.viewmodel.SearchBarViewModel;
+import fhtw.at.tourplanner.PL.viewmodel.TourListViewModel;
+import fhtw.at.tourplanner.PL.viewmodel.TourTabViewModel;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2

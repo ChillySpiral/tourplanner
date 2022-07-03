@@ -1,6 +1,6 @@
 package fhtw.at.tourplanner;
 
-import fhtw.at.tourplanner.view.ControllerFactory;
+import fhtw.at.tourplanner.PL.view.ControllerFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;

@@ -1,4 +1,4 @@
-package fhtw.at.tourplanner.viewmodel;
+package fhtw.at.tourplanner.PL.viewmodel;
 
 import fhtw.at.tourplanner.BL.appManager.TourAppManager;
 import fhtw.at.tourplanner.BL.BLFactory;
