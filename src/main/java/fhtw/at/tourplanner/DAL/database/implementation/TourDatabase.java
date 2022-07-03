@@ -28,7 +28,7 @@ public class TourDatabase implements Database {
             var resultSet = statement.executeQuery();
             result =  processQueryResult(resultSet);
         } catch(SQLException e){
-            log.warn("Select failed in TourDatabase. [ error: " + e + " ]"); // TODO: ok?
+            log.warn("Select failed in TourDatabase. [ error: " + e.getMessage() + " ]");
             e.printStackTrace();
         }
         return result;
@@ -53,7 +53,7 @@ public class TourDatabase implements Database {
                 }
             }
         } catch (SQLException e) {
-            log.warn("Insert failed in TourDatabase. [ error: " + e + " ]"); // TODO: ok?
+            log.warn("Insert failed in TourDatabase. [ error: " + e.getMessage() + " ]");
             e.printStackTrace();
             return -1;
         }
@@ -63,7 +63,7 @@ public class TourDatabase implements Database {
     @Override
     public boolean delete(String query, List<Object> sqlParams) {
         if (query == null || query.isEmpty()) {
-            log.warn("Select failed in TourDatabase because query was false."); // TODO: ok?
+            log.warn("Delete failed in TourDatabase because query was empty.");
             return false;
         }
 
@@ -77,7 +77,7 @@ public class TourDatabase implements Database {
                 return true;
             }
         } catch (SQLException e) {
-            log.warn("Delete failed in TourDatabase. [ error: " + e + " ]"); // TODO: ok?
+            log.warn("Delete failed in TourDatabase. [ error: " + e.getMessage() + " ]");
             e.printStackTrace();
             return false;
         }
@@ -87,7 +87,7 @@ public class TourDatabase implements Database {
     @Override
     public boolean update(String query, List<Object> sqlParams) {
         if (query == null || query.isEmpty()) {
-            log.warn("Update failed in TourDatabase because query was false."); // TODO: ok?
+            log.warn("Update failed in TourDatabase because query was empty.");
             return false;
         }
 
@@ -101,7 +101,7 @@ public class TourDatabase implements Database {
                 return true;
             }
         } catch (SQLException e) {
-            log.warn("Update failed in TourDatabase. [ error: " + e + " ]"); // TODO: ok?
+            log.warn("Update failed in TourDatabase. [ error: " + e.getMessage() + " ]");
             e.printStackTrace();
             return false;
         }

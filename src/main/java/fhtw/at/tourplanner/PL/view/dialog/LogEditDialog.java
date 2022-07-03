@@ -37,7 +37,7 @@ public class LogEditDialog extends Dialog<TourLog> {
             });
 
         } catch (IOException e) {
-            log.warn("Log Edit Dialog failed. [ error: " + e + " ]"); // TODO: ok?
+            log.warn("Log Edit Dialog failed. [ error: " + e.getMessage() + " ]");
             e.printStackTrace();
         }
     }

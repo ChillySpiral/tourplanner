@@ -29,7 +29,7 @@ public class TourLog {
 
     @Getter
     @Setter
-    private Difficulty difficulty; //ToDo: Enum
+    private Difficulty difficulty;
 
     @Getter
     @Setter
@@ -37,7 +37,7 @@ public class TourLog {
 
     @Getter
     @Setter
-    private Rating rating; //ToDo: Enum
+    private Rating rating;
 
     @Getter
     @Setter

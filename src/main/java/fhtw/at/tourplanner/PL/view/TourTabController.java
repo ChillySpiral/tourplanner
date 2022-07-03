@@ -132,6 +132,10 @@ public class TourTabController {
     }
 
     public void addNewLog(ActionEvent actionEvent) {
+        if(tourTabViewModel.getData() == null) {
+            log.info("Add Log cancelled. No tour data");
+            return;
+        }
         TourLog tourLog = tourTabViewModel.addNewLog();
         var result = new LogEditViewModel(null, tourLog.getComment(), tourLog.getDifficulty(), tourLog.getRating());
         var dialog = new LogEditDialog(tourTitle.getScene().getWindow(), result);
@@ -147,7 +151,7 @@ public class TourTabController {
             if(!result.getDuration().isEmpty())
                 newTourLog.setTotalTime(LocalTime.parse(result.getDuration(), DateTimeFormatter.ISO_LOCAL_TIME));
             else {
-                log.warn("Duration was empty for new log in addNewLog. "); // TODO: ok?
+                log.warn("Duration was empty for new log [id:"+tourLog.getLogId()+" ] in addNewLog. ");
                 newTourLog.setTotalTime(LocalTime.of(0, 0, 0));
             }
 
@@ -173,8 +177,10 @@ public class TourTabController {
 
     public void editLog(ActionEvent actionEvent) {
         TourLog tourLog = logTableView.getSelectionModel().getSelectedItem();
-        if(log == null)
+        if(tourLog == null || tourTabViewModel.getData() == null) {
+            log.info("Edit Log cancelled. No selected log or no tour data");
             return;
+        }
         var result = new LogEditViewModel(tourLog.getTotalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")), tourLog.getComment(), tourLog.getDifficulty(), tourLog.getRating());
         var dialog = new LogEditDialog(tourTitle.getScene().getWindow(), result);
 
@@ -188,7 +194,7 @@ public class TourTabController {
             if(!result.getDuration().isEmpty())
                 newTourLog.setTotalTime(LocalTime.parse(result.getDuration(), DateTimeFormatter.ISO_LOCAL_TIME));
             else {
-                log.warn("Duration was empty for new log in editLog. "); // TODO: ok?
+                log.warn("Duration was empty for log [id:"+tourLog.getLogId()+" ] in editLog");
                 newTourLog.setTotalTime(tourLog.getTotalTime());
             }
 

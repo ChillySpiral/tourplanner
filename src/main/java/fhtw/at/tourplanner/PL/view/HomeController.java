@@ -40,9 +40,8 @@ public class HomeController {
         File file = fileChooser.showSaveDialog(owner);
 
         if (file != null) {
-            // TODO: add logs here? with if its null?
             homeViewModel.exportTour(file);
-        }
+        } //ToDo: Possible Log
     }
 
     public void importTour(ActionEvent actionEvent) {
@@ -56,7 +55,7 @@ public class HomeController {
         File file = fileChooser.showOpenDialog(owner);
 
         if(file != null){
-            // TODO: add logs here? with if its null?
+            //ToDo: Possible Log
             homeViewModel.importTour(file);
         }
     }
@@ -73,7 +72,7 @@ public class HomeController {
         File file = fileChooser.showSaveDialog(owner);
 
         if (file != null) {
-            // TODO: add logs here? with if its null?
+            //ToDo: Possible Log
             homeViewModel.generateReportPdf(file);
         }
     }
@@ -90,7 +89,7 @@ public class HomeController {
         File file = fileChooser.showSaveDialog(owner);
 
         if (file != null) {
-            // TODO: add logs here? with if its null?
+            //ToDo: Possible Log
             homeViewModel.generateSummaryPdf(file);
         }
     }

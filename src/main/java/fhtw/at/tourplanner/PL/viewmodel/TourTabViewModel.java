@@ -180,7 +180,7 @@ public class TourTabViewModel {
             Image image = new Image(new File(path).toURI().toString());
             imageProperty.setValue(image);
         }else{
-            log.warn("Image could not be updated because filename was null."); //TODO: ok?
+            log.warn("Image could not be updated because filename was null.");
             imageProperty.setValue(null);
         }
     }
@@ -228,7 +228,7 @@ public class TourTabViewModel {
         double percentage;
 
         if(allLogs.isEmpty()) {
-            log.warn("Could not calculate popularity because there are no logs in existence."); //TODO: ok?
+            log.warn("Could not calculate popularity because there are no logs in existence.");
             percentage = 0;
         }
         else
@@ -256,9 +256,14 @@ public class TourTabViewModel {
     }
 
     public void calculateChildfriendliness() {
+        if(data == null){
+            log.warn("No tour data available. Data is null");
+            return;
+        }
+
         List<TourLog> allLogs = tourAppManager.getAllTourLogsForTour(data);
         if(null == allLogs || allLogs.isEmpty()) {
-            log.warn("Could not calculate child-friendliness because there exist no logs for this tour. [ tourId: " + data.getTourId() + " ]"); //TODO: ok? what id date null
+            log.warn("Could not calculate child-friendliness because there exist no logs for this tour. [ tourId: " + data.getTourId() + " ]");
             childfriendliness.setValue("Not enough data.");
             return;
         }
@@ -267,7 +272,7 @@ public class TourTabViewModel {
         LocalTime averageDuration = Calculator.calculateAverageTime(allLogs.stream().map(TourLog::getTotalTime).collect(Collectors.toList()));
 
         if(null == averageDifficulty || null == averageDuration) {
-            log.warn("Could not calculate child-friendliness because average difficulty or average duration did not return any values."); //TODO: ok?
+            log.warn("Could not calculate child-friendliness because average difficulty or average duration did not return any values. [ tourId: " + data.getTourId() + " ]");
             childfriendliness.setValue("Not enough data.");
             return;
         }

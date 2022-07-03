@@ -40,7 +40,7 @@ public class ControllerFactory {
             return new TourTabController(tourTabViewModel);
 
 
-        log.fatal("COntrollerFactory failed: Unknown controller class. [class: " + controllerClass + " ]"); //TODO: ok?
+        log.fatal("ControllerFactory failed: Unknown controller class. [class: " + controllerClass + " ]");
         throw new IllegalArgumentException("Unknown controller class: " + controllerClass);
     }
 }

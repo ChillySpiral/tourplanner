@@ -36,6 +36,10 @@ public class ReportGeneratorImpl implements ReportGenerator {
 
     @Override
     public boolean generateReport(TourModel tour, java.util.List<TourLog> logs, File pdfFile) {
+        if(tour == null) {
+            log.warn("Generate Report failed, no tour provided");
+            return false;
+        }
         try {
 
             PdfWriter writer = new PdfWriter(pdfFile);
@@ -53,7 +57,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
                 ImageData imageData = ImageDataFactory.create(appConfiguration.getImageFolder() + fileSystem.findFile(tour));
                 document.add(new Image(imageData));
             }catch(NullPointerException e){
-                log.warn("Generate Report failed because image could not b found. [ error: " + e + " ]"); // TODO: ok?
+                log.warn("Image for tour [id:"+ tour.getTourId()+ " ] could not b found. [ error: " + e.getMessage() + " ]");
                 e. printStackTrace();
                 document.add(new Paragraph("Image could not be found").setItalic());
             }
@@ -70,7 +74,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
             list.add(new ListItem("From: " + tour.getFrom()))
                     .add(new ListItem("To: " +  tour.getTo()))
                     .add(new ListItem("Distance: " + String.format("%.1f", tour.getTourDistance()) + "km"))
-                    .add(new ListItem("Estimated Time: " + tour.getEstimatedTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")))) //ToDo: Format
+                    .add(new ListItem("Estimated Time: " + tour.getEstimatedTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"))))
                     .add(new ListItem("Transport Type: " + tour.getTransportType()));
             document.add(listHeader);
             document.add(list);
@@ -111,7 +115,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
             document.close();
             return true;
         }catch(Exception e){
-            log.warn("Generate Report failed because ???. [ error: " + e + " ]"); // TODO: Add reason
+            log.warn("Generate Report failed for tour [id:"+tour.getTourId()+" ] [ error: " + e.getMessage() + " ]");
             e.printStackTrace();
             return false;
         }
@@ -144,18 +148,21 @@ public class ReportGeneratorImpl implements ReportGenerator {
                 if(avgTime != null){
                     table.addCell(new Paragraph(avgTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))).setMaxWidth(150));
                 } else {
+                    log.info("No average time could be calculated for tour [id:"+tour.aObject.getTourId()+"]");
                     table.addCell(new Paragraph("Not enough data").setMaxWidth(150));
                 }
                 var avgDifficulty = Calculator.calculateAverageDifficulty(tour.bObject.stream().map(TourLog::getDifficulty).collect(Collectors.toList()));
                 if(avgDifficulty != null){
                     table.addCell(new Paragraph(avgDifficulty.toString()).setMaxWidth(150));
                 } else {
+                    log.info("No average difficulty could be calculated for tour [id:"+tour.aObject.getTourId()+"]");
                     table.addCell(new Paragraph("Not enough data").setMaxWidth(150));
                 }
                 var avgRating = Calculator.calculateAverageRating(tour.bObject.stream().map(TourLog::getRating).collect(Collectors.toList()));
                 if(avgRating != null){
                     table.addCell(new Paragraph(avgRating.toString()).setMaxWidth(150));
                 } else {
+                    log.info("No average rating could be calculated for tour [id:"+tour.aObject.getTourId()+"]");
                     table.addCell(new Paragraph("Not enough data").setMaxWidth(150));
                 }
             }
@@ -164,7 +171,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
             return true;
 
         }catch(Exception e){
-            log.warn("Generate Summary failed because ???. [ error: " + e + " ]"); // TODO: Add reason
+            log.warn("Generate Summary failed [ error: " + e.getMessage() + " ]");
             e.printStackTrace();
             return false;
         }

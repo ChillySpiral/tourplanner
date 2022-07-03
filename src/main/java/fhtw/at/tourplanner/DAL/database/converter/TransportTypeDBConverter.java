@@ -17,7 +17,7 @@ public class TransportTypeDBConverter {
             case "Car":
                 return TransportType.Car;
         }
-        log.fatal("TransportTypeDBConverter failed because an illegal argument [name: " + dbTransportType + " ] was used."); // TODO: ok?
+        log.fatal("TransportTypeDBConverter failed because an illegal argument [name: " + dbTransportType + " ] was provided.");
         throw new IllegalArgumentException();
     }
 }

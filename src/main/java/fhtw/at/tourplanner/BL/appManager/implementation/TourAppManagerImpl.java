@@ -72,7 +72,7 @@ public class TourAppManagerImpl implements TourAppManager {
         var dbTour = getTour(tourModel.getTourId());
 
         if(dbTour == null) {
-            log.fatal("Update tour failed because tour [id: " + tourModel.getTourId() + " ] does not exist.");
+            log.error("Update tour failed because tour [id: " + tourModel.getTourId() + " ] does not exist.");
             throw new NullPointerException("Tour not found in DB");
         }
 
@@ -124,7 +124,7 @@ public class TourAppManagerImpl implements TourAppManager {
             reportGenerator.generateReport(tour, logs, pdfFile);
         }
         else
-            log.warn("Generate tour report failed because getTour( [ Id: " + tourModel.getTourId() + "returned null.");
+            log.warn("Generate tour report failed because getTour( [ Id: " + tourModel.getTourId() + " ] returned null");
     }
 
     @Override
@@ -148,7 +148,7 @@ public class TourAppManagerImpl implements TourAppManager {
         try{
             jsonGenerator.writeJSON(exportFile, export);
         } catch(Exception e){
-            log.warn("Export Tour failed. [ error: " + e + " ]"); // TODO: this good?
+            log.warn("Export of Tour with [Id:" + tourModel.getTourId() + " ] failed. [ error: " + e.getMessage() + " ]");
             e.printStackTrace();
         }
     }
@@ -177,7 +177,7 @@ public class TourAppManagerImpl implements TourAppManager {
             return newTour;
 
         } catch(Exception e){
-            log.warn("Import Tour failed. [ error: " + e + " ]"); // TODO: this good?
+            log.warn("Import Tour from [file: "+ importFile.getName() +" ] failed. [ error: " + e.getMessage() + " ]");
             e.printStackTrace();
             return null;
         }

@@ -19,7 +19,7 @@ public class ConnectionManager {
             try{
                 dbConnection = DriverManager.getConnection(getAppConfiguration().getDatasourceUrl(), getAppConfiguration().getDatasourceUsername(), getAppConfiguration().getDatasourcePassword());
             } catch(SQLException e){
-                log.warn("Get Connection failed in ConnectionManager. [ error: " + e + " ]"); // TODO: ok?
+                log.fatal("Connection to the database could not be established [ error: " + e.getMessage() + " ]");
                 e.printStackTrace();
             }
         }
