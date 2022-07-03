@@ -142,8 +142,6 @@ public class TourTabViewModel {
             distance.setValue(String.format("%.1f", data.getTourDistance()) + "km");
             updateImage();
             updateTourLogData();
-            calculatePopularity();
-            calculateChildfriendliness();
         }
     }
 
@@ -258,7 +256,6 @@ public class TourTabViewModel {
     }
 
     public void calculateChildfriendliness() {
-
         List<TourLog> allLogs = tourAppManager.getAllTourLogsForTour(data);
         if(null == allLogs || allLogs.isEmpty()) {
             log.warn("Could not calculate child-friendliness because there exist no logs for this tour. [ tourId: " + data.getTourId() + " ]"); //TODO: ok? what id date null

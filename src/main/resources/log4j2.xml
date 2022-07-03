@@ -16,7 +16,7 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="at.fhtw.bif" level="debug"/>
+        <Logger name="at.fhtw.at.tourplanner" level="debug"/>
         <Root level="debug">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingFile"/>
