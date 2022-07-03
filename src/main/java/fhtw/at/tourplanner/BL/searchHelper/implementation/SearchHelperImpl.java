@@ -79,6 +79,7 @@ public class SearchHelperImpl implements SearchHelper {
             if(!result.isEmpty()){
                 List<Integer> tourIds = Stream.of(result, tmpResult)
                         .flatMap(List::stream)
+                        .distinct()
                         .collect(Collectors.toList());
                 result = tourIds;
             }else{
