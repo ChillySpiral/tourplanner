@@ -3,6 +3,7 @@ package fhtw.at.tourplanner.BL.appManager.implementation;
 import fhtw.at.tourplanner.BL.appManager.TourAppManager;
 import fhtw.at.tourplanner.BL.jsonGenerator.JsonGenerator;
 import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
+import fhtw.at.tourplanner.BL.searchHelper.SearchHelper;
 import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
@@ -47,6 +48,9 @@ class TourAppManagerImplTest {
     @Mock
     Dao<TourLog> tourLogDao;
 
+    @Mock
+    SearchHelper searchHelper;
+
     private TourAppManager tourAppManager;
     private List<TourModel> tourModels;
 
@@ -54,7 +58,7 @@ class TourAppManagerImplTest {
 
     @BeforeEach
     private void initTourAppManager(){
-        tourAppManager = new TourAppManagerImpl(reportGenerator, mapQuestRepository, jsonGenerator, tourDao, tourLogDao);
+        tourAppManager = new TourAppManagerImpl(reportGenerator, mapQuestRepository, jsonGenerator, tourDao, tourLogDao, searchHelper);
     }
 
     @BeforeEach
@@ -71,7 +75,7 @@ class TourAppManagerImplTest {
         tourLogs = new ArrayList<>();
         tourLogs.add(new TourLog(1, LocalDateTime.of(2022,7,3,17,5), "Comment 1", Difficulty.Advanced, LocalTime.of(22,2,2), Rating.Bad, 1));
         tourLogs.add(new TourLog(2, LocalDateTime.of(2022,3,23,7,5), "Comment 2", Difficulty.Beginner, LocalTime.of(12,22,32), Rating.Good, 1));
-        tourLogs.add(new TourLog(3, LocalDateTime.of(2021,3,4,14,2), "Comment 3", Difficulty.Expert, LocalTime.of(1,27,29), Rating.Neutral, 1));
+        tourLogs.add(new TourLog(3, LocalDateTime.of(2021,3,4,14,2), "Comment 3", Difficulty.Expert, LocalTime.of(1,27,29), Rating.Neutral, 2));
 
     }
 
@@ -185,26 +189,32 @@ class TourAppManagerImplTest {
     }
 
     @Test
-    void generateTourReport() {
-        //ToDo: Implement
-        fail();
+    void searchTours(){
+        var searchText = "";
+        var dbTours = tourModels;
+        var dbLogs = tourLogs;
+
+        Mockito.when(tourDao.getAll()).thenReturn(dbTours);
+        Mockito.when(tourLogDao.getAll()).thenReturn(dbLogs);
+        Mockito.when(searchHelper.searchTours(dbTours, searchText)).thenReturn(List.of(1,2));
+        Mockito.when(searchHelper.searchLogs(dbLogs, searchText)).thenReturn(List.of(1));
+
+        var tours = tourAppManager.searchTours(searchText);
+        assertThat(tours.size()).isEqualTo(2);
     }
 
     @Test
-    void generateSummaryReport() {
-        //ToDo: Implement
-        fail();
-    }
+    void searchToursEmpty(){
+        var searchText = "";
+        var dbTours = tourModels;
+        var dbLogs = tourLogs;
 
-    @Test
-    void exportTour() {
-        //ToDo: Implement
-        fail();
-    }
+        Mockito.when(tourDao.getAll()).thenReturn(dbTours);
+        Mockito.when(tourLogDao.getAll()).thenReturn(dbLogs);
+        Mockito.when(searchHelper.searchTours(dbTours, searchText)).thenReturn(List.of(1));
+        Mockito.when(searchHelper.searchLogs(dbLogs, searchText)).thenReturn(List.of());
 
-    @Test
-    void importTour() {
-        //ToDo: Implement
-        fail();
+        var tours = tourAppManager.searchTours(searchText);
+        assertThat(tours.size()).isEqualTo(1);
     }
 }
