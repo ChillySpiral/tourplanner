@@ -7,12 +7,12 @@ import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -42,10 +42,13 @@ public class TourTabViewModel {
 
     private final StringProperty popularity = new SimpleStringProperty();
     private final StringProperty childfriendliness = new SimpleStringProperty();
+    private final TourUpdateService tourUpdateService;
 
 
     public TourTabViewModel(TourAppManager tourAppManager) {
         this.tourAppManager = tourAppManager;
+        this.tourUpdateService = new TourUpdateService();
+        registerListenerForTourUpdateService();
     }
 
     public String getTitle() {
@@ -107,6 +110,9 @@ public class TourTabViewModel {
     public StringProperty distanceProperty() {
         return distance;
     }
+    public ReadOnlyBooleanProperty runningProperty() {
+        return tourUpdateService.runningProperty();
+    }
 
     public void setTourModel(TourModel selectedItem) {
 
@@ -148,20 +154,17 @@ public class TourTabViewModel {
     public void updateTourModel(TourModel tourModel) {
         if(isInitialValue)
             return;
-
         data.setTitle(tourModel.getTitle());
         data.setDescription(tourModel.getDescription());
         data.setFrom(tourModel.getFrom());
         data.setTo(tourModel.getTo());
         data.setTransportType(tourModel.getTransportType());
+        updateTourService();
+    }
 
-        String tmpFileName = data.getImageFilename() != null ? data.getImageFilename() : "";
-        tourAppManager.updateTour(data);
+    private void waitToUpdateUi(){
 
-        if(tmpFileName != data.getImageFilename()){
-            updateImage();
-        }
-
+        updateImage();
         this.title.setValue(data.getTitle());
         this.description.setValue(data.getDescription());
         this.detailsFrom.setValue(data.getFrom());
@@ -348,6 +351,35 @@ public class TourTabViewModel {
 
         }
 
+    }
+
+    public void updateTourService() {
+        tourUpdateService.restart();
+    }
+
+    private void registerListenerForTourUpdateService(){
+        tourUpdateService.exceptionProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, newValue.getMessage());
+                alert.showAndWait();
+            }
+        });
+        tourUpdateService.runningProperty().addListener((observable, oldValue, newValue) ->{
+            if(newValue == false){
+                waitToUpdateUi();
+            }
+        });
+    }
+
+    public class TourUpdateService extends Service<String> {
+        protected Task<String> createTask() {
+            return new Task<>() {
+                protected String call() throws Exception {
+                    tourAppManager.updateTour(data);
+                    return "DONE";
+                }
+            };
+        }
     }
 
 }

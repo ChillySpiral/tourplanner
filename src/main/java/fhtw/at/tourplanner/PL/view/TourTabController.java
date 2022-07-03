@@ -82,6 +82,9 @@ public class TourTabController {
     @FXML
     private AnchorPane imageAnchorPane;
 
+    @FXML
+    private ProgressBar progressBar;
+
     private final TourTabViewModel tourTabViewModel;
 
     public TourTabController(TourTabViewModel tourTabViewModel) {
@@ -103,6 +106,8 @@ public class TourTabController {
         detailsDistance.textProperty().bind(tourTabViewModel.distanceProperty());
         popularity.textProperty().bind(tourTabViewModel.popularityProperty());
         childfriendliness.textProperty().bind(tourTabViewModel.childfriendlinessProperty());
+        progressBar.visibleProperty().bind(tourTabViewModel.runningProperty());
+        progressBar.setProgress(-1);
 
         logDate.setCellValueFactory(new PropertyValueFactory<TourLog, LocalDateTime>("dateTime"));
         logDuration.setCellValueFactory(new PropertyValueFactory<TourLog, LocalTime>("totalTime"));

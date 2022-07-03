@@ -75,16 +75,25 @@ public class TourAppManagerImpl implements TourAppManager {
             log.error("Update tour failed because tour [id: " + tourModel.getTourId() + " ] does not exist.");
             throw new NullPointerException("Tour not found in DB");
         }
-
         if(mapQuestQueryNecessary(tourModel, dbTour)){
-            var result = mapQuestRepository.getRouteImage(tourModel);
-            if(result != null){
-                tourModel.setTourDistance(Double.parseDouble(result.bObject.getDistance()));
-                tourModel.setEstimatedTime(LocalTime.parse(result.bObject.getFormattedTime()));
-                tourModel.setImageFilename(result.aObject);
-            }
-            else
-                log.warn("");//TODO: add log text
+
+                var result = mapQuestRepository.getRouteImage(tourModel);
+                if (result != null && result.bObject != null) {
+                    log.debug("Result succesful");
+                    tourModel.setTourDistance(Double.parseDouble(result.bObject.getDistance()));
+                    tourModel.setEstimatedTime(LocalTime.parse(result.bObject.getFormattedTime()));
+                    tourModel.setImageFilename(result.aObject);
+                } else{
+                    if(result == null) {
+                        log.error("Unknown Error with MapQuest Query");
+                        throw new RuntimeException("Unknown Error when calculating Route");
+                    } else{
+                        tourModel.setTransportType(dbTour.getTransportType());
+                        tourModel.setFrom(dbTour.getFrom());
+                        tourModel.setTo(dbTour.getTo());
+                        throw new RuntimeException("Reverting Changes to (TransportType, From, To)\nReason: " + result.aObject);
+                    }
+                }
 
         }
 

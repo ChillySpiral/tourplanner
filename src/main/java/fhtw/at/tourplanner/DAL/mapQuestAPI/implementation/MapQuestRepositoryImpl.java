@@ -9,11 +9,13 @@ import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
 import fhtw.at.tourplanner.DAL.model.mapQuestModels.MapQuestModel;
 import fhtw.at.tourplanner.DAL.model.mapQuestModels.Route;
+import lombok.extern.log4j.Log4j2;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.IOException;
 
+@Log4j2
 public class MapQuestRepositoryImpl implements MapQuestRepository {
 
     private final MapQuestService service;
@@ -49,23 +51,35 @@ public class MapQuestRepositoryImpl implements MapQuestRepository {
     public Pair<String, Route> getRouteImage(TourModel tourModel) {
         try{
             var routeInfo = getRouteInfo(tourModel);
-            if(checkIfRouteSuccessful(routeInfo)){
+            var routeInfoChecked = checkIfRouteSuccessful(routeInfo);
+            if(routeInfoChecked.bObject){
                 var imageResponseBody = service.downloadImage(mapQuestKey, "800,600", routeInfo.getRoute().getSessionId(), routeInfo.getRoute().getBoundingBox().toString()).execute().body();
                 var filename = "tourImage_" + tourModel.getTourId() +"_.jpeg";
 
                 if(fileSystem.writeResponseBody(imageResponseBody, filename)){
                     return new Pair<>(filename, routeInfo.getRoute());
                 }
+            } else{
+                return new Pair<>(routeInfoChecked.aObject, null);
             }
         } catch (IOException e) {
+            log.warn("Issues with MapQuest Query [Error:"+e.getMessage()+ "]");
             e.printStackTrace();
+            return new Pair<>(e.getMessage(), null);
         }
         return null;
     }
 
-    private boolean checkIfRouteSuccessful(MapQuestModel route){
+    private Pair<String, Boolean> checkIfRouteSuccessful(MapQuestModel route) {
         if(route != null && route.getRoute().getSessionId() != null){
-            return true;
+            if(!route.getRoute().getFormattedTime().isEmpty()){
+                var split = route.getRoute().getFormattedTime().split(":");
+                var hours = Integer.parseInt(split[0]);
+                if(hours > 23) {
+                    return new Pair<>("Exceeding Tour Plan Timelimit of 23:59:59", false);
+                }
+            }
+            return new Pair<>("",true);
         }
         var errorMessage = route.getInfo().getMessages();
 
@@ -82,6 +96,6 @@ public class MapQuestRepositoryImpl implements MapQuestRepository {
         sb.append(errorMessage.get(i));
         String result = sb.toString();
 
-        throw new RuntimeException(result);
+        return new Pair<>(result, false);
     }
 }
