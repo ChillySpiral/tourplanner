@@ -173,8 +173,8 @@ public class TourTabViewModel {
         this.distance.setValue(String.format("%.1f", data.getTourDistance()) + "km");
         this.estimatedTime.setValue(data.getEstimatedTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
-        calculateChildfriendliness();
-        calculatePopularity();
+        Calculator.calculateChildfriendliness(data, logData);
+        Calculator.calculatePopularity(logData.size(), tourAppManager.getAllTourLogs().size());
     }
 
     private void updateImage(){
@@ -196,8 +196,8 @@ public class TourTabViewModel {
         logData.clear();
         logData.setAll(tourAppManager.getAllTourLogsForTour(data));
 
-        calculateChildfriendliness();
-        calculatePopularity();
+        childfriendliness.setValue(Calculator.calculateChildfriendliness(data, logData));
+        popularity.setValue(Calculator.calculatePopularity(tourAppManager.getAllTourLogs().size(), logData.size()));
     }
 
     public void editTourLogData(TourLog tourLog) {
@@ -221,10 +221,11 @@ public class TourTabViewModel {
         tourAppManager.deleteLog(tourItem);
         logData.remove(tourItem);
 
-        calculatePopularity();
-        calculateChildfriendliness();
+        childfriendliness.setValue(Calculator.calculateChildfriendliness(data, logData));
+        popularity.setValue(Calculator.calculatePopularity(tourAppManager.getAllTourLogs().size(), logData.size()));
     }
 
+    //ToDo: Remove and fix unit tests
     public void calculatePopularity() {
         List<TourLog> allLogs = tourAppManager.getAllTourLogs();
         List<TourLog> myLogs = tourAppManager.getAllTourLogsForTour(data);
