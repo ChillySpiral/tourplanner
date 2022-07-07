@@ -1,10 +1,10 @@
 package fhtw.at.tourplanner.BL.appManager.implementation;
 
 import fhtw.at.tourplanner.BL.appManager.TourAppManager;
+import fhtw.at.tourplanner.BL.calculator.Calculator;
 import fhtw.at.tourplanner.BL.jsonGenerator.JsonGenerator;
 import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
 import fhtw.at.tourplanner.BL.searchHelper.SearchHelper;
-import fhtw.at.tourplanner.DAL.DalFactory;
 import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
@@ -30,13 +30,16 @@ public class TourAppManagerImpl implements TourAppManager {
     private final JsonGenerator jsonGenerator;
     private final SearchHelper searchHelper;
 
-    public TourAppManagerImpl(ReportGenerator reportGenerator, MapQuestRepository mapQuestRepository, JsonGenerator jsonGenerator, TourDaoExtension tourModelDao, Dao<TourLog> tourLogDao, SearchHelper searchHelper){
+    private final Calculator calculator;
+
+    public TourAppManagerImpl(ReportGenerator reportGenerator, MapQuestRepository mapQuestRepository, JsonGenerator jsonGenerator, TourDaoExtension tourModelDao, Dao<TourLog> tourLogDao, SearchHelper searchHelper, Calculator calculator){
         this.tourModelDao = tourModelDao;
         this.tourLogDao = tourLogDao;
         this.reportGenerator = reportGenerator;
         this.mapQuestRepository = mapQuestRepository;
         this.jsonGenerator = jsonGenerator;
         this.searchHelper = searchHelper;
+        this.calculator = calculator;
     }
 
     @Override
@@ -214,6 +217,21 @@ public class TourAppManagerImpl implements TourAppManager {
         }
 
         return allTours;
+    }
+
+    @Override
+    public String calculatePopularity(TourModel tourModel) {
+        var allLogs = tourLogDao.getAll();
+        var tourLogsSize = allLogs.stream().filter(x -> x.getTourId() == tourModel.getTourId()).count();
+        var result = calculator.calculatePopularity(allLogs.size(), (int)tourLogsSize);
+        return result;
+    }
+
+    @Override
+    public String calculateChildFriendliness(TourModel tourModel) {
+        var allTourLogs = tourModelDao.getLogsForTour(tourModel);
+        var result = calculator.calculateChildFriendliness(tourModel, allTourLogs);
+        return result;
     }
 
     private boolean mapQuestQueryNecessary(TourModel newValue, TourModel oldValue){

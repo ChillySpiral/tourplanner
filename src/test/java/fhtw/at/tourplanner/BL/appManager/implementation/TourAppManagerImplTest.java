@@ -1,6 +1,7 @@
 package fhtw.at.tourplanner.BL.appManager.implementation;
 
 import fhtw.at.tourplanner.BL.appManager.TourAppManager;
+import fhtw.at.tourplanner.BL.calculator.Calculator;
 import fhtw.at.tourplanner.BL.jsonGenerator.JsonGenerator;
 import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
 import fhtw.at.tourplanner.BL.searchHelper.SearchHelper;
@@ -51,6 +52,9 @@ class TourAppManagerImplTest {
     @Mock
     SearchHelper searchHelper;
 
+    @Mock
+    Calculator calculator;
+
     private TourAppManager tourAppManager;
     private List<TourModel> tourModels;
 
@@ -58,7 +62,7 @@ class TourAppManagerImplTest {
 
     @BeforeEach
     private void initTourAppManager(){
-        tourAppManager = new TourAppManagerImpl(reportGenerator, mapQuestRepository, jsonGenerator, tourDao, tourLogDao, searchHelper);
+        tourAppManager = new TourAppManagerImpl(reportGenerator, mapQuestRepository, jsonGenerator, tourDao, tourLogDao, searchHelper, calculator);
     }
 
     @BeforeEach

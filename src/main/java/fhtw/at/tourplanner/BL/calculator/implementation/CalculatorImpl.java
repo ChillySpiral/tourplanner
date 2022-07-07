@@ -1,5 +1,6 @@
-package fhtw.at.tourplanner.BL.pdfGenerator.helper;
+package fhtw.at.tourplanner.BL.calculator.implementation;
 
+import fhtw.at.tourplanner.BL.calculator.Calculator;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
@@ -12,8 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Log4j2
-public class Calculator {
-    public static LocalTime calculateAverageTime(List<LocalTime> times){
+public class CalculatorImpl implements Calculator {
+    public LocalTime calculateAverageTime(List<LocalTime> times){
         if(times == null || times.isEmpty()) {
             log.info("Calculate average time failed because the list of values was null or empty.");
             return null;
@@ -27,7 +28,7 @@ public class Calculator {
         return LocalTime.ofNanoOfDay(nanoSum / (times.size()));
     }
 
-    public static Difficulty calculateAverageDifficulty(List<Difficulty> difficulties){
+    public Difficulty calculateAverageDifficulty(List<Difficulty> difficulties){
         if(difficulties == null || difficulties.isEmpty()) {
             log.info("Calculate average difficulty failed because the list of values was null or empty.");
             return null;
@@ -51,7 +52,7 @@ public class Calculator {
             }
         }
 
-        Double calculatedAverageDifficulty = Double.valueOf((difficultySum / (difficulties.size())));
+        var calculatedAverageDifficulty = (double) difficultySum / difficulties.size();
         var result = Math.round(calculatedAverageDifficulty);
 
         if(result == 0) return Difficulty.Beginner;
@@ -61,7 +62,7 @@ public class Calculator {
 
     }
 
-    public static Rating calculateAverageRating(List<Rating> ratings){
+    public Rating calculateAverageRating(List<Rating> ratings){
         if(ratings == null || ratings.isEmpty()) {
             log.info("Calculate average rating failed because the list of values was null or empty.");
             return null;
@@ -99,7 +100,7 @@ public class Calculator {
 
     }
 
-    public static String calculatePopularity(int allLogsSize, int tourLogSize) {
+    public String calculatePopularity(int allLogsSize, int tourLogSize) {
         double percentage;
 
         if(allLogsSize == 0) {
@@ -130,7 +131,7 @@ public class Calculator {
 
     }
 
-    public static String calculateChildfriendliness(TourModel data, List<TourLog> tourLogs) {
+    public String calculateChildFriendliness(TourModel data, List<TourLog> tourLogs) {
         if(data == null){
             log.warn("No tour data available. Data is null");
             return "Not enough data.";
@@ -141,8 +142,8 @@ public class Calculator {
             return "Not enough data.";
         }
 
-        Difficulty averageDifficulty = Calculator.calculateAverageDifficulty(tourLogs.stream().map(TourLog::getDifficulty).collect(Collectors.toList()));
-        LocalTime averageDuration = Calculator.calculateAverageTime(tourLogs.stream().map(TourLog::getTotalTime).collect(Collectors.toList()));
+        Difficulty averageDifficulty = this.calculateAverageDifficulty(tourLogs.stream().map(TourLog::getDifficulty).collect(Collectors.toList()));
+        LocalTime averageDuration = this.calculateAverageTime(tourLogs.stream().map(TourLog::getTotalTime).collect(Collectors.toList()));
 
         if(null == averageDifficulty || null == averageDuration) {
             log.warn("Could not calculate child-friendliness because average difficulty or average duration did not return any values. [ tourId: " + data.getTourId() + " ]");
@@ -161,7 +162,7 @@ public class Calculator {
             if(600 < distance)
                 friendlinessLevel--;
 
-            if(Difficulty.Intermediate == averageDifficulty)
+            if(Difficulty.Advanced == averageDifficulty)
                 friendlinessLevel--;
             else if(Difficulty.Expert == averageDifficulty)
                 friendlinessLevel-=2;
@@ -178,7 +179,7 @@ public class Calculator {
             if(60 < distance)
                 friendlinessLevel--;
 
-            if(Difficulty.Intermediate == averageDifficulty)
+            if(Difficulty.Advanced == averageDifficulty)
                 friendlinessLevel--;
             else if(Difficulty.Expert == averageDifficulty)
                 friendlinessLevel-=2;
@@ -195,7 +196,7 @@ public class Calculator {
             if(20 < distance)
                 friendlinessLevel--;
 
-            if(Difficulty.Intermediate == averageDifficulty)
+            if(Difficulty.Advanced == averageDifficulty)
                 friendlinessLevel--;
             else if(Difficulty.Expert == averageDifficulty)
                 friendlinessLevel-=2;

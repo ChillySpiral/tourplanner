@@ -9,10 +9,10 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
+import fhtw.at.tourplanner.BL.calculator.Calculator;
+import fhtw.at.tourplanner.BL.calculator.implementation.CalculatorImpl;
 import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
-import fhtw.at.tourplanner.BL.pdfGenerator.helper.Calculator;
 import fhtw.at.tourplanner.Configuration.AppConfiguration;
-import fhtw.at.tourplanner.DAL.DalFactory;
 import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
@@ -29,9 +29,12 @@ public class ReportGeneratorImpl implements ReportGenerator {
 
     private final AppConfiguration appConfiguration;
     private final FileSystem fileSystem;
-    public ReportGeneratorImpl(AppConfiguration appConfiguration, FileSystem fileSystem){
+
+    private final Calculator calculator;
+    public ReportGeneratorImpl(AppConfiguration appConfiguration, FileSystem fileSystem, Calculator calculator){
         this.appConfiguration = appConfiguration;
         this.fileSystem = fileSystem;
+        this.calculator = calculator;
     }
 
     @Override
@@ -144,21 +147,21 @@ public class ReportGeneratorImpl implements ReportGenerator {
 
             for (var tour: allTours) {
                 table.addCell(new Paragraph(tour.aObject.getTitle()).setMaxWidth(100));
-                var avgTime = Calculator.calculateAverageTime(tour.bObject.stream().map(TourLog::getTotalTime).collect(Collectors.toList()));
+                var avgTime = calculator.calculateAverageTime(tour.bObject.stream().map(TourLog::getTotalTime).collect(Collectors.toList()));
                 if(avgTime != null){
                     table.addCell(new Paragraph(avgTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))).setMaxWidth(150));
                 } else {
                     log.info("No average time could be calculated for tour [id:"+tour.aObject.getTourId()+"]");
                     table.addCell(new Paragraph("Not enough data").setMaxWidth(150));
                 }
-                var avgDifficulty = Calculator.calculateAverageDifficulty(tour.bObject.stream().map(TourLog::getDifficulty).collect(Collectors.toList()));
+                var avgDifficulty = calculator.calculateAverageDifficulty(tour.bObject.stream().map(TourLog::getDifficulty).collect(Collectors.toList()));
                 if(avgDifficulty != null){
                     table.addCell(new Paragraph(avgDifficulty.toString()).setMaxWidth(150));
                 } else {
                     log.info("No average difficulty could be calculated for tour [id:"+tour.aObject.getTourId()+"]");
                     table.addCell(new Paragraph("Not enough data").setMaxWidth(150));
                 }
-                var avgRating = Calculator.calculateAverageRating(tour.bObject.stream().map(TourLog::getRating).collect(Collectors.toList()));
+                var avgRating = calculator.calculateAverageRating(tour.bObject.stream().map(TourLog::getRating).collect(Collectors.toList()));
                 if(avgRating != null){
                     table.addCell(new Paragraph(avgRating.toString()).setMaxWidth(150));
                 } else {

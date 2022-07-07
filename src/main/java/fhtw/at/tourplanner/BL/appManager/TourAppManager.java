@@ -17,12 +17,11 @@ public interface TourAppManager {
     TourLog createLog(int tourId);
     void deleteLog(TourLog log);
     void updateLog(TourLog log);
-
     void generateTourReport(TourModel tourModel, File pdfFile);
     void generateSummaryReport(File pdfFile);
-
     void exportTour(File exportFile, TourModel tourModel);
     TourModel importTour(File importFile);
-
     List<TourModel> searchTours(String searchText);
+    String calculatePopularity(TourModel tourModel);
+    String calculateChildFriendliness(TourModel tourModel);
 }
