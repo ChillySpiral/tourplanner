@@ -29,4 +29,5 @@ module fhtw.at.tourplanner {
     exports fhtw.at.tourplanner.DAL.model.export;
     exports fhtw.at.tourplanner.DAL.model.enums;
     exports fhtw.at.tourplanner.DebugRunner;
+    exports fhtw.at.tourplanner.DAL.model.weatherModel;
 }

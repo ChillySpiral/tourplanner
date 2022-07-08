@@ -5,6 +5,7 @@ import fhtw.at.tourplanner.BL.calculator.Calculator;
 import fhtw.at.tourplanner.BL.jsonGenerator.JsonGenerator;
 import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
 import fhtw.at.tourplanner.BL.searchHelper.SearchHelper;
+import fhtw.at.tourplanner.BL.weather.WeatherRepository;
 import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
@@ -12,6 +13,8 @@ import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.export.exportTourModel;
 import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
+import fhtw.at.tourplanner.DAL.model.weatherModel.Condition;
+import fhtw.at.tourplanner.DAL.model.weatherModel.Current;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
@@ -32,7 +35,9 @@ public class TourAppManagerImpl implements TourAppManager {
 
     private final Calculator calculator;
 
-    public TourAppManagerImpl(ReportGenerator reportGenerator, MapQuestRepository mapQuestRepository, JsonGenerator jsonGenerator, TourDaoExtension tourModelDao, Dao<TourLog> tourLogDao, SearchHelper searchHelper, Calculator calculator){
+    private final WeatherRepository weatherRepository;
+
+    public TourAppManagerImpl(ReportGenerator reportGenerator, MapQuestRepository mapQuestRepository, JsonGenerator jsonGenerator, TourDaoExtension tourModelDao, Dao<TourLog> tourLogDao, SearchHelper searchHelper, Calculator calculator, WeatherRepository weatherRepository){
         this.tourModelDao = tourModelDao;
         this.tourLogDao = tourLogDao;
         this.reportGenerator = reportGenerator;
@@ -40,6 +45,7 @@ public class TourAppManagerImpl implements TourAppManager {
         this.jsonGenerator = jsonGenerator;
         this.searchHelper = searchHelper;
         this.calculator = calculator;
+        this.weatherRepository = weatherRepository;
     }
 
     @Override
@@ -94,7 +100,6 @@ public class TourAppManagerImpl implements TourAppManager {
                         tourModel.setTransportType(dbTour.getTransportType());
                         tourModel.setFrom(dbTour.getFrom());
                         tourModel.setTo(dbTour.getTo());
-                        throw new RuntimeException("Reverting Changes to (TransportType, From, To)\nReason: " + result.aObject);
                     }
                 }
 
@@ -231,6 +236,24 @@ public class TourAppManagerImpl implements TourAppManager {
         var allTourLogs = tourModelDao.getLogsForTour(tourModel);
         var result = calculator.calculateChildFriendliness(tourModel, allTourLogs);
         return result;
+    }
+
+    @Override
+    public Current getWeatherInfo(TourModel tourModel) {
+        var result = weatherRepository.getWeatherInfo(tourModel);
+        if(result != null){
+            log.info("Returning Weather Results for [name: "+tourModel.getTo()+"]");
+            return result.getCurrent();
+        }
+
+        log.info("Creating replacement Current for tour [id: "+tourModel.getTourId()+"]");
+        var replaceCurrent = new Current();
+        replaceCurrent.setTemp_c(0);
+        var replaceCondition = new Condition();
+        replaceCondition.setText("No weather data available.");
+        replaceCurrent.setCondition(replaceCondition);
+
+        return replaceCurrent;
     }
 
     private boolean mapQuestQueryNecessary(TourModel newValue, TourModel oldValue){

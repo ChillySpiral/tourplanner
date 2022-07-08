@@ -1,6 +1,7 @@
 package fhtw.at.tourplanner.DebugRunner;
 
 import fhtw.at.tourplanner.BL.BLFactory;
+import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.Rating;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
@@ -15,7 +16,8 @@ public class BLRunner {
         var test1 = false;
         var test2 = false;
         var test3 = false;
-        var test4 = true;
+        var test4 = false;
+        var test5 = true;
         var test = BLFactory.getTourAppManager();
         if(test1) {
 
@@ -45,6 +47,12 @@ public class BLRunner {
         }
         if(test4){
             test.searchTours("Expert");
+        }
+        if(test5){
+            var tour = new TourModel();
+            tour.setTo("Dublin");
+            var result = test.getWeatherInfo(tour);
+            System.out.println(result);
         }
     }
 }

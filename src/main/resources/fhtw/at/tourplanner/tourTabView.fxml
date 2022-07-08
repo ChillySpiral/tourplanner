@@ -86,6 +86,33 @@
                      </children></AnchorPane>
                </content>
             </Tab>
+            <Tab text="Weather">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Weather Info" />
+                              <Label text="Temperature:" GridPane.rowIndex="1" />
+                              <Label text="Condition:" GridPane.rowIndex="2" />
+                              <Button fx:id="weatherButton" mnemonicParsing="false" text="Check" GridPane.columnIndex="1" onAction="#getWeatherInfo"/>
+                              <TextField fx:id="weatherTemperature" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="weatherCondition" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
             </tabs>
         </TabPane>
         <Label text="Title: " />

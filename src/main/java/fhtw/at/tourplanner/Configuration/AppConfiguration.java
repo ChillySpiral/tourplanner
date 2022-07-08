@@ -13,6 +13,7 @@ public class AppConfiguration {
     private String datasourcePassword;
     private String imageFolder;
     private String apiKey;
+    private String weatherKey;
 
     public static AppConfiguration fromProperties(Properties appProps) {
         return AppConfiguration.builder()
@@ -21,6 +22,7 @@ public class AppConfiguration {
                 .datasourceUsername(appProps.getProperty("datasource.username"))
                 .datasourcePassword(appProps.getProperty("datasource.password"))
                 .apiKey(appProps.getProperty("api.key"))
+                .weatherKey(appProps.getProperty("weather.key"))
                 .build();
     }
 }

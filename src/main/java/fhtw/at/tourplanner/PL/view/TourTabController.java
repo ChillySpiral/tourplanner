@@ -85,6 +85,15 @@ public class TourTabController {
     @FXML
     private ProgressBar progressBar;
 
+    @FXML
+    private TextField weatherTemperature;
+
+    @FXML
+    private TextField weatherCondition;
+
+    @FXML
+    private Button weatherButton;
+
     private final TourTabViewModel tourTabViewModel;
 
     public TourTabController(TourTabViewModel tourTabViewModel) {
@@ -105,7 +114,7 @@ public class TourTabController {
         detailsEstimatedTime.textProperty().bind(tourTabViewModel.estimatedTimeProperty());
         detailsDistance.textProperty().bind(tourTabViewModel.distanceProperty());
         popularity.textProperty().bind(tourTabViewModel.popularityProperty());
-        childfriendliness.textProperty().bind(tourTabViewModel.childfriendlinessProperty());
+        childfriendliness.textProperty().bind(tourTabViewModel.childFriendlinessProperty());
         progressBar.visibleProperty().bind(tourTabViewModel.runningProperty());
         progressBar.setProgress(-1);
 
@@ -118,6 +127,10 @@ public class TourTabController {
 
         image.fitHeightProperty().bind(imageAnchorPane.heightProperty());
         image.fitWidthProperty().bind(imageAnchorPane.widthProperty());
+
+        weatherTemperature.textProperty().bind(tourTabViewModel.weatherTemperature());
+        weatherCondition.textProperty().bind(tourTabViewModel.weatherCondition());
+        weatherButton.disableProperty().bind(Bindings.isEmpty(detailsTo.textProperty()));
     }
 
     public void editTour(ActionEvent actionEvent) {
@@ -208,4 +221,7 @@ public class TourTabController {
         });
     }
 
+    public void getWeatherInfo(ActionEvent actionEvent) {
+        tourTabViewModel.checkWeather();
+    }
 }

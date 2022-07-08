@@ -5,6 +5,7 @@ import fhtw.at.tourplanner.BL.calculator.Calculator;
 import fhtw.at.tourplanner.BL.jsonGenerator.JsonGenerator;
 import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
 import fhtw.at.tourplanner.BL.searchHelper.SearchHelper;
+import fhtw.at.tourplanner.BL.weather.WeatherRepository;
 import fhtw.at.tourplanner.DAL.dao.Dao;
 import fhtw.at.tourplanner.DAL.dao.extended.TourDaoExtension;
 import fhtw.at.tourplanner.DAL.mapQuestAPI.MapQuestRepository;
@@ -55,6 +56,9 @@ class TourAppManagerImplTest {
     @Mock
     Calculator calculator;
 
+    @Mock
+    WeatherRepository weatherRepository;
+
     private TourAppManager tourAppManager;
     private List<TourModel> tourModels;
 
@@ -62,7 +66,7 @@ class TourAppManagerImplTest {
 
     @BeforeEach
     private void initTourAppManager(){
-        tourAppManager = new TourAppManagerImpl(reportGenerator, mapQuestRepository, jsonGenerator, tourDao, tourLogDao, searchHelper, calculator);
+        tourAppManager = new TourAppManagerImpl(reportGenerator, mapQuestRepository, jsonGenerator, tourDao, tourLogDao, searchHelper, calculator, weatherRepository);
     }
 
     @BeforeEach

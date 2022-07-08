@@ -2,6 +2,7 @@ package fhtw.at.tourplanner.BL.appManager;
 
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import fhtw.at.tourplanner.DAL.model.weatherModel.Current;
 
 import java.io.File;
 import java.util.List;
@@ -24,4 +25,5 @@ public interface TourAppManager {
     List<TourModel> searchTours(String searchText);
     String calculatePopularity(TourModel tourModel);
     String calculateChildFriendliness(TourModel tourModel);
+    Current getWeatherInfo(TourModel tourModel);
 }

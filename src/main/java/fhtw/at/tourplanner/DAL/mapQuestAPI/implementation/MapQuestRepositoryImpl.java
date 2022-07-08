@@ -76,9 +76,11 @@ public class MapQuestRepositoryImpl implements MapQuestRepository {
                 var hours = Integer.parseInt(split[0]);
                 if(hours > 23) {
                     return new Pair<>("Exceeding Tour Plan Timelimit of 23:59:59", false);
+                } else{
+                    return new Pair<>("",true);
                 }
             }
-            return new Pair<>("",true);
+            return new Pair<>("",false);
         }
         var errorMessage = route.getInfo().getMessages();
 

@@ -1,12 +1,11 @@
 package fhtw.at.tourplanner.PL.viewmodel;
 
 import fhtw.at.tourplanner.BL.appManager.TourAppManager;
-import fhtw.at.tourplanner.BL.calculator.implementation.CalculatorImpl;
 import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
-import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.TransportType;
+import fhtw.at.tourplanner.DAL.model.weatherModel.Current;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,16 +17,14 @@ import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Log4j2
 public class TourTabViewModel {
 
     @Getter
     private TourModel data;
+    private Current weatherInfo;
     private volatile boolean isInitialValue = false;
     private final StringProperty title = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
@@ -39,16 +36,19 @@ public class TourTabViewModel {
     private final StringProperty distance = new SimpleStringProperty();
     private final TourAppManager tourAppManager;
     private final ObservableList<TourLog> logData = FXCollections.observableArrayList();
-
     private final StringProperty popularity = new SimpleStringProperty();
-    private final StringProperty childfriendliness = new SimpleStringProperty();
+    private final StringProperty childFriendliness = new SimpleStringProperty();
+    private final StringProperty weatherTemperature = new SimpleStringProperty();
+    private final StringProperty weatherCondition = new SimpleStringProperty();
     private final TourUpdateService tourUpdateService;
-
+    private final TourWeatherService tourWeatherService;
 
     public TourTabViewModel(TourAppManager tourAppManager) {
         this.tourAppManager = tourAppManager;
         this.tourUpdateService = new TourUpdateService();
+        this.tourWeatherService = new TourWeatherService();
         registerListenerForTourUpdateService();
+        registerListenerForTourWeatherService();
     }
 
     public String getTitle() {
@@ -97,8 +97,8 @@ public class TourTabViewModel {
     public StringProperty popularityProperty() {
         return popularity;
     }
-    public StringProperty childfriendlinessProperty() {
-        return childfriendliness;
+    public StringProperty childFriendlinessProperty() {
+        return childFriendliness;
     }
 
     public ObjectProperty<TransportType> transportTypeProperty() {
@@ -109,6 +109,12 @@ public class TourTabViewModel {
     }
     public StringProperty distanceProperty() {
         return distance;
+    }
+    public StringProperty weatherTemperature(){
+        return weatherTemperature;
+    }
+    public StringProperty weatherCondition(){
+        return weatherCondition;
     }
     public ReadOnlyBooleanProperty runningProperty() {
         return tourUpdateService.runningProperty();
@@ -136,8 +142,10 @@ public class TourTabViewModel {
             estimatedTime.setValue(null);
             distance.setValue(null);
             logData.clear();
+            weatherCondition.setValue(null);
+            weatherTemperature.setValue(null);
             popularity.setValue(null);
-            childfriendliness.setValue(null);
+            childFriendliness.setValue(null);
         } else {
             title.setValue(data.getTitle());
             description.setValue(data.getDescription());
@@ -146,6 +154,8 @@ public class TourTabViewModel {
             transportTypeProperty().setValue(data.getTransportType());
             estimatedTime.setValue(data.getEstimatedTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
             distance.setValue(String.format("%.1f", data.getTourDistance()) + "km");
+            weatherCondition.setValue(null);
+            weatherTemperature.setValue(null);
             updateImage();
             updateTourLogData();
         }
@@ -162,6 +172,11 @@ public class TourTabViewModel {
         updateTourService();
     }
 
+    public void checkWeather(){
+        log.info("Started weather checking for destination [name: "+data.getTo()+"]");
+        updateWeatherService();
+    }
+
     private void waitToUpdateUi(){
 
         updateImage();
@@ -173,8 +188,18 @@ public class TourTabViewModel {
         this.distance.setValue(String.format("%.1f", data.getTourDistance()) + "km");
         this.estimatedTime.setValue(data.getEstimatedTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
+        this.weatherInfo = null;
+        this.weatherTemperature.setValue("");
+        this.weatherCondition.setValue("");
+
         tourAppManager.calculateChildFriendliness(data);
         tourAppManager.calculatePopularity(data);
+    }
+    private void waitToUpdateWeather(){
+        if(weatherInfo != null){
+            this.weatherCondition.setValue(weatherInfo.getCondition().getText());
+            this.weatherTemperature.setValue(String.valueOf(weatherInfo.getTemp_c()));
+        }
     }
 
     private void updateImage(){
@@ -196,7 +221,7 @@ public class TourTabViewModel {
         logData.clear();
         logData.setAll(tourAppManager.getAllTourLogsForTour(data));
 
-        childfriendliness.setValue(tourAppManager.calculateChildFriendliness(data));
+        childFriendliness.setValue(tourAppManager.calculateChildFriendliness(data));
         popularity.setValue(tourAppManager.calculatePopularity(data));
     }
 
@@ -221,12 +246,15 @@ public class TourTabViewModel {
         tourAppManager.deleteLog(tourItem);
         logData.remove(tourItem);
 
-        childfriendliness.setValue(tourAppManager.calculateChildFriendliness(data));
+        childFriendliness.setValue(tourAppManager.calculateChildFriendliness(data));
         popularity.setValue(tourAppManager.calculatePopularity(data));
     }
 
     public void updateTourService() {
         tourUpdateService.restart();
+    }
+    public void updateWeatherService(){
+        tourWeatherService.restart();
     }
 
     private void registerListenerForTourUpdateService(){
@@ -237,8 +265,21 @@ public class TourTabViewModel {
             }
         });
         tourUpdateService.runningProperty().addListener((observable, oldValue, newValue) ->{
-            if(newValue == false){
+            if(!newValue){
                 waitToUpdateUi();
+            }
+        });
+    }
+    private void registerListenerForTourWeatherService(){
+        tourWeatherService.exceptionProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, newValue.getMessage());
+                alert.showAndWait();
+            }
+        });
+        tourWeatherService.runningProperty().addListener((observable, oldValue, newValue) ->{
+            if(!newValue){
+                waitToUpdateWeather();
             }
         });
     }
@@ -248,6 +289,19 @@ public class TourTabViewModel {
             return new Task<>() {
                 protected String call() throws Exception {
                     tourAppManager.updateTour(data);
+                    return "DONE";
+                }
+            };
+        }
+    }
+
+    public class TourWeatherService extends Service<String> {
+        protected Task<String> createTask() {
+            return new Task<>() {
+                protected String call() throws Exception {
+                    log.info("Starting Weather task for tour [id: "+data.getTourId()+" ]");
+                    var result = tourAppManager.getWeatherInfo(data);
+                    weatherInfo = result;
                     return "DONE";
                 }
             };

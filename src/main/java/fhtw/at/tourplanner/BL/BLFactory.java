@@ -10,6 +10,8 @@ import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
 import fhtw.at.tourplanner.BL.pdfGenerator.implementation.ReportGeneratorImpl;
 import fhtw.at.tourplanner.BL.searchHelper.SearchHelper;
 import fhtw.at.tourplanner.BL.searchHelper.implementation.SearchHelperImpl;
+import fhtw.at.tourplanner.BL.weather.WeatherRepository;
+import fhtw.at.tourplanner.BL.weather.implementation.WeatherRepositoryImpl;
 import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
 import fhtw.at.tourplanner.DAL.DalFactory;
 
@@ -22,9 +24,11 @@ public final class BLFactory {
 
     private static Calculator calculator;
 
+    private  static WeatherRepository weatherRepository;
+
     public static TourAppManager getTourAppManager(){
         if(tourAM == null){
-            tourAM = new TourAppManagerImpl(getReportGenerator(), DalFactory.GetMapQuestRepository(), getJsonGenerator(), DalFactory.GetTourModelDao(), DalFactory.GetTourLogDao(), getSearchHelper(), getCalculator());
+            tourAM = new TourAppManagerImpl(getReportGenerator(), DalFactory.GetMapQuestRepository(), getJsonGenerator(), DalFactory.GetTourModelDao(), DalFactory.GetTourLogDao(), getSearchHelper(), getCalculator(), getWeatherRepository());
         }
         return tourAM;
     }
@@ -55,5 +59,12 @@ public final class BLFactory {
             calculator = new CalculatorImpl();
         }
         return calculator;
+    }
+
+    public static WeatherRepository getWeatherRepository(){
+        if(weatherRepository == null){
+            weatherRepository = new WeatherRepositoryImpl(AppConfigurationLoader.getInstance().getAppConfiguration());
+        }
+        return weatherRepository;
     }
 }
