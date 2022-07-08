@@ -37,18 +37,10 @@ public class CalculatorImpl implements Calculator {
 
         for (var difficulty : difficulties) {
             switch (difficulty){
-                case Beginner -> {
-                    difficultySum += 0;
-                }
-                case Intermediate -> {
-                    difficultySum += 1;
-                }
-                case Advanced -> {
-                    difficultySum += 2;
-                }
-                case Expert -> {
-                    difficultySum += 3;
-                }
+                case Beginner -> difficultySum += 0;
+                case Intermediate -> difficultySum += 1;
+                case Advanced -> difficultySum += 2;
+                case Expert -> difficultySum += 3;
             }
         }
 
@@ -71,25 +63,15 @@ public class CalculatorImpl implements Calculator {
 
         for (var rating : ratings) {
             switch (rating){
-                case Terrible -> {
-                    ratingSum += 0;
-                }
-                case Bad -> {
-                    ratingSum += 1;
-                }
-                case Neutral -> {
-                    ratingSum += 2;
-                }
-                case Good -> {
-                    ratingSum += 3;
-                }
-                case Perfect -> {
-                    ratingSum += 4;
-                }
+                case Terrible -> ratingSum += 0;
+                case Bad -> ratingSum += 1;
+                case Neutral -> ratingSum += 2;
+                case Good -> ratingSum += 3;
+                case Perfect -> ratingSum += 4;
             }
         }
 
-        Double calculatedAverageRating = Double.valueOf((ratingSum / (ratings.size())));
+        var calculatedAverageRating = (double) (ratingSum / (ratings.size()));
         var result = Math.round(calculatedAverageRating);
 
         if(result == 0) return Rating.Terrible;
@@ -207,17 +189,12 @@ public class CalculatorImpl implements Calculator {
                 friendlinessLevel--;
         }
 
-        switch(friendlinessLevel){
-            case 6:
-            case 5: return "Child friendly.";
-            case 4:
-            case 3: return "For advanced or older children.";
-            case 2:
-            case 1:
-            case 0: return "Not suitable for children.";
-
-        }
-    return "Not enough data";
+        return switch (friendlinessLevel) {
+            case 6, 5 -> "Child friendly.";
+            case 4, 3 -> "For advanced or older children.";
+            case 2, 1, 0 -> "Not suitable for children.";
+            default -> "Not enough data";
+        };
     }
 
 }

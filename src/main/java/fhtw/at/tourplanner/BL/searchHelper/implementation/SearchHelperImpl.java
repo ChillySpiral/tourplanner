@@ -34,18 +34,17 @@ public class SearchHelperImpl implements SearchHelper {
             Predicate<TourModel> transportTypePredicate = d -> d.getTransportType().toString().toLowerCase().contains(search.toLowerCase());
 
 
-            List<Integer> tmpResult = new ArrayList<>();
+            List<Integer> tmpResult;
             tmpResult = tourModelList.stream()
                     .filter((titlePredicateNull.and(titlePredicate)).or(descriptionPredicateNull.and(descriptionPredicate)).or(fromPredicateNull.and(fromPredicate)).or(toPredicateNull.and(toPredicate)).or(transportTypePredicateNull.and(transportTypePredicate)))
                     .map(TourModel::getTourId)
                     .collect(Collectors.toList());
 
             if(!result.isEmpty()){
-                List<Integer> tourIds = Stream.of(result, tmpResult)
+                result = Stream.of(result, tmpResult)
                         .flatMap(List::stream)
                         .distinct()
                         .collect(Collectors.toList());
-                result = tourIds;
             }else{
                 result = tmpResult;
             }
@@ -70,18 +69,17 @@ public class SearchHelperImpl implements SearchHelper {
             Predicate<TourLog> difficultyPredicate = d -> d.getDifficulty().toString().toLowerCase().contains(search.toLowerCase());
             Predicate<TourLog> ratingPredicate = d -> d.getRating().toString().toLowerCase().contains(search.toLowerCase());
 
-            List<Integer> tmpResult = new ArrayList<>();
+            List<Integer> tmpResult;
             tmpResult = tourLogList.stream()
                     .filter((commentPredicateNull.and(commentPredicate)).or(difficultyPredicateNull.and(difficultyPredicate)).or(ratingPredicateNull.and(ratingPredicate)))
                     .map(TourLog::getTourId)
                     .collect(Collectors.toList());
 
             if(!result.isEmpty()){
-                List<Integer> tourIds = Stream.of(result, tmpResult)
+                result = Stream.of(result, tmpResult)
                         .flatMap(List::stream)
                         .distinct()
                         .collect(Collectors.toList());
-                result = tourIds;
             }else{
                 result = tmpResult;
             }

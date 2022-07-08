@@ -18,7 +18,6 @@ public class JsonGeneratorImpl implements JsonGenerator {
     public exportTourModel readJSON(File importFile) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        exportTourModel tour = mapper.readValue(importFile, exportTourModel.class);
-        return tour;
+        return mapper.readValue(importFile, exportTourModel.class);
     }
 }

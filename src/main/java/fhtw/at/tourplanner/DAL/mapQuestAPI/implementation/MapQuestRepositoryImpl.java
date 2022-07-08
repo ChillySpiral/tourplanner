@@ -70,33 +70,36 @@ public class MapQuestRepositoryImpl implements MapQuestRepository {
     }
 
     private Pair<String, Boolean> checkIfRouteSuccessful(MapQuestModel route) {
-        if(route != null && route.getRoute().getSessionId() != null){
-            if(!route.getRoute().getFormattedTime().isEmpty()){
-                var split = route.getRoute().getFormattedTime().split(":");
-                var hours = Integer.parseInt(split[0]);
-                if(hours > 23) {
-                    return new Pair<>("Exceeding Tour Plan Timelimit of 23:59:59", false);
+        if(route != null) {
+            if (route.getRoute() != null) {
+                if (route.getRoute().getRouteError().getErrorCode().equals("-400")) {
+                    return new Pair<>(null, true);
                 } else{
-                    return new Pair<>("",true);
+                    var routeErrorMessage = route.getRoute().getRouteError().getMessage();
+                    var routeInfoMessage = route.getInfo().getMessages();
+
+                    if(!routeErrorMessage.isEmpty())
+                        routeInfoMessage.add(routeErrorMessage);
+
+                    if(!routeInfoMessage.isEmpty()) {
+                        String breaker = "\n";
+                        StringBuilder sb = new StringBuilder();
+
+                        int i = 0;
+                        while (i < routeInfoMessage.size() - 1) {
+                            sb.append(routeInfoMessage.get(i));
+                            sb.append(breaker);
+                            i++;
+                        }
+                        sb.append(routeInfoMessage.get(i));
+                        String result = sb.toString();
+
+                        return new Pair<>(result, false);
+                    }
                 }
             }
-            return new Pair<>("",false);
         }
-        var errorMessage = route.getInfo().getMessages();
+        return new Pair<>("Unknown Route Issue", false);
 
-        String breaker = "\n";
-        StringBuilder sb = new StringBuilder();
-
-        int i = 0;
-        while (i < errorMessage.size() - 1)
-        {
-            sb.append(errorMessage.get(i));
-            sb.append(breaker);
-            i++;
-        }
-        sb.append(errorMessage.get(i));
-        String result = sb.toString();
-
-        return new Pair<>(result, false);
     }
 }

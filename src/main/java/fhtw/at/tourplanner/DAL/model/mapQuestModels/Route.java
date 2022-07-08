@@ -19,4 +19,8 @@ public class Route {
     @Getter
     @Setter
     private BoundingBoxMapQuest boundingBox;
+
+    @Getter
+    @Setter
+    private RouteError routeError;
 }

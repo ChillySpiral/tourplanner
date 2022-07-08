@@ -13,14 +13,16 @@ import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.export.exportTourModel;
 import fhtw.at.tourplanner.DAL.model.fileSystem.Pair;
+import fhtw.at.tourplanner.DAL.model.mapQuestModels.Route;
 import fhtw.at.tourplanner.DAL.model.weatherModel.Condition;
 import fhtw.at.tourplanner.DAL.model.weatherModel.Current;
+import fhtw.at.tourplanner.exceptions.UserFriendlyException;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Log4j2
@@ -75,9 +77,11 @@ public class TourAppManagerImpl implements TourAppManager {
         tourModelDao.delete(tourModel);
     }
 
+    @SneakyThrows
     @Override
     public void updateTour(TourModel tourModel) {
-
+        boolean reverted = false;
+        Pair<String, Route> revertResult = null;
         var dbTour = getTour(tourModel.getTourId());
 
         if(dbTour == null) {
@@ -88,7 +92,7 @@ public class TourAppManagerImpl implements TourAppManager {
 
                 var result = mapQuestRepository.getRouteImage(tourModel);
                 if (result != null && result.bObject != null) {
-                    log.debug("Result succesful");
+                    log.debug("Result successful");
                     tourModel.setTourDistance(Double.parseDouble(result.bObject.getDistance()));
                     tourModel.setEstimatedTime(LocalTime.parse(result.bObject.getFormattedTime()));
                     tourModel.setImageFilename(result.aObject);
@@ -97,15 +101,20 @@ public class TourAppManagerImpl implements TourAppManager {
                         log.error("Unknown Error with MapQuest Query");
                         throw new RuntimeException("Unknown Error when calculating Route");
                     } else{
+                        log.info("Reverting changes for Transport Type, From, To for Tour [id: "+dbTour.getTourId()+"]");
                         tourModel.setTransportType(dbTour.getTransportType());
                         tourModel.setFrom(dbTour.getFrom());
                         tourModel.setTo(dbTour.getTo());
+                        reverted = true;
+                        revertResult = result;
                     }
                 }
 
         }
 
         tourModelDao.update(tourModel);
+        if(reverted)
+            throw new UserFriendlyException("Reverted changes Transport Type, To, From because:\n" + revertResult.aObject);
     }
 
     @Override
@@ -210,15 +219,10 @@ public class TourAppManagerImpl implements TourAppManager {
         List<Integer> tourIds = Stream.of(tourSearchResult, logSearchResult)
                 .flatMap(List::stream)
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
 
-        Set<Integer> ids = new HashSet<Integer>(tourIds);
-        Iterator<TourModel> it = allTours.iterator();
-        while (it.hasNext()) {
-            if (!ids.contains(it.next().getTourId())) {
-                it.remove();
-            }
-        }
+        Set<Integer> ids = new HashSet<>(tourIds);
+        allTours.removeIf(tourModel -> !ids.contains(tourModel.getTourId()));
 
         return allTours;
     }
@@ -227,15 +231,13 @@ public class TourAppManagerImpl implements TourAppManager {
     public String calculatePopularity(TourModel tourModel) {
         var allLogs = tourLogDao.getAll();
         var tourLogsSize = allLogs.stream().filter(x -> x.getTourId() == tourModel.getTourId()).count();
-        var result = calculator.calculatePopularity(allLogs.size(), (int)tourLogsSize);
-        return result;
+        return calculator.calculatePopularity(allLogs.size(), (int)tourLogsSize);
     }
 
     @Override
     public String calculateChildFriendliness(TourModel tourModel) {
         var allTourLogs = tourModelDao.getLogsForTour(tourModel);
-        var result = calculator.calculateChildFriendliness(tourModel, allTourLogs);
-        return result;
+        return calculator.calculateChildFriendliness(tourModel, allTourLogs);
     }
 
     @Override
@@ -266,10 +268,7 @@ public class TourAppManagerImpl implements TourAppManager {
         if(oldValue.getTo() == null || oldValue.getFrom() == null || oldValue.getTransportType() == null)
             return true;
 
-        if(newValue.getFrom() == oldValue.getFrom() && newValue.getTo() == oldValue.getTo() && newValue.getTransportType() == oldValue.getTransportType())
-            return false;
-
-        return true;
+        return !newValue.getFrom().equals(oldValue.getFrom()) || !newValue.getTo().equals(oldValue.getTo()) || newValue.getTransportType() != oldValue.getTransportType();
     }
 
 }
