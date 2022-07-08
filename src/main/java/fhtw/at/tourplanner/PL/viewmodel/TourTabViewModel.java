@@ -183,7 +183,7 @@ public class TourTabViewModel {
             Image image = new Image(new File(path).toURI().toString());
             imageProperty.setValue(image);
         }else{
-            log.warn("Image could not be updated because filename was null.");
+            log.info("Image could not be updated because filename was null.");
             imageProperty.setValue(null);
         }
     }

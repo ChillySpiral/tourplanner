@@ -20,7 +20,6 @@ public class ConnectionManager {
                 dbConnection = DriverManager.getConnection(getAppConfiguration().getDatasourceUrl(), getAppConfiguration().getDatasourceUsername(), getAppConfiguration().getDatasourcePassword());
             } catch(SQLException e){
                 log.fatal("Connection to the database could not be established [ error: " + e.getMessage() + " ]");
-                e.printStackTrace();
             }
         }
         return dbConnection;

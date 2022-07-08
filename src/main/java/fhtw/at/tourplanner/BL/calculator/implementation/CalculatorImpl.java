@@ -104,7 +104,7 @@ public class CalculatorImpl implements Calculator {
         double percentage;
 
         if(allLogsSize == 0) {
-            log.warn("Could not calculate popularity because there are no logs in existence.");
+            log.info("Could not calculate popularity because there are no logs in existence.");
             percentage = 0;
         }
         else
@@ -133,12 +133,12 @@ public class CalculatorImpl implements Calculator {
 
     public String calculateChildFriendliness(TourModel data, List<TourLog> tourLogs) {
         if(data == null){
-            log.warn("No tour data available. Data is null");
+            log.info("No tour data available. Data is null");
             return "Not enough data.";
         }
 
         if(null == tourLogs || tourLogs.isEmpty()) {
-            log.warn("Could not calculate child-friendliness because there exist no logs for this tour. [ tourId: " + data.getTourId() + " ]");
+            log.info("Could not calculate child-friendliness because there exist no logs for this tour. [ tourId: " + data.getTourId() + " ]");
             return "Not enough data.";
         }
 
@@ -146,7 +146,7 @@ public class CalculatorImpl implements Calculator {
         LocalTime averageDuration = this.calculateAverageTime(tourLogs.stream().map(TourLog::getTotalTime).collect(Collectors.toList()));
 
         if(null == averageDifficulty || null == averageDuration) {
-            log.warn("Could not calculate child-friendliness because average difficulty or average duration did not return any values. [ tourId: " + data.getTourId() + " ]");
+            log.info("Could not calculate child-friendliness because average difficulty or average duration did not return any values. [ tourId: " + data.getTourId() + " ]");
             return "Not enough data.";
         }
 

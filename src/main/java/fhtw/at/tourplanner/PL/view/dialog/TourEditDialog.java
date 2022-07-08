@@ -36,8 +36,7 @@ public class TourEditDialog extends Dialog<TourModel> {
             });
 
         } catch (IOException e) {
-            log.warn("Tour Edit Dialog failed. [ error: " + e.getMessage() + " ]");
-            e.printStackTrace();
+            log.error("Tour Edit Dialog failed. [ error: " + e.getMessage() + " ]");
         }
     }
 }

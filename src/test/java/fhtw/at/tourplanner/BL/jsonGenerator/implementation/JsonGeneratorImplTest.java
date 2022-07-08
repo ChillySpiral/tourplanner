@@ -69,7 +69,6 @@ class JsonGeneratorImplTest {
         try{
             jsonGen.writeJSON(testFile, testModel);
         } catch(Exception e){
-            e.printStackTrace();
             fail();
         }
 
@@ -79,7 +78,6 @@ class JsonGeneratorImplTest {
         try{
             result = jsonGen.readJSON(testFile);
         } catch(Exception e){
-            e.printStackTrace();
             fail();
         }
 

@@ -54,7 +54,7 @@ public class TourAppManagerImpl implements TourAppManager {
         if(result.isPresent()){
             return result.get();
         }
-        log.warn("Get TourModel [Id: " + Id + " ] failed because the tour does not exist.");
+        log.error("Get TourModel [Id: " + Id + " ] failed because the tour does not exist.");
         return null;
     }
 
@@ -137,7 +137,7 @@ public class TourAppManagerImpl implements TourAppManager {
             reportGenerator.generateReport(tour, logs,allLogsSize ,pdfFile);
         }
         else
-            log.warn("Generate tour report failed because getTour( [ Id: " + tourModel.getTourId() + " ] returned null");
+            log.error("Generate tour report failed because getTour( [ Id: " + tourModel.getTourId() + " ] returned null");
     }
 
     @Override
@@ -161,8 +161,7 @@ public class TourAppManagerImpl implements TourAppManager {
         try{
             jsonGenerator.writeJSON(exportFile, export);
         } catch(Exception e){
-            log.warn("Export of Tour with [Id:" + tourModel.getTourId() + " ] failed. [ error: " + e.getMessage() + " ]");
-            e.printStackTrace();
+            log.error("Export of Tour with [Id:" + tourModel.getTourId() + " ] failed. [ error: " + e.getMessage() + " ]");
         }
     }
 
@@ -190,8 +189,7 @@ public class TourAppManagerImpl implements TourAppManager {
             return newTour;
 
         } catch(Exception e){
-            log.warn("Import Tour from [file: "+ importFile.getName() +" ] failed. [ error: " + e.getMessage() + " ]");
-            e.printStackTrace();
+            log.error("Import Tour from [file: "+ importFile.getName() +" ] failed. [ error: " + e.getMessage() + " ]");
             return null;
         }
     }

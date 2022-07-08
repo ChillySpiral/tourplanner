@@ -3,10 +3,12 @@ package fhtw.at.tourplanner.DAL.FileSystem.implementation;
 import fhtw.at.tourplanner.Configuration.AppConfiguration;
 import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
 import fhtw.at.tourplanner.DAL.model.TourModel;
+import lombok.extern.log4j.Log4j2;
 import okhttp3.ResponseBody;
 
 import java.io.*;
 
+@Log4j2
 public class FileSystemImpl implements FileSystem {
 
     public final String path;
@@ -42,6 +44,7 @@ public class FileSystemImpl implements FileSystem {
 
                 return true;
             } catch (IOException e) {
+                log.error("Writing image to system failed [ error:"+e.getMessage()+ "]");
                 return false;
             } finally {
                 if (inputStream != null) {
@@ -53,6 +56,7 @@ public class FileSystemImpl implements FileSystem {
                 }
             }
         } catch (IOException e) {
+            log.error("Writing image to system failed [ error:"+e.getMessage()+ "]");
             return false;
         }
     }
@@ -73,15 +77,17 @@ public class FileSystemImpl implements FileSystem {
 
         String[] fileNameList = directory.list();
 
-        if(fileNameList == null)
+        if(fileNameList == null) {
+            log.info("No images found on system");
             return null;
-
+        }
         for (var image : fileNameList) {
             var tmpOutTourId = getTourIdFromImage(image);
             if(tourModel.getTourId() == tmpOutTourId){
                 return image;
             }
         }
+        log.info("Image for tour [ id: "+tourModel.getTourId()+"] not found");
         return null;
     }
 
@@ -91,7 +97,7 @@ public class FileSystemImpl implements FileSystem {
             var tourId = Integer.parseInt(props[1]);
             return tourId;
         } catch(Exception e){
-            e.printStackTrace();
+            log.error("Getting TourId from Image [ file: "+fileName+"] failed [ error: "+e.getMessage()+" ]");
             return -1;
         }
     }

@@ -42,7 +42,7 @@ public class MapQuestRepositoryImpl implements MapQuestRepository {
             result = service.getRouteInfo(mapQuestKey, tourModel.getFrom(), tourModel.getTo(), "k", TransportTypeConverter.Convert(tourModel.getTransportType()).toString()).execute().body();
             return result;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Map Quest Get Route for tour [id: "+tourModel.getTourId()+"] failed [error: "+e.getMessage()+"]");
         }
         return null;
     }
@@ -63,8 +63,7 @@ public class MapQuestRepositoryImpl implements MapQuestRepository {
                 return new Pair<>(routeInfoChecked.aObject, null);
             }
         } catch (IOException e) {
-            log.warn("Issues with MapQuest Query [Error:"+e.getMessage()+ "]");
-            e.printStackTrace();
+            log.error("Issues with MapQuest Query [Error:"+e.getMessage()+ "]");
             return new Pair<>(e.getMessage(), null);
         }
         return null;

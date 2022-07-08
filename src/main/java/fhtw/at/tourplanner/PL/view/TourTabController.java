@@ -156,7 +156,7 @@ public class TourTabController {
             if(!result.getDuration().isEmpty())
                 newTourLog.setTotalTime(LocalTime.parse(result.getDuration(), DateTimeFormatter.ISO_LOCAL_TIME));
             else {
-                log.warn("Duration was empty for new log [id:"+tourLog.getLogId()+" ] in addNewLog. ");
+                log.info("Duration was empty for new log [id:"+tourLog.getLogId()+" ] in addNewLog. ");
                 newTourLog.setTotalTime(LocalTime.of(0, 0, 0));
             }
 
@@ -199,7 +199,7 @@ public class TourTabController {
             if(!result.getDuration().isEmpty())
                 newTourLog.setTotalTime(LocalTime.parse(result.getDuration(), DateTimeFormatter.ISO_LOCAL_TIME));
             else {
-                log.warn("Duration was empty for log [id:"+tourLog.getLogId()+" ] in editLog");
+                log.info("Duration was empty for log [id:"+tourLog.getLogId()+" ] in editLog");
                 newTourLog.setTotalTime(tourLog.getTotalTime());
             }
 
