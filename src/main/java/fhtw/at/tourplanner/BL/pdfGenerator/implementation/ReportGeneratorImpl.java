@@ -10,7 +10,6 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
 import fhtw.at.tourplanner.BL.calculator.Calculator;
-import fhtw.at.tourplanner.BL.calculator.implementation.CalculatorImpl;
 import fhtw.at.tourplanner.BL.pdfGenerator.ReportGenerator;
 import fhtw.at.tourplanner.Configuration.AppConfiguration;
 import fhtw.at.tourplanner.DAL.FileSystem.FileSystem;
@@ -38,9 +37,9 @@ public class ReportGeneratorImpl implements ReportGenerator {
     }
 
     @Override
-    public boolean generateReport(TourModel tour, java.util.List<TourLog> logs, File pdfFile) {
+    public boolean generateReport(TourModel tour, java.util.List<TourLog> logs,int allLogsSize, File pdfFile) {
         if(tour == null) {
-            log.warn("Generate Report failed, no tour provided");
+            log.error("Generate Report failed, no tour provided");
             return false;
         }
         try {
@@ -59,9 +58,8 @@ public class ReportGeneratorImpl implements ReportGenerator {
             try {
                 ImageData imageData = ImageDataFactory.create(appConfiguration.getImageFolder() + fileSystem.findFile(tour));
                 document.add(new Image(imageData));
-            }catch(NullPointerException e){
-                log.warn("Image for tour [id:"+ tour.getTourId()+ " ] could not b found. [ error: " + e.getMessage() + " ]");
-                e. printStackTrace();
+            }catch(Exception e){
+                log.info("Image for tour [id:"+ tour.getTourId()+ " ] could not b found. [ error: " + e.getMessage() + " ]");
                 document.add(new Paragraph("Image could not be found").setItalic());
             }
 
@@ -79,6 +77,14 @@ public class ReportGeneratorImpl implements ReportGenerator {
                     .add(new ListItem("Distance: " + String.format("%.1f", tour.getTourDistance()) + "km"))
                     .add(new ListItem("Estimated Time: " + tour.getEstimatedTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"))))
                     .add(new ListItem("Transport Type: " + tour.getTransportType()));
+            var childFriendliness = calculator.calculateChildFriendliness(tour, logs);
+            if(childFriendliness != null)
+                list.add("Child Friendliness: " + childFriendliness);
+            var popularity = calculator.calculatePopularity(allLogsSize, logs.size());
+            if(popularity != null)
+                list.add("Popularity: " + popularity);
+
+
             document.add(listHeader);
             document.add(list);
 
@@ -108,7 +114,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
             table.setFontSize(12).setBackgroundColor(ColorConstants.WHITE);
             for (var log: logs) {
                 table.addCell(new Paragraph(log.getDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))).setMaxWidth(100));
-                table.addCell(new Paragraph(log.getComment()).setMaxWidth(150));
+                table.addCell(new Paragraph(log.getComment() != null ? log.getComment() : "").setMaxWidth(150));
                 table.addCell(new Paragraph(String.valueOf(log.getDifficulty())).setMaxWidth(90));
                 table.addCell(new Paragraph(String.valueOf(log.getRating())).setMaxWidth(90));
                 table.addCell(new Paragraph(log.getTotalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"))).setMaxWidth(100));
@@ -118,8 +124,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
             document.close();
             return true;
         }catch(Exception e){
-            log.warn("Generate Report failed for tour [id:"+tour.getTourId()+" ] [ error: " + e.getMessage() + " ]");
-            e.printStackTrace();
+            log.error("Generate Report failed for tour [id:"+tour.getTourId()+" ] [ error: " + e.getMessage() + " ]");
             return false;
         }
     }
@@ -174,8 +179,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
             return true;
 
         }catch(Exception e){
-            log.warn("Generate Summary failed [ error: " + e.getMessage() + " ]");
-            e.printStackTrace();
+            log.error("Generate Summary failed [ error: " + e.getMessage() + " ]");
             return false;
         }
     }

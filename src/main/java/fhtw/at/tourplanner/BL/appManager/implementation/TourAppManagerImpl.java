@@ -131,9 +131,10 @@ public class TourAppManagerImpl implements TourAppManager {
     @Override
     public void generateTourReport(TourModel tourModel, File pdfFile) {
         var tour = getTour(tourModel.getTourId());
+        var allLogsSize = tourLogDao.getAll().size();
         if(tour != null){
             var logs = getAllTourLogsForTour(tour);
-            reportGenerator.generateReport(tour, logs, pdfFile);
+            reportGenerator.generateReport(tour, logs,allLogsSize ,pdfFile);
         }
         else
             log.warn("Generate tour report failed because getTour( [ Id: " + tourModel.getTourId() + " ] returned null");

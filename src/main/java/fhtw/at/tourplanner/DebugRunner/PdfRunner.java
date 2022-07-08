@@ -43,6 +43,6 @@ public class PdfRunner {
 
         var pdfGenerator = new ReportGeneratorImpl(AppConfigurationLoader.getInstance().getAppConfiguration(), new FileSystemImpl(AppConfigurationLoader.getInstance().getAppConfiguration()), new CalculatorImpl());
 
-        pdfGenerator.generateReport(testModel, logs, new File("./pdf/pdfRunner.pdf"));
+        pdfGenerator.generateReport(testModel, logs,3 ,new File("./pdf/pdfRunner.pdf"));
     }
 }
