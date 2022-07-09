@@ -2,7 +2,6 @@ package fhtw.at.tourplanner;
 
 import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

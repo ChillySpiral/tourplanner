@@ -4,7 +4,6 @@ import fhtw.at.tourplanner.BL.calculator.implementation.CalculatorImpl;
 import fhtw.at.tourplanner.BL.pdfGenerator.implementation.ReportGeneratorImpl;
 import fhtw.at.tourplanner.Configuration.AppConfigurationLoader;
 import fhtw.at.tourplanner.DAL.FileSystem.implementation.FileSystemImpl;
-import fhtw.at.tourplanner.DAL.mapQuestAPI.implementation.MapQuestRepositoryImpl;
 import fhtw.at.tourplanner.DAL.model.TourLog;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.enums.Difficulty;

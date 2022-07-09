@@ -4,7 +4,6 @@ import fhtw.at.tourplanner.BL.BLFactory;
 import fhtw.at.tourplanner.DAL.model.TourModel;
 import fhtw.at.tourplanner.DAL.model.enums.Difficulty;
 import fhtw.at.tourplanner.DAL.model.enums.Rating;
-import fhtw.at.tourplanner.DAL.model.enums.TransportType;
 
 import java.io.File;
 import java.time.LocalDateTime;
