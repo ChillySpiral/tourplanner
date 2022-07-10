@@ -198,7 +198,7 @@ public class TourTabViewModel {
     private void waitToUpdateWeather(){
         if(weatherInfo != null){
             this.weatherCondition.setValue(weatherInfo.getCondition().getText());
-            this.weatherTemperature.setValue(String.valueOf(weatherInfo.getTemp_c()));
+            this.weatherTemperature.setValue(String.valueOf(weatherInfo.getTemp_c())+" \u00b0C");
         }
     }
 

@@ -45,6 +45,7 @@ public class TourListViewModel {
 
     public void setTours(List<TourModel> tourItems) {
         data.clear();
+        tourItems.sort(Comparator.comparing(TourModel::getTourId).reversed());
         data.addAll(tourItems);
     }
 
