@@ -50,6 +50,9 @@ public class TourListController {
     }
 
     public void deleteTour(ActionEvent actionEvent){
-        tourListViewModel.deleteTour(tourModelListView.getSelectionModel().getSelectedItem());
+        var data = tourModelListView.getSelectionModel().getSelectedItem();
+        if(data == null)
+            return;
+        tourListViewModel.deleteTour(data);
     }
 }

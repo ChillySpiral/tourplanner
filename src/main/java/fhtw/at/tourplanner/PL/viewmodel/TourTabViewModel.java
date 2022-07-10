@@ -18,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 
 @Log4j2
 public class TourTabViewModel {
@@ -219,7 +220,9 @@ public class TourTabViewModel {
 
     public void updateTourLogData() {
         logData.clear();
-        logData.setAll(tourAppManager.getAllTourLogsForTour(data));
+        var logs = tourAppManager.getAllTourLogsForTour(data);
+        logs.sort(Comparator.comparing(TourLog::getLogId).reversed());
+        logData.setAll(logs);
 
         childFriendliness.setValue(tourAppManager.calculateChildFriendliness(data));
         popularity.setValue(tourAppManager.calculatePopularity(data));
