@@ -29,13 +29,6 @@ public class HomeViewModel {
         this.tourListViewModel.setTours(tours);
     }
 
-    /*
-    * Info:
-    * selectedTourItem -> selectTour(selectedTourItem) definiert einen Listener, der sich ein TourModel Object nimmt
-    * und das an selectTour weitergibt
-    *
-    * Die Lambda Funktion ist die Implementation der changeSelection Methode aus dem Interface TourSelectionListener
-    * */
     private void registerListeners(){
         this.tourListViewModel.addTourSelectionListener(selectedTourItem -> selectTour(selectedTourItem));
         this.searchBarViewModel.addTourSearchListener(tourIds -> filterTours(tourIds));
