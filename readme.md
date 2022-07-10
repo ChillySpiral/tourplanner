@@ -1,4 +1,4 @@
-Add config File in src/main/resources/app.properties and add those plus values (add enter between each Key):
+Add config File in src/main/resources/app.properties
 
 name=Tourplanner
 version=1.0
@@ -9,3 +9,6 @@ datasource.username=<username>
 datasource.password=<password>
 
 api.key=<key>
+weather.key=<key>
+
+Read databaseInitSQL.txt to setup Database

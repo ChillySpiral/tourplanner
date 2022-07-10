@@ -1,3 +1,8 @@
+//Docker Command:
+docker run --name swe2db -e POSTGRES_USER=swe2user -e POSTGRES_PASSWORD=swe2pw -p 6000:5432 postgres
+
+
+
 create database tourplanner
     with owner swe2user;
 
@@ -46,8 +51,3 @@ create table if not exists log
 
 alter table log
     owner to swe2user;
-
-
-
-//Docker Command:
-docker run --name swe2db -e POSTGRES_USER=swe2user -e POSTGRES_PASSWORD=swe2pw -p 6000:5432 postgres
