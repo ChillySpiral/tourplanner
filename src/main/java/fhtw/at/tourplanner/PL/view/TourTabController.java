@@ -94,6 +94,9 @@ public class TourTabController {
     @FXML
     private Button weatherButton;
 
+    @FXML
+    private AnchorPane descriptionAnchorPane;
+
     private final TourTabViewModel tourTabViewModel;
 
     public TourTabController(TourTabViewModel tourTabViewModel) {
@@ -127,6 +130,8 @@ public class TourTabController {
 
         image.fitHeightProperty().bind(imageAnchorPane.heightProperty());
         image.fitWidthProperty().bind(imageAnchorPane.widthProperty());
+
+        descriptionText.prefHeightProperty().bind(descriptionAnchorPane.heightProperty());
 
         weatherTemperature.textProperty().bind(tourTabViewModel.weatherTemperature());
         weatherCondition.textProperty().bind(tourTabViewModel.weatherCondition());
