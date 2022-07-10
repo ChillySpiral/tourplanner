@@ -28,6 +28,5 @@ module fhtw.at.tourplanner {
     opens fhtw.at.tourplanner.PL.view.dialog to javafx.fxml;
     exports fhtw.at.tourplanner.DAL.model.export;
     exports fhtw.at.tourplanner.DAL.model.enums;
-    exports fhtw.at.tourplanner.DebugRunner;
     exports fhtw.at.tourplanner.DAL.model.weatherModel;
 }
