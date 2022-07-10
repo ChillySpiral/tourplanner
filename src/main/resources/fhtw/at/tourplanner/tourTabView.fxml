@@ -44,7 +44,7 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextArea fx:id="descriptionText" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+                        <TextArea fx:id="descriptionText" editable="false" wrapText="true" />
                      </children></AnchorPane>
                     </content>
                 </Tab>
@@ -104,7 +104,7 @@
                               <Label text="Weather Info" />
                               <Label text="Temperature:" GridPane.rowIndex="1" />
                               <Label text="Condition:" GridPane.rowIndex="2" />
-                              <Button fx:id="weatherButton" mnemonicParsing="false" text="Check" GridPane.columnIndex="1" onAction="#getWeatherInfo"/>
+                              <Button fx:id="weatherButton" mnemonicParsing="false" onAction="#getWeatherInfo" text="Check" GridPane.columnIndex="1" />
                               <TextField fx:id="weatherTemperature" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <TextField fx:id="weatherCondition" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                            </children>
