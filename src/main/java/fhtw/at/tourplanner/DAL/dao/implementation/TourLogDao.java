@@ -49,6 +49,7 @@ public class TourLogDao implements Dao<TourLog> {
     public TourLog create(int tourId) {
         var queryString = "INSERT INTO public.\"log\" (\"TourId\", \"DateTime\", \"Difficulty\", \"Rating\") VALUES(CAST(? AS INTEGER), ?, ?, ?);";
         var newItem = new TourLog();
+        newItem.setComment("");
         newItem.setDateTime(LocalDateTime.now());
         newItem.setDifficulty(Difficulty.Advanced);
         newItem.setRating(Rating.Neutral);

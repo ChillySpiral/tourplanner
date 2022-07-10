@@ -53,6 +53,9 @@ public class TourDao implements TourDaoExtension {
         var queryString = "INSERT INTO public.\"tour\" (\"Title\", \"TransportType\") VALUES(?, ?);";
         var newItem = new TourModel();
         newItem.setTitle("New Tour");
+        newItem.setTo("");
+        newItem.setFrom("");
+        newItem.setDescription("");
         newItem.setTransportType(TransportType.Foot);
         newItem.setEstimatedTime(LocalTime.of(0,0,0));
         newItem.setTourDistance(0.0);
